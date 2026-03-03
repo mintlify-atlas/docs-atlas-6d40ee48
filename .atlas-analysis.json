@@ -1,0 +1,138 @@
+{
+  "projectType": "cli-tool",
+  "projectName": "GitWhisper",
+  "projectDescription": "AI-powered Git commit message generator that analyzes your changes and whispers the perfect commit message using multiple AI models.",
+  "theme": "aspen",
+  "primaryColor": "#8B5CF6",
+  "lightColor": "#A78BFA",
+  "darkColor": "#7C3AED",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "installation",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Core Features",
+            "pages": [
+              "features/interactive-confirmation",
+              "features/ai-models",
+              "features/code-analysis",
+              "features/multi-language"
+            ]
+          },
+          {
+            "group": "Commands",
+            "pages": [
+              "commands/commit",
+              "commands/analyze",
+              "commands/configuration",
+              "commands/models"
+            ]
+          },
+          {
+            "group": "Configuration",
+            "pages": [
+              "configuration/api-keys",
+              "configuration/defaults",
+              "configuration/language-settings"
+            ]
+          },
+          {
+            "group": "Advanced Usage",
+            "pages": [
+              "advanced/conventional-commits",
+              "advanced/ticket-prefixes",
+              "advanced/git-tagging",
+              "advanced/editor-integration"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "AI Models",
+        "groups": [
+          {
+            "group": "Supported Providers",
+            "pages": [
+              "models/overview",
+              "models/openai",
+              "models/claude",
+              "models/gemini",
+              "models/ollama",
+              "models/free-model"
+            ]
+          },
+          {
+            "group": "Model Configuration",
+            "pages": [
+              "models/variants",
+              "models/custom-endpoints"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Integrations",
+        "groups": [
+          {
+            "group": "Editor Plugins",
+            "pages": [
+              "integrations/overview",
+              "integrations/vscode",
+              "integrations/jetbrains"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Resources",
+        "groups": [
+          {
+            "group": "Additional Resources",
+            "pages": [
+              "resources/troubleshooting",
+              "resources/contributing",
+              "resources/changelog",
+              "resources/faq"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "AI-powered commit message generation using multiple AI models (OpenAI, Claude, Gemini, Ollama, and more)",
+    "Interactive commit confirmation with review, edit, retry, and model-switching options",
+    "Code analysis for staged and unstaged changes with AI-powered suggestions",
+    "Multi-language support for commit messages in 20+ languages",
+    "Conventional commit format with customizable emoji support",
+    "Ticket/prefix integration for project management workflows",
+    "Git tagging and auto-push capabilities",
+    "Free model option requiring no API key",
+    "Editor integrations for VS Code and JetBrains IDEs",
+    "Configurable defaults and flexible API key management"
+  ],
+  "publicApiSurface": [
+    "gitwhisper commit - Generate and apply commit messages with interactive confirmation",
+    "gitwhisper analyze - Analyze code changes with AI-powered suggestions",
+    "gitwhisper list-models - Display all supported AI models",
+    "gitwhisper list-variants - Show available variants for AI models",
+    "gitwhisper save-key - Store API keys securely for future use",
+    "gitwhisper set-defaults - Configure default model, variant, and settings",
+    "gitwhisper show-defaults - Display current default configuration",
+    "gitwhisper clear-defaults - Clear saved default preferences",
+    "gitwhisper show-config - View full configuration file",
+    "gitwhisper change-language - Set language for commit messages",
+    "gitwhisper always-add - Configure automatic staging of changes",
+    "gitwhisper update - Update GitWhisper to the latest version",
+    "gw - Short alias for gitwhisper command"
+  ]
+}
