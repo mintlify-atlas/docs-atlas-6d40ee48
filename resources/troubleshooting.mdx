@@ -1,0 +1,387 @@
+---
+title: Troubleshooting
+description: Common issues and solutions for GitWhisper
+---
+
+This page covers common issues you might encounter when using GitWhisper and their solutions.
+
+## Common Issues
+
+<AccordionGroup>
+  <Accordion title="Authentication failed - Invalid API key">
+    **Error Message:**
+    ```
+    Authentication failed: Invalid API key
+    ```
+
+    **Solutions:**
+    - Check that your API key is correct and valid
+    - Ensure your API key has not expired
+    - Verify you're using the correct API key for the service (Claude, OpenAI, etc.)
+    - Make sure your API key is properly formatted with no extra spaces
+    - Re-save your API key using:
+      ```bash
+      gw save-key --model <model-name> --key "your-api-key"
+      ```
+
+    **Check your saved keys:**
+    ```bash
+    gw show-config
+    ```
+  </Accordion>
+
+  <Accordion title="Git not found or not a Git repository">
+    **Error Message:**
+    ```
+    Error: Git is not installed or not found in PATH
+    ```
+    or
+    ```
+    Error: Not a git repository
+    ```
+
+    **Solutions:**
+    - Ensure Git is installed on your system:
+      ```bash
+      git --version
+      ```
+    - If Git is not installed:
+      - **macOS**: `brew install git`
+      - **Ubuntu/Debian**: `sudo apt-get install git`
+      - **Windows**: Download from [git-scm.com](https://git-scm.com)
+    - Make sure you're running GitWhisper from inside a Git repository
+    - Initialize a Git repository if needed:
+      ```bash
+      git init
+      ```
+  </Accordion>
+
+  <Accordion title="No staged changes found">
+    **Error Message:**
+    ```
+    Error: No staged changes found. Please stage your changes first.
+    ```
+
+    **Solutions:**
+    - Stage your changes manually:
+      ```bash
+      git add .
+      ```
+    - Or stage specific files:
+      ```bash
+      git add file1.js file2.py
+      ```
+    - Enable automatic staging:
+      ```bash
+      gw always-add true
+      ```
+    - Then run GitWhisper again:
+      ```bash
+      gw commit
+      ```
+  </Accordion>
+
+  <Accordion title="Request too large - Diff size exceeds limits">
+    **Error Message:**
+    ```
+    Request too large: Your diff exceeds the maximum allowed size
+    ```
+
+    **Solutions:**
+    - GitWhisper automatically handles large diffs by processing files individually
+    - Adjust the max diff size threshold:
+      ```bash
+      gw set-defaults --max-diff-size 100000
+      ```
+    - Break your changes into smaller, focused commits
+    - Exclude large files from staging:
+      ```bash
+      git reset HEAD large-file.txt
+      ```
+    - Use `.gitignore` to exclude unnecessary files
+    - Consider committing one file at a time for very large changes
+  </Accordion>
+
+  <Accordion title="Large files detected (>10MB)">
+    **Error Message:**
+    ```
+    Warning: Large files detected in your staging area
+    ```
+
+    **Solutions:**
+    - GitWhisper automatically detects files >10MB to prevent accidental commits
+    - Review the large files listed in the warning
+    - If the file should not be committed:
+      ```bash
+      git reset HEAD large-file.bin
+      echo "large-file.bin" >> .gitignore
+      ```
+    - Consider using Git LFS for large files:
+      ```bash
+      git lfs install
+      git lfs track "*.bin"
+      git add .gitattributes
+      ```
+    - Adjust the size threshold if needed in `~/.git_whisper.yaml`
+  </Accordion>
+
+  <Accordion title="Rate limit exceeded">
+    **Error Message:**
+    ```
+    Rate limit exceeded: Too many requests
+    ```
+
+    **Solutions:**
+    - Wait before retrying (usually indicated in the error message)
+    - Reduce the frequency of your requests
+    - Consider upgrading your API plan for higher limits
+    - Try using a different AI model temporarily:
+      ```bash
+      gw commit --model free
+      ```
+    - The free model has these limits:
+      - 8k chars per request
+      - 60 requests per hour
+      - 10 requests per minute
+  </Accordion>
+
+  <Accordion title="Permission denied - Insufficient access">
+    **Error Message:**
+    ```
+    Permission denied: Your account does not have access to this resource
+    ```
+
+    **Solutions:**
+    - Check your API key permissions with your provider
+    - Ensure your account has access to the specified model
+    - Verify your account is in good standing
+    - Check if billing is enabled for your account
+    - Some models require specific tier access - check your provider's documentation
+  </Accordion>
+
+  <Accordion title="Model not found or invalid variant">
+    **Error Message:**
+    ```
+    Resource not found: Invalid model name or variant
+    ```
+
+    **Solutions:**
+    - List available models:
+      ```bash
+      gw list-models
+      ```
+    - List available variants for a model:
+      ```bash
+      gw list-variants --model openai
+      ```
+    - Check your spelling of the model name
+    - Ensure you're using the correct variant format
+    - Update to the latest version of GitWhisper:
+      ```bash
+      gw update
+      ```
+  </Accordion>
+
+  <Accordion title="Server error or service temporarily unavailable">
+    **Error Message:**
+    ```
+    Server error: The service is temporarily unavailable
+    ```
+    or
+    ```
+    Service overloaded: High traffic detected
+    ```
+
+    **Solutions:**
+    - Wait a few minutes and try again
+    - Check the service status page for your AI provider
+    - Try using a different model:
+      ```bash
+      gw commit --model claude  # if OpenAI is down
+      ```
+    - Use the interactive retry option to try again
+    - Try during off-peak hours if the issue persists
+  </Accordion>
+
+  <Accordion title="Git push failed">
+    **Error Message:**
+    ```
+    Error during git push: Permission denied
+    ```
+    or
+    ```
+    Error: No remote configured
+    ```
+
+    **Solutions:**
+    - Check if you have a remote configured:
+      ```bash
+      git remote -v
+      ```
+    - Add a remote if missing:
+      ```bash
+      git remote add origin <repository-url>
+      ```
+    - Ensure you have push permissions for the repository
+    - Check your SSH keys or authentication:
+      ```bash
+      ssh -T git@github.com
+      ```
+    - For HTTPS, ensure your credentials are correct
+    - Try pushing manually first to diagnose the issue
+  </Accordion>
+
+  <Accordion title="Configuration file issues">
+    **Error Message:**
+    ```
+    Error: Could not read configuration file
+    ```
+    or
+    ```
+    Error: Invalid configuration format
+    ```
+
+    **Solutions:**
+    - Check if your config file exists:
+      ```bash
+      cat ~/.git_whisper.yaml
+      ```
+    - Verify the YAML format is valid
+    - If corrupted, you can delete and recreate it:
+      ```bash
+      rm ~/.git_whisper.yaml
+      gw set-defaults --model openai
+      ```
+    - Re-save your API keys:
+      ```bash
+      gw save-key --model openai --key "your-key"
+      ```
+    - View your full configuration:
+      ```bash
+      gw show-config
+      ```
+  </Accordion>
+
+  <Accordion title="Ollama connection issues">
+    **Error Message:**
+    ```
+    Error: Could not connect to Ollama
+    ```
+
+    **Solutions:**
+    - Ensure Ollama is running:
+      ```bash
+      ollama serve
+      ```
+    - Check if Ollama is accessible:
+      ```bash
+      curl http://localhost:11434/api/tags
+      ```
+    - Verify your base URL configuration:
+      ```bash
+      gw set-defaults --model ollama --base-url http://localhost:11434
+      ```
+    - If using a custom port, update the base URL accordingly
+    - No API key is required for Ollama
+    - Check that the model is pulled:
+      ```bash
+      ollama list
+      ollama pull llama3
+      ```
+  </Accordion>
+
+  <Accordion title="Editor issues when editing commit messages">
+    **Error Message:**
+    ```
+    Error: Editor exited with non-zero status
+    ```
+
+    **Solutions:**
+    - GitWhisper uses your Git editor configuration
+    - Check your editor setup:
+      ```bash
+      git config --global core.editor
+      ```
+    - Set your preferred editor:
+      ```bash
+      git config --global core.editor "nano"
+      # or
+      git config --global core.editor "vim"
+      # or for VS Code
+      git config --global core.editor "code --wait"
+      ```
+    - Alternatively, set the EDITOR environment variable:
+      ```bash
+      export EDITOR=nano
+      ```
+    - Make sure the editor command is available in your PATH
+  </Accordion>
+
+  <Accordion title="Multi-language commit messages not working">
+    **Issue:**
+    Commit messages are always generated in English despite setting a different language.
+
+    **Solutions:**
+    - Set your preferred language:
+      ```bash
+      gw change-language
+      ```
+    - Verify language is saved in config:
+      ```bash
+      gw show-config
+      ```
+    - Note: Commit types (feat:, fix:) and emojis remain in English for compatibility
+    - Only the description is translated
+    - Example in Spanish:
+      ```
+      feat: ✨ Agregar funcionalidad de modo oscuro
+      ```
+  </Accordion>
+
+  <Accordion title="Insufficient balance or credits">
+    **Error Message:**
+    ```
+    Insufficient balance: Add funds to continue
+    ```
+
+    **Solutions:**
+    - Add funds to your API provider account
+    - Check your billing information with the provider
+    - Verify your payment method is valid
+    - Review your usage limits and quotas
+    - Consider switching to the free model temporarily:
+      ```bash
+      gw commit --model free
+      ```
+    - Check your account dashboard:
+      - OpenAI: [platform.openai.com](https://platform.openai.com/account/billing)
+      - Anthropic: [console.anthropic.com](https://console.anthropic.com)
+      - Google: [console.cloud.google.com](https://console.cloud.google.com)
+  </Accordion>
+</AccordionGroup>
+
+## Getting More Help
+
+If you're experiencing an issue not listed here:
+
+1. **Check the logs**: Look for detailed error messages in your terminal output
+2. **Update GitWhisper**: Ensure you're using the latest version
+   ```bash
+   gw update
+   ```
+3. **Search existing issues**: [GitHub Issues](https://github.com/iamngoni/gitwhisper/issues)
+4. **Open a new issue**: [Create an issue](https://github.com/iamngoni/gitwhisper/issues/new) with:
+   - Error messages (with API keys redacted)
+   - Your GitWhisper version (`gw --version`)
+   - Your OS and Git version
+   - Steps to reproduce the issue
+5. **Join discussions**: [GitHub Discussions](https://github.com/iamngoni/gitwhisper/discussions)
+
+## Debug Tips
+
+- Run with verbose output to see more details
+- Check your configuration: `gw show-config`
+- View default settings: `gw show-defaults`
+- Test with the free model first to isolate API-related issues
+- Verify Git is working: `git status` and `git diff --cached`
+- Check file permissions on `~/.git_whisper.yaml` (should be 600 on Unix systems)

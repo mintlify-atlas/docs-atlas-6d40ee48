@@ -1,0 +1,456 @@
+---
+title: 'Ollama Self-Hosted Models'
+description: 'Run AI models locally with Ollama for complete privacy and control'
+icon: 'server'
+---
+
+Ollama enables you to run powerful open-source AI models locally on your own hardware, ensuring your code never leaves your machine.
+
+## Why Use Ollama?
+
+<CardGroup cols={2}>
+
+<Card title="Complete Privacy" icon="lock">
+  Your code and commits stay on your local machine - never sent to external servers
+</Card>
+
+<Card title="No API Costs" icon="wallet">
+  No usage fees or API quotas - unlimited commits once set up
+</Card>
+
+<Card title="Offline Access" icon="wifi-slash">
+  Works without internet connection after initial model download
+</Card>
+
+<Card title="Full Control" icon="sliders">
+  Choose from dozens of open-source models and customize parameters
+</Card>
+
+</CardGroup>
+
+## Prerequisites
+
+Before using Ollama with GitWhisper, you need to:
+
+1. **Install Ollama**: Download from [ollama.com](https://ollama.com)
+2. **Pull a model**: Download at least one AI model
+3. **Start the server**: Ollama must be running locally
+
+### Installation
+
+<Tabs>
+  <Tab title="macOS">
+    ```bash
+    # Download from ollama.com or use Homebrew
+    brew install ollama
+    
+    # Start Ollama
+    ollama serve
+    ```
+  </Tab>
+  <Tab title="Linux">
+    ```bash
+    # Install script
+    curl -fsSL https://ollama.com/install.sh | sh
+    
+    # Start Ollama
+    ollama serve
+    ```
+  </Tab>
+  <Tab title="Windows">
+    Download the installer from [ollama.com/download](https://ollama.com/download)
+    
+    Ollama will run automatically in the background
+  </Tab>
+</Tabs>
+
+### Download Models
+
+Pull models you want to use:
+
+```bash
+# Popular models for code
+ollama pull llama3.2
+ollama pull codellama
+ollama pull deepseek-coder
+ollama pull qwen2.5-coder
+
+# Smaller, faster models
+ollama pull phi3
+ollama pull gemma2
+
+# Verify available models
+ollama list
+```
+
+<Tip>
+  Start with **llama3.2** or **codellama** - they offer a good balance of quality and speed for commit messages.
+</Tip>
+
+## Available Models
+
+Ollama supports hundreds of models. Popular choices for GitWhisper:
+
+### Recommended for Code
+
+- **llama3.2:latest** ⭐ (default) - Great all-around choice
+- **codellama** - Optimized for code understanding
+- **deepseek-coder** - Excellent code generation and analysis
+- **qwen2.5-coder** - Strong coding capabilities
+- **granite-code** - IBM's code-focused model
+
+### Fast & Lightweight
+
+- **phi3** - Microsoft's compact model
+- **gemma2** - Google's efficient model
+- **tinyllama** - Ultra-fast but basic
+
+### Large & Powerful
+
+- **llama3:70b** - More capable, requires more RAM
+- **mixtral** - High quality, mixture of experts
+- **command-r** - Cohere's advanced model
+
+<Note>
+  Browse all available models at [ollama.com/library](https://ollama.com/library)
+</Note>
+
+## Usage
+
+### Basic Usage
+
+Make sure Ollama is running, then:
+
+```bash
+# Use Ollama with default model (llama3.2:latest)
+gitwhisper commit --model ollama
+
+# Shorthand
+gw commit -m ollama
+```
+
+### Specify Model
+
+Use a specific Ollama model:
+
+```bash
+# Use CodeLlama
+gitwhisper commit --model ollama --model-variant codellama
+
+# Use DeepSeek Coder
+gitwhisper commit --model ollama --model-variant deepseek-coder
+
+# Use specific version
+gitwhisper commit --model ollama --model-variant llama3.2:3b
+```
+
+### Set as Default
+
+Configure Ollama as your default model:
+
+```bash
+# Set Ollama with default model
+gitwhisper set-defaults --model ollama
+
+# Set Ollama with specific model
+gitwhisper set-defaults --model ollama --model-variant codellama
+
+# Set custom base URL (if not using default)
+gitwhisper set-defaults --model ollama --model-variant llama3.2 --base-url http://localhost:11434
+```
+
+## Custom Base URL
+
+If Ollama is running on a different host or port:
+
+```bash
+# Custom port
+gitwhisper commit --model ollama --base-url http://localhost:8080
+
+# Remote Ollama server
+gitwhisper commit --model ollama --base-url http://192.168.1.100:11434
+
+# Save as default
+gitwhisper set-defaults --model ollama --base-url http://localhost:8080
+```
+
+See [Custom Endpoints](/models/custom-endpoints) for more details.
+
+## No API Key Required
+
+Ollama doesn't require an API key:
+
+```bash
+# Just use it directly
+gitwhisper commit --model ollama
+
+# No save-key needed
+# No environment variables needed
+```
+
+## Hardware Requirements
+
+Model performance depends on your hardware:
+
+<Tabs>
+  <Tab title="Minimum">
+    **Basic laptop/desktop**
+    - 8GB RAM
+    - Any modern CPU
+    - No GPU required
+    
+    **Recommended models:**
+    - phi3
+    - tinyllama
+    - llama3.2:3b
+    
+    Response time: 5-15 seconds
+  </Tab>
+  <Tab title="Recommended">
+    **Good laptop/desktop**
+    - 16GB RAM
+    - Modern CPU (8+ cores)
+    - Optional: NVIDIA GPU
+    
+    **Recommended models:**
+    - llama3.2
+    - codellama
+    - deepseek-coder
+    - gemma2
+    
+    Response time: 2-5 seconds
+  </Tab>
+  <Tab title="Optimal">
+    **Workstation/Gaming PC**
+    - 32GB+ RAM
+    - High-end CPU
+    - NVIDIA GPU (8GB+ VRAM)
+    
+    **Recommended models:**
+    - llama3:70b
+    - mixtral
+    - Any model runs smoothly
+    
+    Response time: 1-3 seconds
+  </Tab>
+</Tabs>
+
+<Warning>
+  Larger models (70B parameters) require significant RAM (32GB+) and will be slow without a GPU.
+</Warning>
+
+## Model Comparison
+
+<Tabs>
+  <Tab title="Quality vs Speed">
+    | Model | Quality | Speed | Size | RAM Needed |
+    |-------|---------|-------|------|------------|
+    | llama3:70b | ⭐⭐⭐⭐⭐ | ⭐ | 40GB | 32GB+ |
+    | codellama | ⭐⭐⭐⭐ | ⭐⭐⭐ | 7GB | 8GB |
+    | llama3.2 | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | 2GB | 8GB |
+    | deepseek-coder | ⭐⭐⭐⭐ | ⭐⭐⭐ | 7GB | 8GB |
+    | phi3 | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | 2GB | 4GB |
+    | tinyllama | ⭐⭐ | ⭐⭐⭐⭐⭐ | 700MB | 2GB |
+  </Tab>
+  <Tab title="Best For">
+    | Model | Best Use Case |
+    |-------|---------------|
+    | codellama | Code-heavy commits with technical details |
+    | llama3.2 | Balanced choice for everyday use |
+    | deepseek-coder | Complex code analysis and generation |
+    | phi3 | Fast commits on limited hardware |
+    | qwen2.5-coder | Alternative to CodeLlama |
+    | mixtral | High quality with good speed |
+  </Tab>
+</Tabs>
+
+## Code Analysis
+
+Use Ollama for local code analysis:
+
+```bash
+# Analyze changes locally
+gitwhisper analyze --model ollama
+
+# Use specialized code model
+gitwhisper analyze --model ollama --model-variant codellama
+```
+
+### Analysis Benefits
+
+- **Private**: Code never leaves your machine
+- **Fast**: No network latency
+- **Detailed**: Generate comprehensive reports
+- **Unlimited**: No API quotas or rate limits
+
+## GPU Acceleration
+
+Ollama automatically uses your GPU if available:
+
+### NVIDIA GPUs
+
+```bash
+# Ollama detects NVIDIA GPU automatically
+# Install CUDA drivers if not detected
+
+# Check GPU usage
+watch -n 1 nvidia-smi
+```
+
+### Apple Silicon (M1/M2/M3)
+
+```bash
+# Metal acceleration is automatic
+# No additional setup needed
+```
+
+### AMD GPUs
+
+```bash
+# ROCm support on Linux
+# Check Ollama documentation for setup
+```
+
+<Tip>
+  GPU acceleration can make models 10-50x faster. For best results, use a GPU with 8GB+ VRAM.
+</Tip>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Ollama Not Running">
+    ```
+    Error: Connection refused
+    ```
+    
+    **Solution**: Start Ollama:
+    ```bash
+    # macOS/Linux
+    ollama serve
+    
+    # Or check if already running
+    ps aux | grep ollama
+    ```
+  </Accordion>
+  <Accordion title="Model Not Found">
+    ```
+    Error: Model not found
+    ```
+    
+    **Solution**: Pull the model first:
+    ```bash
+    ollama pull llama3.2
+    
+    # List available models
+    ollama list
+    ```
+  </Accordion>
+  <Accordion title="Out of Memory">
+    ```
+    Error: Out of memory
+    ```
+    
+    **Solution**: Use a smaller model:
+    ```bash
+    # Try a lighter model
+    ollama pull phi3
+    gitwhisper commit --model ollama --model-variant phi3
+    ```
+  </Accordion>
+  <Accordion title="Slow Performance">
+    **Solutions**:
+    1. Use a smaller model (phi3, gemma2)
+    2. Enable GPU acceleration
+    3. Close other applications
+    4. Use quantized models (models with `:q4` or `:q8` suffix)
+  </Accordion>
+  <Accordion title="Custom Port">
+    If Ollama is on a different port:
+    ```bash
+    # Set custom URL
+    gitwhisper set-defaults --model ollama --base-url http://localhost:8080
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Best Practices
+
+1. **Start with recommended models**: Use llama3.2 or codellama first
+2. **Monitor resource usage**: Watch RAM/GPU with `htop` or Activity Monitor
+3. **Keep models updated**: Run `ollama pull <model>` periodically
+4. **Use GPU when available**: Much faster than CPU-only
+5. **Match model to hardware**: Don't use 70B models on 8GB RAM
+
+## Comparison with Cloud Models
+
+<CardGroup cols={2}>
+
+<Card title="Advantages" icon="thumbs-up">
+  - Complete privacy
+  - No API costs
+  - Offline capability
+  - Unlimited usage
+  - No rate limits
+</Card>
+
+<Card title="Trade-offs" icon="scale-balanced">
+  - Requires local hardware
+  - Setup complexity
+  - May be slower
+  - Quality varies by model
+  - Uses system resources
+</Card>
+
+</CardGroup>
+
+## Example Workflow
+
+```bash
+# 1. Install and start Ollama
+ollama serve
+
+# 2. Pull a model (in another terminal)
+ollama pull codellama
+
+# 3. Set as default in GitWhisper
+gitwhisper set-defaults --model ollama --model-variant codellama
+
+# 4. Use for commits
+git add .
+gitwhisper commit
+
+# 5. Analyze code changes
+gitwhisper analyze
+```
+
+## Popular Model Links
+
+Explore models on Ollama's library:
+
+- [llama3.2](https://ollama.com/library/llama3.2)
+- [codellama](https://ollama.com/library/codellama)
+- [deepseek-coder](https://ollama.com/library/deepseek-coder)
+- [phi3](https://ollama.com/library/phi3)
+- [Browse all models](https://ollama.com/library)
+
+## Next Steps
+
+<CardGroup cols={2}>
+
+<Card title="Custom Endpoints" icon="gear" href="/models/custom-endpoints">
+  Configure custom Ollama URLs
+</Card>
+
+<Card title="Model Variants" icon="list" href="/models/variants">
+  View all available models
+</Card>
+
+<Card title="Cloud Models" icon="cloud" href="/models/overview">
+  Compare with cloud-based options
+</Card>
+
+<Card title="Configuration" icon="sliders" href="/configuration/defaults">
+  Set up default preferences
+</Card>
+
+</CardGroup>

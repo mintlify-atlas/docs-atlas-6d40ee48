@@ -1,0 +1,536 @@
+---
+title: 'Model Variants'
+description: 'Complete list of all available model variants across providers'
+icon: 'list'
+---
+
+This page lists all available model variants for each AI provider supported by GitWhisper. Use these exact names when specifying variants with the `--model-variant` flag.
+
+## Quick Reference
+
+List variants from the command line:
+
+```bash
+# List all variants for all models
+gitwhisper list-variants
+
+# List variants for a specific model
+gitwhisper list-variants --model openai
+gitwhisper list-variants --model claude
+```
+
+## OpenAI Models
+
+Default variant: **gpt-4o**
+
+### GPT-5 Series (Latest)
+
+```bash
+gpt-5                    # Most advanced model
+gpt-5-pro                # Enhanced version
+gpt-5-mini               # Faster, cost-effective
+gpt-5-nano               # Ultra-fast lightweight
+```
+
+### GPT-4.1 Series
+
+```bash
+gpt-4.1                  # Enhanced GPT-4
+gpt-4.1-mini             # Balanced speed/quality
+gpt-4.1-nano             # Lightweight efficient
+```
+
+### GPT-4o Series
+
+```bash
+gpt-4o                   # Default - optimized for speed/cost
+gpt-4o-mini              # Most cost-effective
+gpt-4.5-preview          # Preview of upcoming features
+```
+
+### Realtime Series
+
+```bash
+gpt-realtime             # Low-latency responses
+gpt-realtime-mini        # Fastest option
+```
+
+### o-Series (Reasoning)
+
+```bash
+o1-preview               # Advanced reasoning
+o1-mini                  # Compact reasoning
+o3-mini                  # Latest reasoning model
+```
+
+<Tabs>
+  <Tab title="Usage Example">
+    ```bash
+    # Use GPT-5
+    gitwhisper commit --model openai --model-variant gpt-5
+    
+    # Use o3-mini for reasoning
+    gitwhisper commit --model openai --model-variant o3-mini
+    
+    # Set as default
+    gitwhisper set-defaults --model openai --model-variant gpt-4o
+    ```
+  </Tab>
+  <Tab title="Recommendations">
+    - **gpt-4o**: Best default choice
+    - **gpt-5**: Maximum quality
+    - **gpt-4o-mini**: High volume usage
+    - **o3-mini**: Complex reasoning tasks
+  </Tab>
+</Tabs>
+
+## Claude Models
+
+Default variant: **claude-sonnet-4-5-20250929**
+
+### Claude 4 Series (Latest)
+
+```bash
+claude-sonnet-4-5-20250929        # Default - best balance
+claude-sonnet-4-20250514          # Stable Sonnet 4
+claude-opus-4-1-20250805          # Enhanced Opus with extended context
+claude-opus-4-20250514            # Most powerful Claude
+```
+
+### Claude 3.7 Series
+
+```bash
+claude-3-7-sonnet-20250219        # Latest 3.7 release
+claude-3-7-sonnet-latest          # Auto-updates to newest 3.7
+```
+
+### Claude 3.5 Series
+
+```bash
+claude-3-5-sonnet-latest          # Auto-updates to latest 3.5
+claude-3-5-sonnet-20241022        # October 2024 release
+claude-3-5-sonnet-20240620        # June 2024 release
+```
+
+### Claude 3 Series
+
+```bash
+claude-3-opus-20240307            # Most powerful Claude 3
+claude-3-sonnet-20240307          # Balanced Claude 3
+claude-3-haiku-20240307           # Fast and efficient
+```
+
+<Tabs>
+  <Tab title="Usage Example">
+    ```bash
+    # Use latest Sonnet 4.5
+    gitwhisper commit --model claude --model-variant claude-sonnet-4-5-20250929
+    
+    # Use Opus 4 for maximum quality
+    gitwhisper commit --model claude --model-variant claude-opus-4-20250514
+    
+    # Use Haiku for speed
+    gitwhisper commit --model claude --model-variant claude-3-haiku-20240307
+    ```
+  </Tab>
+  <Tab title="Recommendations">
+    - **claude-sonnet-4-5-20250929**: Best overall
+    - **claude-opus-4-20250514**: Maximum quality
+    - **claude-3-haiku-20240307**: Fast & cheap
+    - **claude-3-7-sonnet-latest**: Always current
+  </Tab>
+</Tabs>
+
+## Gemini Models
+
+Default variant: **gemini-2.0-flash**
+
+### Gemini 2.5 Series (Latest)
+
+```bash
+gemini-2.5-pro                    # Advanced reasoning with thinking
+gemini-2.5-flash                  # Updated Sep 2025, fast
+gemini-2.5-flash-lite             # Most cost-efficient
+gemini-2.5-flash-image            # Image generation
+gemini-2.5-computer-use           # Agent interaction
+```
+
+### Gemini 2.0 Series
+
+```bash
+gemini-2.0-flash                  # Default - optimized performance
+gemini-2.0-flash-lite             # Lowest latency
+```
+
+### Gemini 1.5 Series
+
+```bash
+gemini-1.5-pro-002                # Up to 2M tokens context
+gemini-1.5-flash-002              # Up to 1M tokens context
+gemini-1.5-flash-8b               # Most cost-effective
+```
+
+<Tabs>
+  <Tab title="Usage Example">
+    ```bash
+    # Use default 2.0 Flash
+    gitwhisper commit --model gemini
+    
+    # Use 2.5 Pro with thinking mode
+    gitwhisper commit --model gemini --model-variant gemini-2.5-pro
+    
+    # Use 1.5 Pro for massive context
+    gitwhisper commit --model gemini --model-variant gemini-1.5-pro-002
+    ```
+  </Tab>
+  <Tab title="Recommendations">
+    - **gemini-2.0-flash**: Best default
+    - **gemini-2.5-pro**: Complex reasoning
+    - **gemini-1.5-pro-002**: Huge context (2M tokens)
+    - **gemini-2.0-flash-lite**: Maximum speed
+  </Tab>
+</Tabs>
+
+## Grok Models
+
+Default variant: **grok-2-latest**
+
+### Grok 4 Series
+
+```bash
+grok-4                            # Most intelligent
+grok-4-heavy                      # Most powerful
+grok-4-fast                       # Efficient reasoning
+```
+
+### Grok Code Series
+
+```bash
+grok-code-fast-1                  # Agentic coding
+```
+
+### Grok 3 & 2 Series
+
+```bash
+grok-3                            # Reasoning capabilities
+grok-3-mini                       # Faster responses
+grok-2-latest                     # Default - stable release
+```
+
+<Tabs>
+  <Tab title="Usage Example">
+    ```bash
+    # Use Grok 4
+    gitwhisper commit --model grok --model-variant grok-4
+    
+    # Use Grok for coding
+    gitwhisper commit --model grok --model-variant grok-code-fast-1
+    ```
+  </Tab>
+  <Tab title="Recommendations">
+    - **grok-2-latest**: Safe default
+    - **grok-4**: Best quality
+    - **grok-code-fast-1**: Code-focused tasks
+  </Tab>
+</Tabs>
+
+## Llama Models
+
+Default variant: **llama-3-70b-instruct**
+
+### Llama 3.x Series
+
+```bash
+llama-3.3-70b-instruct            # Latest 70B model
+llama-3.2-3b-instruct             # Small efficient model
+llama-3.2-1b-instruct             # Tiny efficient model
+llama-3.1-405b-instruct           # Largest Llama model
+llama-3.1-70b-instruct            # Large balanced model
+llama-3.1-8b-instruct             # Small fast model
+```
+
+### Llama 3.0 Series
+
+```bash
+llama-3-70b-instruct              # Default - proven quality
+llama-3-8b-instruct               # Fast and efficient
+```
+
+<Tabs>
+  <Tab title="Usage Example">
+    ```bash
+    # Use Llama 3.3 70B
+    gitwhisper commit --model llama --model-variant llama-3.3-70b-instruct
+    
+    # Use small model for speed
+    gitwhisper commit --model llama --model-variant llama-3.1-8b-instruct
+    ```
+  </Tab>
+  <Tab title="Recommendations">
+    - **llama-3-70b-instruct**: Best balance
+    - **llama-3.3-70b-instruct**: Latest features
+    - **llama-3.1-8b-instruct**: Fast commits
+    - **llama-3.1-405b-instruct**: Maximum capability
+  </Tab>
+</Tabs>
+
+## DeepSeek Models
+
+Default variant: **deepseek-chat**
+
+### DeepSeek V3 Series
+
+```bash
+deepseek-v3.2-exp                 # Latest experimental
+deepseek-v3.1                     # Hybrid reasoning
+deepseek-v3.1-terminus            # Terminus variant
+deepseek-v3-0324                  # March 2024 release
+```
+
+### DeepSeek R1 & Chat
+
+```bash
+deepseek-r1-0528                  # Upgraded reasoning
+deepseek-reasoner                 # Reasoning-focused
+deepseek-chat                     # Default - general purpose
+```
+
+<Tabs>
+  <Tab title="Usage Example">
+    ```bash
+    # Use DeepSeek Chat
+    gitwhisper commit --model deepseek
+    
+    # Use reasoning model
+    gitwhisper commit --model deepseek --model-variant deepseek-r1-0528
+    ```
+  </Tab>
+  <Tab title="Recommendations">
+    - **deepseek-chat**: General use
+    - **deepseek-r1-0528**: Complex reasoning
+    - **deepseek-v3.2-exp**: Latest features
+  </Tab>
+</Tabs>
+
+## GitHub Models
+
+Default variant: **gpt-4o**
+
+### Available Models
+
+```bash
+gpt-4o                            # Default - OpenAI's flagship
+DeepSeek-R1                       # DeepSeek reasoning
+Llama-3.3-70B-Instruct            # Meta Llama
+Deepseek-V3                       # DeepSeek V3
+Phi-4-mini-instruct               # Microsoft Phi
+"Codestral 25.01"                 # Mistral code model (quote the name)
+"Mistral Large 24.11"             # Mistral large (quote the name)
+```
+
+<Warning>
+  Some model names contain spaces and must be quoted when used on the command line.
+</Warning>
+
+<Tabs>
+  <Tab title="Usage Example">
+    ```bash
+    # Use GPT-4o (default)
+    gitwhisper commit --model github
+    
+    # Use DeepSeek for reasoning
+    gitwhisper commit --model github --model-variant DeepSeek-R1
+    
+    # Use Codestral (note the quotes)
+    gitwhisper commit --model github --model-variant "Codestral 25.01"
+    ```
+  </Tab>
+  <Tab title="More Models">
+    GitHub regularly adds new models. Check the full list at:
+    
+    [github.com/marketplace?type=models](https://github.com/marketplace?type=models)
+  </Tab>
+</Tabs>
+
+## Ollama Models
+
+Default variant: **llama3.2:latest**
+
+### Ollama Variants
+
+Ollama supports hundreds of models. You can use any model from [ollama.com/library](https://ollama.com/library).
+
+**Popular choices:**
+
+```bash
+llama3.2:latest                   # Default - balanced choice
+codellama                         # Code-optimized
+deepseek-coder                    # Excellent for code
+qwen2.5-coder                     # Qwen code model
+phi3                              # Fast and efficient
+gemma2                            # Google's model
+mixtral                           # High quality
+llama3:70b                        # Large powerful model
+```
+
+<Tabs>
+  <Tab title="Usage Example">
+    ```bash
+    # First, pull the model locally
+    ollama pull codellama
+    
+    # Then use with GitWhisper
+    gitwhisper commit --model ollama --model-variant codellama
+    
+    # Use specific version
+    gitwhisper commit --model ollama --model-variant llama3.2:3b
+    ```
+  </Tab>
+  <Tab title="Find Models">
+    Browse available models:
+    
+    - Visit [ollama.com/library](https://ollama.com/library)
+    - Search by category (code, chat, etc.)
+    - Check model size and requirements
+    - Pull with `ollama pull <model>`
+  </Tab>
+</Tabs>
+
+<Note>
+  See the [Ollama documentation](/models/ollama) for more details on installing and using local models.
+</Note>
+
+## Free Model
+
+Default variant: **default** (only option)
+
+### No Variants
+
+The free model doesn't support variant selection - it uses a single default model from LLM7.io:
+
+```bash
+# Simply use the free model
+gitwhisper commit --model free
+
+# No variants available
+# --model-variant flag is ignored
+```
+
+<Info>
+  The free model is powered by [LLM7.io](https://llm7.io) and requires no API key. See [Free Model documentation](/models/free-model) for limits and details.
+</Info>
+
+## Setting Default Variants
+
+You can set a default model and variant to avoid specifying them each time:
+
+```bash
+# Set default model only (uses default variant)
+gitwhisper set-defaults --model openai
+
+# Set default model with specific variant
+gitwhisper set-defaults --model claude --model-variant claude-opus-4-20250514
+
+# Set for Ollama with custom base URL
+gitwhisper set-defaults --model ollama --model-variant codellama --base-url http://localhost:11434
+
+# View current defaults
+gitwhisper show-defaults
+
+# Clear defaults
+gitwhisper clear-defaults
+```
+
+## Comparison Table
+
+### Default Variants Summary
+
+| Provider | Default Variant | Quality | Speed | Cost |
+|----------|----------------|---------|-------|------|
+| OpenAI | gpt-4o | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | 💰💰 |
+| Claude | claude-sonnet-4-5-20250929 | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | 💰💰 |
+| Gemini | gemini-2.0-flash | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | 💰 |
+| Grok | grok-2-latest | ⭐⭐⭐⭐ | ⭐⭐⭐ | 💰💰 |
+| Llama | llama-3-70b-instruct | ⭐⭐⭐ | ⭐⭐⭐ | 💰💰 |
+| DeepSeek | deepseek-chat | ⭐⭐⭐ | ⭐⭐⭐⭐ | 💰 |
+| GitHub | gpt-4o | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Free (limited) |
+| Ollama | llama3.2:latest | ⭐⭐⭐ | ⭐⭐⭐ | Free (local) |
+| Free | default | ⭐⭐ | ⭐⭐⭐⭐ | Free (limited) |
+
+## Tips for Choosing Variants
+
+<AccordionGroup>
+  <Accordion title="For Daily Development">
+    **Recommended defaults:**
+    - OpenAI: `gpt-4o` or `gpt-4o-mini`
+    - Claude: `claude-sonnet-4-5-20250929`
+    - Gemini: `gemini-2.0-flash`
+    
+    These provide excellent quality at reasonable cost.
+  </Accordion>
+  <Accordion title="For Maximum Quality">
+    **Best quality variants:**
+    - OpenAI: `gpt-5` or `o3-mini`
+    - Claude: `claude-opus-4-20250514`
+    - Gemini: `gemini-2.5-pro`
+    
+    Use for important commits or complex changes.
+  </Accordion>
+  <Accordion title="For Cost Efficiency">
+    **Most economical:**
+    - OpenAI: `gpt-4o-mini`
+    - Claude: `claude-3-haiku-20240307`
+    - Gemini: `gemini-2.0-flash-lite`
+    - Free: `free` model
+    - Local: Ollama models
+    
+    Great for high-volume usage or testing.
+  </Accordion>
+  <Accordion title="For Privacy">
+    **Keep code local:**
+    - Ollama: Any model (`codellama`, `llama3.2`, etc.)
+    
+    Your code never leaves your machine.
+  </Accordion>
+</AccordionGroup>
+
+## Staying Updated
+
+Model variants are regularly updated:
+
+```bash
+# Check current variants
+gitwhisper list-variants
+
+# Check for specific model
+gitwhisper list-variants --model claude
+
+# Update GitWhisper to get latest models
+gitwhisper update
+```
+
+<Tip>
+  New models are added regularly. Check the [GitHub repository](https://github.com/iamngoni/gitwhisper) for announcements.
+</Tip>
+
+## Next Steps
+
+<CardGroup cols={2}>
+
+<Card title="Model Overview" icon="brain-circuit" href="/models/overview">
+  Learn how to choose the right model
+</Card>
+
+<Card title="OpenAI Guide" icon="openai" href="/models/openai">
+  Deep dive into OpenAI models
+</Card>
+
+<Card title="Claude Guide" icon="message-bot" href="/models/claude">
+  Explore Claude model options
+</Card>
+
+<Card title="Configuration" icon="gear" href="/configuration/defaults">
+  Set up your default preferences
+</Card>
+
+</CardGroup>

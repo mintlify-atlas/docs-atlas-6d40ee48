@@ -1,0 +1,431 @@
+---
+title: Installation
+description: Install GitWhisper using your preferred method - Dart pub, Homebrew, APT, curl, PowerShell, or direct binary download.
+---
+
+## Prerequisites
+
+Before installing GitWhisper, ensure you have:
+
+- **Git** installed and available in your PATH
+- One of the installation methods below available on your system
+
+<Note>
+  GitWhisper requires Git to be installed and accessible from the command line. Verify with `git --version`.
+</Note>
+
+## Installation methods
+
+Choose the installation method that works best for your system:
+
+<Tabs>
+  <Tab title="Dart pub">
+    ### Install via Dart pub
+
+    If you have Dart SDK installed, you can activate GitWhisper globally:
+
+    <CodeGroup>
+      ```bash Global activation
+      dart pub global activate gitwhisper
+      ```
+
+      ```bash Local activation
+      dart pub global activate --source=path <path-to-gitwhisper>
+      ```
+    </CodeGroup>
+
+    <Note>
+      Requires Dart SDK version 3.0.0 or higher.
+    </Note>
+
+    After installation, make sure the Dart pub global bin directory is in your PATH:
+
+    ```bash
+    # Add to ~/.bashrc, ~/.zshrc, or equivalent
+    export PATH="$PATH":"$HOME/.pub-cache/bin"
+    ```
+
+    Verify the installation:
+
+    ```bash
+    gitwhisper --version
+    gw --version
+    ```
+  </Tab>
+
+  <Tab title="Homebrew (macOS)">
+    ### Install via Homebrew
+
+    On macOS, you can install GitWhisper using Homebrew:
+
+    <Steps>
+      <Step title="Tap the GitWhisper repository">
+        ```bash
+        brew tap iamngoni/homebrew-gitwhisper
+        ```
+      </Step>
+
+      <Step title="Install GitWhisper">
+        ```bash
+        brew install gitwhisper
+        ```
+      </Step>
+
+      <Step title="Verify installation">
+        ```bash
+        gitwhisper --version
+        gw --version
+        ```
+      </Step>
+    </Steps>
+
+    <Tip>
+      Homebrew automatically adds GitWhisper to your PATH and creates the `gw` alias.
+    </Tip>
+
+    ### Update via Homebrew
+
+    To update to the latest version:
+
+    ```bash
+    brew update
+    brew upgrade gitwhisper
+    ```
+  </Tab>
+
+  <Tab title="APT (Debian/Ubuntu)">
+    ### Install via APT
+
+    GitWhisper is available for Debian and Ubuntu systems via APT. Supports both `amd64` and `arm64` architectures.
+
+    <Steps>
+      <Step title="Add the GitWhisper APT repository">
+        ```bash
+        echo "deb [trusted=yes] https://iamngoni.github.io/gitwhisper-apt stable main" | sudo tee /etc/apt/sources.list.d/gitwhisper.list
+        ```
+      </Step>
+
+      <Step title="Update package list">
+        ```bash
+        sudo apt update
+        ```
+      </Step>
+
+      <Step title="Install GitWhisper">
+        ```bash
+        sudo apt install gitwhisper
+        ```
+      </Step>
+
+      <Step title="Verify installation">
+        ```bash
+        gitwhisper --version
+        gw --version
+        ```
+      </Step>
+    </Steps>
+
+    ### Update via APT
+
+    To update to the latest version:
+
+    ```bash
+    sudo apt update
+    sudo apt upgrade gitwhisper
+    ```
+
+    ### Uninstall via APT
+
+    ```bash
+    sudo apt remove gitwhisper
+    ```
+  </Tab>
+
+  <Tab title="curl (Linux/macOS)">
+    ### Install via curl script
+
+    Use the one-line installation script for quick setup on Linux and macOS:
+
+    ```bash
+    curl -sSL https://raw.githubusercontent.com/iamngoni/gitwhisper/master/install.sh | bash
+    ```
+
+    <Warning>
+      This script requires `sudo` privileges to install to `/usr/local/bin`. You'll be prompted for your password.
+    </Warning>
+
+    ### What the script does
+
+    The installation script automatically:
+
+    1. Detects your platform (OS and architecture)
+    2. Downloads the latest release from GitHub
+    3. Extracts the binary
+    4. Installs to `/usr/local/bin/gitwhisper`
+    5. Creates a symlink for the `gw` alias
+    6. Sets proper permissions
+
+    <Tip>
+      The script detects `x86_64` and `aarch64`/`arm64` architectures automatically.
+    </Tip>
+
+    ### Install specific version
+
+    To install a specific version:
+
+    ```bash
+    curl -sSL https://raw.githubusercontent.com/iamngoni/gitwhisper/master/install.sh | bash -s v0.1.15
+    ```
+
+    Verify the installation:
+
+    ```bash
+    gitwhisper --version
+    gw --version
+    ```
+  </Tab>
+
+  <Tab title="PowerShell (Windows)">
+    ### Install via PowerShell
+
+    On Windows, use the PowerShell installation script:
+
+    <Warning>
+      You must run PowerShell as **Administrator** to install GitWhisper.
+    </Warning>
+
+    <Steps>
+      <Step title="Open PowerShell as Administrator">
+        Right-click on PowerShell and select "Run as administrator"
+      </Step>
+
+      <Step title="Run the installation script">
+        ```powershell
+        irm https://raw.githubusercontent.com/iamngoni/gitwhisper/master/install.ps1 | iex
+        ```
+      </Step>
+
+      <Step title="Restart your terminal">
+        Close and reopen your terminal to ensure PATH changes take effect
+      </Step>
+
+      <Step title="Verify installation">
+        ```powershell
+        gitwhisper --version
+        gw --version
+        ```
+      </Step>
+    </Steps>
+
+    ### What the script does
+
+    The PowerShell installation script:
+
+    1. Checks for Administrator privileges
+    2. Fetches the latest release from GitHub
+    3. Downloads the Windows binary
+    4. Extracts to `C:\Program Files\GitWhisper`
+    5. Creates both `gitwhisper.exe` and `gw.exe`
+    6. Adds the installation directory to System PATH
+
+    <Note>
+      The script automatically adds `C:\Program Files\GitWhisper` to your system PATH if it's not already present.
+    </Note>
+
+    ### Troubleshooting
+
+    If you see "command not found" after installation:
+
+    1. Close and reopen your terminal
+    2. Verify PATH includes: `C:\Program Files\GitWhisper`
+    3. Run `$env:Path` to check your PATH variable
+  </Tab>
+
+  <Tab title="Binary download">
+    ### Direct binary download
+
+    Download pre-compiled binaries directly from GitHub releases:
+
+    <Steps>
+      <Step title="Visit the releases page">
+        Go to the [GitWhisper releases page](https://github.com/iamngoni/gitwhisper/releases)
+      </Step>
+
+      <Step title="Download for your platform">
+        Choose the appropriate binary for your operating system and architecture:
+        
+        - **Linux (x64)**: `gitwhisper-linux.tar.gz`
+        - **Linux (ARM64)**: `gitwhisper-linux-arm64.tar.gz`
+        - **macOS (Intel)**: `gitwhisper-darwin.tar.gz`
+        - **macOS (Apple Silicon)**: `gitwhisper-darwin-arm64.tar.gz`
+        - **Windows**: `gitwhisper-windows.tar.gz`
+      </Step>
+
+      <Step title="Extract the archive">
+        <CodeGroup>
+          ```bash Linux/macOS
+          tar -xzf gitwhisper-*.tar.gz
+          ```
+
+          ```powershell Windows
+          tar -xzf gitwhisper-windows.tar.gz
+          ```
+        </CodeGroup>
+      </Step>
+
+      <Step title="Move to PATH">
+        <CodeGroup>
+          ```bash Linux/macOS
+          sudo mv gitwhisper /usr/local/bin/
+          sudo ln -sf /usr/local/bin/gitwhisper /usr/local/bin/gw
+          chmod +x /usr/local/bin/gitwhisper
+          ```
+
+          ```powershell Windows (as Administrator)
+          Move-Item gitwhisper.exe "C:\Program Files\GitWhisper\"
+          Copy-Item "C:\Program Files\GitWhisper\gitwhisper.exe" "C:\Program Files\GitWhisper\gw.exe"
+          ```
+        </CodeGroup>
+      </Step>
+
+      <Step title="Verify installation">
+        ```bash
+        gitwhisper --version
+        gw --version
+        ```
+      </Step>
+    </Steps>
+
+    <Tip>
+      On Windows, make sure to add `C:\Program Files\GitWhisper` to your system PATH if it's not already included.
+    </Tip>
+  </Tab>
+</Tabs>
+
+## Verify installation
+
+After installation, verify that both `gitwhisper` and `gw` commands are available:
+
+```bash
+# Check version
+gitwhisper --version
+
+# Test the short alias
+gw --version
+
+# View help
+gitwhisper --help
+gw --help
+```
+
+You should see output similar to:
+
+```
+gitwhisper version: 0.1.15
+```
+
+## Post-installation setup
+
+After installing GitWhisper, you'll need to configure at least one AI model API key:
+
+<Steps>
+  <Step title="Choose an AI model">
+    Select an AI provider from: Claude, OpenAI, Gemini, Grok, Llama, DeepSeek, GitHub, Ollama, or use the free model (no API key required)
+  </Step>
+
+  <Step title="Save your API key">
+    ```bash
+    gitwhisper save-key --model openai --key "your-api-key-here"
+    ```
+  </Step>
+
+  <Step title="Set default model (optional)">
+    ```bash
+    gitwhisper set-defaults --model openai --model-variant gpt-4o
+    ```
+  </Step>
+</Steps>
+
+<Note>
+  Skip API key setup if you're using the free model: `gw commit --model free`
+</Note>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card
+    title="Quick start guide"
+    icon="rocket"
+    href="/quickstart"
+  >
+    Generate your first AI-powered commit message
+  </Card>
+  <Card
+    title="Configuration"
+    icon="gear"
+    href="/configuration"
+  >
+    Set up API keys, default models, and preferences
+  </Card>
+</CardGroup>
+
+## Update GitWhisper
+
+To update GitWhisper to the latest version:
+
+<CodeGroup>
+  ```bash Dart pub
+  dart pub global activate gitwhisper
+  ```
+
+  ```bash Homebrew
+  brew upgrade gitwhisper
+  ```
+
+  ```bash APT
+  sudo apt update && sudo apt upgrade gitwhisper
+  ```
+
+  ```bash Built-in update command
+  gitwhisper update
+  ```
+</CodeGroup>
+
+<Tip>
+  GitWhisper includes a built-in `update` command that works across all installation methods.
+</Tip>
+
+## Uninstall
+
+To remove GitWhisper from your system:
+
+<CodeGroup>
+  ```bash Dart pub
+  dart pub global deactivate gitwhisper
+  ```
+
+  ```bash Homebrew
+  brew uninstall gitwhisper
+  brew untap iamngoni/homebrew-gitwhisper
+  ```
+
+  ```bash APT
+  sudo apt remove gitwhisper
+  ```
+
+  ```bash Manual (Linux/macOS)
+  sudo rm /usr/local/bin/gitwhisper
+  sudo rm /usr/local/bin/gw
+  ```
+
+  ```powershell Windows (as Administrator)
+  Remove-Item "C:\Program Files\GitWhisper" -Recurse
+  # Then remove from PATH manually
+  ```
+</CodeGroup>
+
+Optionally, remove the configuration file:
+
+```bash
+rm ~/.git_whisper.yaml
+```

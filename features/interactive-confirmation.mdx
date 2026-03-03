@@ -1,0 +1,388 @@
+---
+title: Interactive Commit Confirmation
+description: Review, edit, and refine AI-generated commit messages with GitWhisper's interactive confirmation workflow
+---
+
+GitWhisper's interactive confirmation feature gives you complete control over your commit messages before they're applied. Review, edit, retry with different models, or add custom context to get the perfect commit message.
+
+## Enabling Confirmation Mode
+
+You can enable interactive confirmation in two ways:
+
+<Tabs>
+  <Tab title="Per-Commit Flag">
+    Use the `--confirm` or `-c` flag when running the commit command:
+
+    ```bash
+    gw commit --confirm
+    ```
+
+    This enables confirmation for just this commit.
+  </Tab>
+  
+  <Tab title="Global Configuration">
+    Set confirmation as the default behavior:
+
+    ```bash
+    gw set-defaults --confirm
+    ```
+
+    Now all commits will prompt for confirmation unless you use `--no-confirm`.
+  </Tab>
+</Tabs>
+
+## The Confirmation Workflow
+
+When confirmation mode is enabled, GitWhisper presents you with the generated commit message and several options:
+
+<Steps>
+  <Step title="Review the Generated Message">
+    GitWhisper displays the AI-generated commit message:
+
+    ```bash
+    ---------------------------------
+    feat: add user authentication with JWT tokens
+
+    Implement secure user authentication system using JWT tokens
+    for stateless session management. Add login and registration
+    endpoints with password hashing using bcrypt.
+    ---------------------------------
+
+    What would you like to do with this commit message?
+    > commit
+      edit
+      retry
+      discard
+    ```
+  </Step>
+
+  <Step title="Choose Your Action">
+    Select from four options:
+    - **commit** - Accept the message and create the commit
+    - **edit** - Open your Git editor to modify the message
+    - **retry** - Generate a new message (with options)
+    - **discard** - Cancel the commit entirely
+  </Step>
+
+  <Step title="Create Your Commit">
+    Once satisfied, select "commit" to apply the message and create your commit.
+  </Step>
+</Steps>
+
+## Available Actions
+
+### Commit
+
+Accept the current message and create the commit immediately.
+
+```bash
+What would you like to do with this commit message?
+> commit  # ← Select this option
+```
+
+The commit is created with the displayed message.
+
+### Edit
+
+Open your configured Git editor (e.g., vim, nano, VS Code) to manually modify the commit message.
+
+```bash
+What would you like to do with this commit message?
+> edit  # ← Opens your Git editor
+```
+
+<Info>
+GitWhisper uses your Git configuration's `core.editor` setting. Configure it with:
+```bash
+git config --global core.editor "code --wait"  # VS Code
+git config --global core.editor "vim"          # Vim
+```
+</Info>
+
+After editing:
+- If you save changes, the new message is displayed for review
+- If you cancel or save an empty message, you return to the options menu
+
+### Retry
+
+Regenerate the commit message with three powerful options:
+
+<Tabs>
+  <Tab title="Same Model">
+    Generate a fresh message using the same AI model:
+
+    ```bash
+    How would you like to retry?
+    > same model  # ← Regenerate with current model
+    ```
+
+    This is useful because AI models are non-deterministic and may produce different results on subsequent runs.
+  </Tab>
+
+  <Tab title="Different Model">
+    Switch to a different AI model for a fresh perspective:
+
+    ```bash
+    How would you like to retry?
+    > different model
+
+    Select a different model:
+    > claude
+      openai
+      gemini
+      grok
+      llama
+      deepseek
+      github
+      ollama
+    ```
+
+    <Note>
+    You must have an API key configured for the selected model. Use `gw save-key` to store API keys.
+    </Note>
+  </Tab>
+
+  <Tab title="Add Context">
+    Provide additional instructions to refine the message:
+
+    ```bash
+    How would you like to retry?
+    > add context
+
+    Add context or instructions for the AI:
+    > make it more technical and include performance details
+    ```
+
+    The AI will incorporate your guidance into the regenerated message.
+  </Tab>
+</Tabs>
+
+### Discard
+
+Cancel the commit operation entirely:
+
+```bash
+What would you like to do with this commit message?
+> discard  # ← Cancels the commit
+
+Commit cancelled.
+```
+
+Your staged changes remain intact - nothing is committed or lost.
+
+## Real-World Examples
+
+### Example 1: Editing for Clarity
+
+```bash
+$ gw commit --confirm
+Analyzing staged changes using openai (gpt-4o)...
+
+---------------------------------
+fix: update API endpoint
+
+Change endpoint URL
+---------------------------------
+
+What would you like to do with this commit message?
+> edit
+
+Opening editor...
+
+# You edit to:
+fix: update API endpoint URL to use HTTPS
+
+Replace HTTP endpoint with HTTPS for secure communication
+with the authentication service. Update all references in
+the API client.
+
+---------------------------------
+fix: update API endpoint URL to use HTTPS
+
+Replace HTTP endpoint with HTTPS for secure communication
+with the authentication service. Update all references in
+the API client.
+---------------------------------
+
+What would you like to do with this commit message?
+> commit
+
+✓ Commit created successfully
+```
+
+### Example 2: Trying Different Models
+
+```bash
+$ gw commit --confirm --model openai
+Analyzing staged changes using openai (gpt-4o)...
+
+---------------------------------
+refactor: optimize database queries
+
+Improve query performance
+---------------------------------
+
+What would you like to do with this commit message?
+> retry
+
+How would you like to retry?
+> different model
+
+Select a different model:
+> claude
+
+Regenerating with claude...
+
+---------------------------------
+perf: optimize database queries with proper indexing
+
+Add compound indexes on user_id and created_at columns to
+accelerate the dashboard query. Reduces query time from 2.3s
+to 180ms in production dataset testing.
+---------------------------------
+
+What would you like to do with this commit message?
+> commit
+
+✓ Commit created successfully
+```
+
+### Example 3: Adding Context
+
+```bash
+$ gw commit -c
+Analyzing staged changes using claude (claude-sonnet-4-5)...
+
+---------------------------------
+feat: add error handling
+
+Implement error handling for API calls
+---------------------------------
+
+What would you like to do with this commit message?
+> retry
+
+How would you like to retry?
+> add context
+
+Add context or instructions for the AI:
+> focus on the retry logic and exponential backoff implementation
+
+Regenerating with additional context...
+
+---------------------------------
+feat: implement robust error handling with exponential backoff
+
+Add comprehensive error handling for API calls with exponential
+backoff retry strategy. Implements 3 retry attempts with delays
+of 1s, 2s, and 4s before failing. Includes specific handling for
+network timeouts, 429 rate limits, and 5xx server errors.
+---------------------------------
+
+What would you like to do with this commit message?
+> commit
+
+✓ Commit created successfully
+```
+
+## Multi-Repository Support
+
+Confirmation mode works seamlessly with multiple repositories:
+
+```bash
+$ gw commit --confirm
+Working in 3 git repos
+
+[frontend] Review commit message:
+---------------------------------
+feat: add loading spinner component
+---------------------------------
+
+What would you like to do with this commit message?
+> commit
+✓ [frontend] Commit created successfully
+
+[backend] Review commit message:
+---------------------------------
+fix: resolve CORS policy issue
+---------------------------------
+
+What would you like to do with this commit message?
+> edit
+# ... edit and commit ...
+```
+
+<Tip>
+Each repository is processed independently, allowing you to use different actions for each one.
+</Tip>
+
+## Code Reference
+
+The interactive confirmation workflow is implemented in `commit_command.dart:650`:
+
+```dart
+Future<String?> _handleCommitConfirmation({
+  required String commitMessage,
+  required CommitGenerator generator,
+  required String diff,
+  // ... other parameters
+}) async {
+  String currentMessage = commitMessage;
+
+  while (true) {
+    _logger
+      ..info('\n---------------------------------\n')
+      ..info(currentMessage)
+      ..info('\n---------------------------------\n');
+
+    final action = _logger.chooseOne(
+      'What would you like to do with this commit message?',
+      choices: ['commit', 'edit', 'retry', 'discard'],
+      defaultValue: 'commit',
+    );
+
+    switch (action) {
+      case 'commit':
+        return currentMessage;
+      case 'edit':
+        // Open Git editor for manual editing
+      case 'retry':
+        // Regenerate with same model, different model, or context
+      case 'discard':
+        return null;
+    }
+  }
+}
+```
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Enable by Default" icon="check">
+    Set `--confirm` as your default to review all commits before they're created.
+  </Card>
+  
+  <Card title="Try Multiple Models" icon="sparkles">
+    Different AI models have different writing styles. Try a few to find your preference.
+  </Card>
+  
+  <Card title="Use Context Wisely" icon="message">
+    When adding context, be specific about what aspects you want emphasized.
+  </Card>
+  
+  <Card title="Quick Commits" icon="bolt">
+    Use `--no-confirm` for quick commits when you trust the AI output.
+  </Card>
+</CardGroup>
+
+## Related Features
+
+<CardGroup cols={2}>
+  <Card title="AI Models" icon="brain" href="/features/ai-models">
+    Learn about all supported AI models and their characteristics
+  </Card>
+  
+  <Card title="Configuration" icon="gear" href="/configuration/defaults">
+    Configure default behaviors and preferences
+  </Card>
+</CardGroup>

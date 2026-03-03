@@ -1,0 +1,403 @@
+---
+title: 'GitHub Models'
+description: 'Access premium AI models for free using your GitHub account'
+icon: 'github'
+---
+
+GitHub Models provides free access to premium AI models through GitHub's infrastructure, perfect for developers already using GitHub.
+
+## Overview
+
+GitHub Models offers rate-limited access to various state-of-the-art models:
+
+- **Free access** with your GitHub account
+- **Multiple model providers** (OpenAI, Meta, DeepSeek, and more)
+- **Rate-limited** but generous for development use
+- **No separate subscription** needed if you use GitHub
+
+<Note>
+  GitHub Models is free but rate-limited. For high-volume usage, consider direct API providers.
+</Note>
+
+## Available Models
+
+GitHub provides access to various models:
+
+### OpenAI Models
+
+- **gpt-4o** ⭐ (default) - OpenAI's flagship model
+
+### Meta Llama Models
+
+- **Llama-3.3-70B-Instruct** - Powerful open model
+
+### DeepSeek Models
+
+- **DeepSeek-R1** - Reasoning-focused model
+- **Deepseek-V3** - Advanced DeepSeek model
+
+### Other Models
+
+- **Phi-4-mini-instruct** - Microsoft's efficient model
+- **Codestral 25.01** - Mistral's code model
+- **Mistral Large 24.11** - Mistral's largest model
+
+<Info>
+  Browse all available models at [github.com/marketplace?type=models](https://github.com/marketplace?type=models)
+</Info>
+
+## Setup
+
+### 1. Create a GitHub Personal Access Token (PAT)
+
+You need a GitHub PAT to authenticate:
+
+<Steps>
+  <Step title="Go to GitHub Settings">
+    Visit [github.com/settings/tokens](https://github.com/settings/tokens)
+  </Step>
+  <Step title="Generate New Token">
+    Click "Generate new token" → "Generate new token (classic)"
+  </Step>
+  <Step title="Configure Token">
+    - Give it a descriptive name (e.g., "GitWhisper")
+    - Set expiration (recommended: 90 days or No expiration)
+    - Select scopes: `repo` (if private repos) or no scopes (for public use)
+  </Step>
+  <Step title="Generate and Copy">
+    Click "Generate token" and copy the token immediately (you won't see it again)
+  </Step>
+</Steps>
+
+<Warning>
+  Store your PAT securely! It provides access to your GitHub account. Never commit it to a repository.
+</Warning>
+
+### 2. Configure GitWhisper
+
+Save your GitHub PAT:
+
+<Tabs>
+  <Tab title="Save Permanently">
+    ```bash
+    gitwhisper save-key --model github --key "ghp_..."
+    ```
+    The key is stored securely in `~/.git_whisper.yaml`
+  </Tab>
+  <Tab title="Environment Variable">
+    ```bash
+    export GITHUB_TOKEN="ghp_..."
+    ```
+    Add to your `.bashrc` or `.zshrc` for persistence
+  </Tab>
+  <Tab title="Command Line">
+    ```bash
+    gitwhisper commit --model github --key "ghp_..."
+    ```
+    Not recommended for security reasons
+  </Tab>
+</Tabs>
+
+## Usage
+
+### Basic Usage
+
+Use GitHub Models with default model (gpt-4o):
+
+```bash
+# Use GitHub Models
+gitwhisper commit --model github
+
+# Shorthand
+gw commit -m github
+```
+
+### Specific Model
+
+Choose a specific model:
+
+```bash
+# Use DeepSeek-R1 for reasoning
+gitwhisper commit --model github --model-variant DeepSeek-R1
+
+# Use Llama 3.3 70B
+gitwhisper commit --model github --model-variant Llama-3.3-70B-Instruct
+
+# Use Codestral for code
+gitwhisper commit --model github --model-variant "Codestral 25.01"
+```
+
+### Set as Default
+
+Make GitHub Models your default:
+
+```bash
+# Set GitHub as default
+gitwhisper set-defaults --model github
+
+# Set specific variant as default
+gitwhisper set-defaults --model github --model-variant DeepSeek-R1
+```
+
+## Rate Limits
+
+GitHub Models has rate limits that vary by model and your GitHub account type:
+
+<Tabs>
+  <Tab title="Free Tier">
+    **Typical limits for free GitHub accounts:**
+    
+    - Requests per minute: 10-15
+    - Requests per hour: 50-150
+    - Tokens per request: Varies by model
+    
+    Perfect for:
+    - Individual development
+    - Small projects
+    - Testing and learning
+  </Tab>
+  <Tab title="GitHub Pro">
+    **Higher limits with GitHub Pro/Teams:**
+    
+    - Requests per minute: 15-30
+    - Requests per hour: 150-500
+    - Increased token limits
+    
+    Better for:
+    - Active development
+    - Small to medium teams
+    - Regular usage
+  </Tab>
+  <Tab title="Enterprise">
+    **Highest limits with GitHub Enterprise:**
+    
+    - Custom rate limits
+    - Priority access
+    - Larger token allowances
+    
+    Suitable for:
+    - Large teams
+    - Production usage
+    - High-volume commits
+  </Tab>
+</Tabs>
+
+<Warning>
+  Rate limits are subject to change and vary by model. Check [GitHub Models documentation](https://docs.github.com/en/github-models) for current limits.
+</Warning>
+
+## Model Comparison
+
+<Tabs>
+  <Tab title="By Quality">
+    | Model | Quality | Speed | Best For |
+    |-------|---------|-------|----------|
+    | gpt-4o | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | General purpose |
+    | Llama-3.3-70B | ⭐⭐⭐⭐ | ⭐⭐⭐ | Open source preference |
+    | DeepSeek-R1 | ⭐⭐⭐⭐ | ⭐⭐⭐ | Reasoning tasks |
+    | Codestral | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Code-focused |
+    | Phi-4-mini | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Fast responses |
+  </Tab>
+  <Tab title="By Use Case">
+    | Use Case | Recommended Model |
+    |----------|------------------|
+    | General commits | gpt-4o |
+    | Code analysis | Codestral 25.01 |
+    | Complex reasoning | DeepSeek-R1 |
+    | Fast responses | Phi-4-mini-instruct |
+    | Open source | Llama-3.3-70B-Instruct |
+  </Tab>
+</Tabs>
+
+## Code Analysis
+
+Use GitHub Models for code analysis:
+
+```bash
+# Analyze with default model
+gitwhisper analyze --model github
+
+# Use Codestral for code-focused analysis
+gitwhisper analyze --model github --model-variant "Codestral 25.01"
+
+# Use DeepSeek-R1 for reasoning
+gitwhisper analyze --model github --model-variant DeepSeek-R1
+```
+
+## Advantages
+
+<CardGroup cols={2}>
+
+<Card title="Free Access" icon="dollar-sign">
+  No separate API subscription needed if you use GitHub
+</Card>
+
+<Card title="Multiple Models" icon="layer-group">
+  Access various providers through one API
+</Card>
+
+<Card title="Easy Setup" icon="rocket">
+  Use your existing GitHub account
+</Card>
+
+<Card title="Regular Updates" icon="arrows-rotate">
+  GitHub adds new models regularly
+</Card>
+
+</CardGroup>
+
+## Limitations
+
+<CardGroup cols={2}>
+
+<Card title="Rate Limits" icon="gauge-high">
+  Limited requests per hour - may not suit high-volume use
+</Card>
+
+<Card title="Model Availability" icon="clock">
+  Some models may have waiting lists or limited access
+</Card>
+
+<Card title="No Guaranteed SLA" icon="shield-xmark">
+  Free tier has no service level guarantees
+</Card>
+
+<Card title="Account Required" icon="user">
+  Need GitHub account and PAT
+</Card>
+
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Invalid Token">
+    ```
+    Error: Invalid authentication credentials
+    ```
+    
+    **Solution**: Verify your GitHub PAT:
+    1. Check token hasn't expired
+    2. Ensure token has correct scopes
+    3. Regenerate if necessary:
+    ```bash
+    gitwhisper save-key --model github --key "ghp_NEW_TOKEN"
+    ```
+  </Accordion>
+  <Accordion title="Rate Limit Exceeded">
+    ```
+    Error: Rate limit exceeded
+    ```
+    
+    **Solution**: You've hit the hourly limit. Either:
+    1. Wait for limit reset (usually hourly)
+    2. Use a different model temporarily:
+    ```bash
+    gitwhisper commit --model free
+    ```
+    3. Upgrade to GitHub Pro for higher limits
+  </Accordion>
+  <Accordion title="Model Not Available">
+    ```
+    Error: Model not found
+    ```
+    
+    **Solution**: Model may not be available or name is incorrect:
+    ```bash
+    # List available variants
+    gitwhisper list-variants --model github
+    
+    # Check GitHub Models marketplace
+    # https://github.com/marketplace?type=models
+    ```
+  </Accordion>
+  <Accordion title="Access Denied">
+    ```
+    Error: Access denied
+    ```
+    
+    **Solution**: Some models may have access restrictions:
+    - Check if model requires waitlist approval
+    - Verify your GitHub account status
+    - Try a different model
+  </Accordion>
+</AccordionGroup>
+
+## Comparison with Other Options
+
+<Tabs>
+  <Tab title="vs Free Model">
+    | Feature | GitHub Models | Free Model |
+    |---------|---------------|------------|
+    | Setup | PAT required | None |
+    | Quality | Excellent | Good |
+    | Rate Limits | Generous | 60/hour |
+    | Model Choice | Multiple | Single |
+    | Requirements | GitHub account | None |
+  </Tab>
+  <Tab title="vs Direct APIs">
+    | Feature | GitHub Models | OpenAI/Claude |
+    |---------|---------------|---------------|
+    | Cost | Free (limited) | Pay per use |
+    | Rate Limits | Moderate | High |
+    | Quality | Excellent | Excellent |
+    | SLA | None | Yes (paid) |
+    | Setup | GitHub PAT | API key |
+  </Tab>
+  <Tab title="vs Ollama">
+    | Feature | GitHub Models | Ollama |
+    |---------|---------------|--------|
+    | Privacy | Data sent to GitHub | Completely local |
+    | Setup | PAT required | Local installation |
+    | Hardware | Not needed | Required |
+    | Cost | Free (limited) | Free (unlimited) |
+    | Offline | No | Yes |
+  </Tab>
+</Tabs>
+
+## Best Practices
+
+1. **Use appropriate models**: Choose models based on your task
+2. **Monitor rate limits**: Keep track of your usage
+3. **Secure your PAT**: Never commit tokens to repositories
+4. **Rotate tokens**: Regularly update your PAT
+5. **Have alternatives**: Know how to switch models if limits hit
+
+## Example Workflow
+
+```bash
+# 1. Set up GitHub PAT (one time)
+gitwhisper save-key --model github --key "ghp_..."
+
+# 2. Set as default
+gitwhisper set-defaults --model github
+
+# 3. Use for daily commits
+git add .
+gitwhisper commit
+
+# 4. Try different models for variety
+gitwhisper commit --model-variant DeepSeek-R1
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+
+<Card title="View All Models" icon="github" href="https://github.com/marketplace?type=models">
+  Browse GitHub Models marketplace
+</Card>
+
+<Card title="GitHub Docs" icon="book" href="https://docs.github.com/en/github-models">
+  Official GitHub Models documentation
+</Card>
+
+<Card title="Compare Models" icon="scale-balanced" href="/models/overview">
+  See all GitWhisper model options
+</Card>
+
+<Card title="API Keys" icon="key" href="/configuration/api-keys">
+  Learn about API key management
+</Card>
+
+</CardGroup>

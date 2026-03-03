@@ -1,0 +1,345 @@
+---
+title: Changelog
+description: Version history and release notes for GitWhisper
+---
+
+Track the evolution of GitWhisper through our version history. Each release includes new features, improvements, and bug fixes.
+
+## Latest Releases
+
+### 0.1.15
+
+- Switched OpenAI models to use `max_completion_tokens` instead of the deprecated `max_tokens` parameter
+- Improved compatibility with OpenAI API changes
+
+### 0.1.14
+
+- **Large File Detection**: Automatically detects files >10MB before committing to prevent accidentally adding large files to git history
+- **Improved Diff Handling**: When diff exceeds max size, automatically processes file-by-file without prompting
+- Better user experience for handling large changesets
+
+### 0.1.13
+
+- **Configurable Max Diff Size**: New `--max-diff-size` option in `set-defaults` to customize the threshold (in characters) before prompting for interactive staging (default: 50,000)
+- **New Command**: `gw show-config` displays your full configuration file in a formatted view
+- **Improved Large Diff Handling**: Large diffs now trigger an interactive prompt with options to use focused staging, commit everything, or cancel
+- Enhanced user control over diff processing
+
+### 0.1.12
+
+- **Free Model (No API Key Required!)**: New `free` model option powered by LLM7.io
+  - Use GitWhisper without any API key setup: `gw commit --model free`
+  - Anonymous tier limits: 8k chars per request, 60 requests/hour
+- **Git Tagging Support**: New `--tag` / `-t` flag to create a git tag alongside your commit
+  - Example: `gw commit -t v1.0.0`
+- **Auto-push Tags**: When using `--auto-push` with `--tag`, both the commit and tag are pushed to the remote
+- **Improved Ticket Prefix**: Fixed ticket prefix formatting to correctly include the prefix in generated commit messages
+  - Example: `JIRA-123 -> fix: 🐛 Fix bug`
+
+### 0.1.11
+
+- Added ARM64 architecture support
+- Better compatibility across different platforms
+
+### 0.1.10
+
+- **Git Editor Integration**: Edit commit messages in your preferred Git editor (vim, nano, VS Code, etc.) instead of inline prompt
+- **Improved Edit Workflow**: After editing, the commit message returns to the confirmation menu for review instead of auto-committing
+- **Better UX**: Respects Git's editor configuration hierarchy: `GIT_EDITOR` → `$EDITOR` → `vi` as fallback
+- More flexible commit message editing
+
+### 0.1.9
+
+- **Emoji Control**: New `--allow-emojis` / `--no-allow-emojis` flag to control emoji inclusion in commit messages (defaults to enabled)
+- **Updated Model Variants**: Refreshed all AI model variants with latest releases:
+  - **OpenAI**: Added GPT-5 family (gpt-5, gpt-5-mini, gpt-5-nano, gpt-5-pro), GPT-4.1 family, and gpt-realtime models
+  - **Claude**: Added claude-sonnet-4-5-20250929 and claude-opus-4-1-20250805
+  - **Gemini**: Updated to Gemini 2.5 family (gemini-2.5-pro, gemini-2.5-flash, gemini-2.5-flash-lite, etc.)
+  - **Grok**: Added grok-4, grok-4-heavy, grok-4-fast, and grok-code-fast-1
+  - **DeepSeek**: Added deepseek-v3.2-exp, deepseek-v3.1, deepseek-r1-0528, and more
+- **Build Improvements**: Added dynamic version injection via yq in build workflow
+- **Code Documentation**: Added comprehensive method documentation for commit prompt utilities
+
+## Earlier Versions
+
+### 0.1.2
+
+- **Interactive Commit Confirmation**: Review, edit, retry with different models, or discard AI-generated messages
+- **Enhanced User Experience**: All commands now use interactive prompts with smart defaults and guided workflows
+- **Multi-repo Support**: Confirmation workflow works across single and multiple repositories
+- **Improved Security**: Hidden input for API keys and better Ollama handling
+
+### 0.0.59
+
+- Added language support to commit and analysis generation
+- Multi-language commit messages and analysis
+
+### 0.0.58
+
+- Documentation updates and improvements
+
+### 0.0.57
+
+- Made GitWhisper available on all platforms through various installation channels
+- Cross-platform distribution support
+
+### 0.0.53
+
+- Fixed API key to be optional for certain models
+- Better handling of API-key-free services
+
+### 0.0.52
+
+- Fixed API key issue with Ollama
+- Improved Ollama integration
+
+### 0.0.51
+
+- **Ollama Support**: Added support for self-hosted Ollama models
+- Local AI model support without external API calls
+
+### 0.0.50
+
+- Made GitWhisper installable through Homebrew
+- Easier installation for macOS users
+
+### 0.0.49
+
+- Added Windows compatibility for file permissions
+- Cross-platform permission handling
+
+### 0.0.48
+
+- Updated Claude model variants and default version
+- Latest Claude models available
+
+### 0.0.47
+
+- General enhancements and improvements
+
+### 0.0.46
+
+- Updated success message
+- Support for singular repository operations
+
+### 0.0.45
+
+- Added `folderPath` parameter to `GitUtils.runGitCommit`
+- Better multi-repository support
+
+### 0.0.44
+
+- Fixed Git add command
+- Properly pass `workingDirectory` parameter
+
+### 0.0.43
+
+- Fixed passing `folderPath` to git diff command
+- Improved multi-repository handling
+
+### 0.0.42
+
+- Fixed multi-repository options
+
+### 0.0.41
+
+- **Multi-repository Analysis**: Implement analysis on multiple git repos
+- **Commit in Subfolders**: Implement commit command in subfolders
+- **Improved Git Utils**: Refactor with subfolder support
+
+### 0.0.40
+
+- Removed `argOptions` for cleaner code
+
+### 0.0.39
+
+- Removed always add abbreviation
+
+### 0.0.38
+
+- Handle null home directory with proper exception
+- **Always-add Command**: New command to skip running `git add` manually
+- **Auto-staging**: Stage all unstaged files if configured
+
+### 0.0.37
+
+- Simplified git push confirmation logic
+
+### 0.0.36
+
+- Handle missing remote URL during push
+- Better error messages for git operations
+
+### 0.0.35
+
+- **Auto-push Support**: Add automatic push to remote repository
+- Contributed by [Takudzwa Nyanhanga](https://github.com/abcdOfficialzw)
+
+### 0.0.34
+
+- Removed markdown changes
+
+### 0.0.33
+
+- Render markdown properly in output
+
+### 0.0.32
+
+- Updated Gemini model variants and API integration
+- Dynamic endpoint support for Gemini
+
+### 0.0.31
+
+- Increased max output tokens for analysis
+- Better handling of detailed analysis responses
+
+### 0.0.30
+
+- Lowered mason_logger dependency version for compatibility
+
+### 0.0.29
+
+- **Analyze Command**: Added analyze command for detailed code change analysis
+- AI-powered code review and suggestions
+
+### 0.0.28
+
+- Refactored commit message generation prompt
+- Improved AI prompt engineering
+
+### 0.0.27
+
+- Added mandatory format rules for commit messages
+- Consistent commit message formatting
+
+### 0.0.26
+
+- Removed debug print statement
+- Version bump
+
+### 0.0.25
+
+- Made AI aware of the prefix for better commit messages
+
+### 0.0.24
+
+- Updated release notes URL
+
+### 0.0.23
+
+- Fixed formatting regression
+
+### 0.0.22
+
+- Removed manual commit message prefix formatting logic
+- Added prefix support to AI commit message generation
+- Updated commit prompt with prefix instructions
+
+### 0.0.21
+
+- Updated commit message guide with format details
+
+### 0.0.20
+
+- Enhanced prompt formatting for commit message generation
+
+### 0.0.16
+
+- Updated commit message guidelines to include emojis
+
+### 0.0.15
+
+- Removed unused `process_run` dependency from `pubspec.yaml`
+
+### 0.0.14
+
+- Expanded commit types with mandatory emojis in prompt
+
+### 0.0.13
+
+- Extracted commit prompt to shared utility module
+
+### 0.0.12+1
+
+- Added new models: Deepseek-V3, Phi-4-mini-instruct, Codestral 25.01, Mistral Large 24.11
+- Updated README with GitHub Marketplace model link
+
+### 0.0.12
+
+- **GitHub Models Support**: Added support for GitHub's free AI models
+- Updated documentation with GitHub authentication instructions
+- Enhanced command options for GitHub model
+- Added `GithubGenerator` for GitHub model integration
+
+### 0.0.11
+
+- **Deepseek Integration**: Integrated Deepseek model
+- Updated model listing and validation
+- Added Deepseek-specific generator implementation
+
+### 0.0.10
+
+- Updated README with better command documentation
+
+### 0.0.9
+
+- Default to 'commit' command when args are empty
+- Added 'gw' executable alias for shorter commands
+
+### 0.0.8
+
+- Removed default values to enforce mandatory options
+
+### 0.0.7
+
+- Set and clear default model and variant for future use
+- Configuration persistence
+
+### 0.0.6
+
+- Resolved Dart SDK constraint issue
+
+### 0.0.5
+
+- Updated Claude API endpoint and model selection
+- Removed curl_logger_dio_interceptor dependency
+- Added model-variant option to commit command
+- Updated and expanded model variant lists
+- Use ModelVariants for default model variants across all generators
+
+### 0.0.3
+
+- Testing configurations
+
+### 0.0.2
+
+- Setup basic features for the tool
+- Initial release
+
+## Release Notes
+
+For detailed release notes and downloads, visit:
+
+- [GitHub Releases](https://github.com/iamngoni/gitwhisper/releases)
+- [pub.dev Versions](https://pub.dev/packages/gitwhisper/versions)
+
+## Stay Updated
+
+Update GitWhisper to the latest version:
+
+```bash
+gw update
+```
+
+Or manually:
+
+```bash
+# For Dart users
+dart pub global activate gitwhisper
+
+# For Homebrew users
+brew upgrade gitwhisper
+
+# For APT users
+sudo apt update && sudo apt upgrade gitwhisper
+```

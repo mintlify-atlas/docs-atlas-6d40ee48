@@ -1,0 +1,268 @@
+---
+title: API Keys
+description: Learn how to provide and manage API keys for AI models in GitWhisper
+---
+
+GitWhisper supports multiple AI providers and offers flexible ways to configure your API keys. You can provide keys via environment variables, command-line options, or save them permanently in the configuration file.
+
+## Supported AI Providers
+
+GitWhisper supports the following AI providers:
+
+- **Claude** (Anthropic)
+- **OpenAI** (GPT models)
+- **Gemini** (Google)
+- **Grok** (xAI)
+- **Llama** (Meta)
+- **DeepSeek**
+- **GitHub** (GitHub Copilot)
+- **Ollama** (Local models)
+- **Free** (LLM7.io - No API key required)
+
+## Environment Variables
+
+The quickest way to provide API keys is through environment variables. GitWhisper checks for the following environment variables:
+
+```bash
+# Anthropic Claude
+export ANTHROPIC_API_KEY="sk-ant-xxx"
+
+# OpenAI GPT models
+export OPENAI_API_KEY="sk-xxx"
+
+# Google Gemini
+export GEMINI_API_KEY="xxx"
+
+# xAI Grok
+export GROK_API_KEY="xxx"
+
+# Meta Llama
+export LLAMA_API_KEY="xxx"
+
+# DeepSeek
+export DEEPSEEK_API_KEY="xxx"
+```
+
+<Note>
+Environment variables take precedence over saved configuration. This is useful for temporary key overrides or CI/CD environments.
+</Note>
+
+## Saving API Keys
+
+For permanent configuration, save your API keys using the `save-key` command:
+
+```bash
+# Interactive mode (recommended)
+gw save-key
+
+# Specify model directly
+gw save-key --model claude
+
+# Provide both model and key
+gw save-key --model openai --key sk-xxx
+```
+
+### Interactive Example
+
+When you run `gw save-key` without arguments, GitWhisper will guide you through the process:
+
+```bash
+$ gw save-key
+? Select the AI model to save the key for: › openai
+  claude
+  openai  ← selected
+  gemini
+  grok
+  llama
+  deepseek
+  github
+  ollama
+
+? Enter the API key for openai: ••••••••
+✓ API key for openai saved successfully.
+```
+
+## Command-Line Options
+
+You can provide API keys directly when running commands:
+
+```bash
+# Using environment variables (temporary)
+ANTHROPIC_API_KEY="sk-ant-xxx" gw commit
+
+# Or export for the session
+export ANTHROPIC_API_KEY="sk-ant-xxx"
+gw commit
+```
+
+## Configuration File
+
+API keys are stored in `~/.git_whisper.yaml`. This file is automatically created when you save a key:
+
+```yaml
+api_keys:
+  claude: sk-ant-xxx
+  openai: sk-xxx
+  gemini: xxx
+```
+
+<Warning>
+The configuration file contains sensitive API keys. GitWhisper automatically sets file permissions to `600` (owner read/write only) on Unix-like systems.
+</Warning>
+
+## Security Best Practices
+
+<AccordionGroup>
+  <Accordion title="Never commit API keys to version control">
+    - Never add `~/.git_whisper.yaml` to your git repositories
+    - Use environment variables in CI/CD pipelines
+    - Consider using secret management tools for production environments
+    - Add `.git_whisper.yaml` to your global `.gitignore` if needed
+  </Accordion>
+
+  <Accordion title="File permissions">
+    GitWhisper automatically sets restrictive permissions on the configuration file:
+    - Unix/Linux/macOS: `chmod 600` (owner read/write only)
+    - Windows: Uses NTFS permissions (if available)
+    
+    Verify permissions:
+    ```bash
+    ls -la ~/.git_whisper.yaml
+    # Should show: -rw------- (600)
+    ```
+  </Accordion>
+
+  <Accordion title="Rotating API keys">
+    If you need to rotate your API keys:
+    
+    1. Generate a new key from your provider's dashboard
+    2. Update using `save-key` command:
+       ```bash
+       gw save-key --model openai --key NEW_KEY
+       ```
+    3. Revoke the old key from your provider's dashboard
+  </Accordion>
+
+  <Accordion title="Using environment variables in CI/CD">
+    For CI/CD pipelines, use environment variables instead of saving keys:
+    
+    **GitHub Actions:**
+    ```yaml
+    - name: Generate commit message
+      env:
+        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      run: gw commit
+    ```
+    
+    **GitLab CI:**
+    ```yaml
+    commit:
+      script:
+        - export ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY
+        - gw commit
+    ```
+  </Accordion>
+
+  <Accordion title="API key precedence">
+    GitWhisper checks for API keys in this order:
+    
+    1. **Environment variables** (highest priority)
+    2. **Saved configuration** (`~/.git_whisper.yaml`)
+    3. **Command defaults** (for free tier models)
+    
+    This allows you to temporarily override saved keys without modifying the configuration file.
+  </Accordion>
+</AccordionGroup>
+
+## Special Cases
+
+### Ollama (Local Models)
+
+Ollama typically runs locally and doesn't require an API key:
+
+```bash
+$ gw save-key --model ollama
+? Ollama typically runs locally and doesn't require an API key. 
+  Do you still want to set one? › No
+✓ No API key needed for Ollama. Configuration complete.
+```
+
+If you're using a remote Ollama instance, you can configure the base URL:
+
+```bash
+gw set-defaults --model ollama --base-url http://your-server:11434
+```
+
+### Free Tier (LLM7.io)
+
+The free tier doesn't require an API key:
+
+```bash
+gw commit --model free
+```
+
+<Note>
+When using the free tier for the first time, you'll need to accept a disclaimer about data privacy.
+</Note>
+
+## Viewing Saved Keys
+
+To view your current configuration (keys are displayed):
+
+```bash
+gw show-config
+```
+
+Output:
+```
+Gitwhisper Configs:
+
+Api Keys:
+  claude:
+    sk-ant-xxx
+  openai:
+    sk-xxx
+```
+
+<Warning>
+The `show-config` command displays your API keys in plain text. Be careful when sharing your terminal output.
+</Warning>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="API key not being recognized">
+    1. Check if the key is correctly set:
+       ```bash
+       gw show-config
+       ```
+    2. Verify environment variable names are correct (e.g., `ANTHROPIC_API_KEY` not `CLAUDE_API_KEY`)
+    3. Ensure no trailing spaces in the key
+    4. For environment variables, make sure they're exported in the current shell
+  </Accordion>
+
+  <Accordion title="Permission denied errors">
+    If you see permission errors:
+    ```bash
+    chmod 600 ~/.git_whisper.yaml
+    ```
+  </Accordion>
+
+  <Accordion title="Configuration file not found">
+    The configuration file is created automatically when you save your first key. If it's missing:
+    ```bash
+    gw save-key --model openai --key YOUR_KEY
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Set Defaults" icon="sliders" href="/configuration/defaults">
+    Configure default model and variant preferences
+  </Card>
+  <Card title="Language Settings" icon="language" href="/configuration/language-settings">
+    Set your preferred language for commit messages
+  </Card>
+</CardGroup>

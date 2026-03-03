@@ -1,80 +1,635 @@
 ---
-title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+title: Quick start
+description: Get from installation to your first AI-generated commit in under 5 minutes with this comprehensive quick start guide.
 ---
 
-## Get started in three steps
+## Before you begin
 
-Get your documentation site running locally and make your first customization.
+Make sure you have:
 
-### Step 1: Set up your local environment
+- GitWhisper installed ([installation guide](/installation))
+- Git installed and accessible in your PATH
+- A Git repository to work with
+
+<Note>
+  You can use the free model (no API key required) to try GitWhisper instantly, or set up your preferred AI provider for the best experience.
+</Note>
+
+## Using the free model (no setup required)
+
+The fastest way to try GitWhisper is with the free model powered by LLM7.io:
+
+<Steps>
+  <Step title="Make some changes to your code">
+    ```bash
+    # Create or modify some files
+    echo "console.log('Hello GitWhisper');" > app.js
+    ```
+  </Step>
+
+  <Step title="Stage your changes">
+    ```bash
+    git add app.js
+    ```
+  </Step>
+
+  <Step title="Generate commit with free model">
+    ```bash
+    gw commit --model free
+    ```
+    
+    On first use, you'll see a disclaimer about the free model. Accept the terms to continue.
+  </Step>
+
+  <Step title="Review and commit">
+    GitWhisper will analyze your changes and present a commit message. Choose to:
+    - **commit** - Use the message as-is
+    - **edit** - Modify the message in your editor
+    - **retry** - Generate a new message
+    - **discard** - Cancel the commit
+  </Step>
+</Steps>
+
+<Tip>
+  The free model has limits: 8k chars per request, 60 requests/hour. For production use, set up a paid API provider.
+</Tip>
+
+## Set up with your AI provider
+
+For the best experience with unlimited usage, configure your preferred AI model:
+
+<Tabs>
+  <Tab title="OpenAI">
+    ### OpenAI (GPT models)
+
+    <Steps>
+      <Step title="Get an OpenAI API key">
+        Visit [OpenAI's platform](https://platform.openai.com/api-keys) and create an API key
+      </Step>
+
+      <Step title="Save your API key">
+        ```bash
+        gw save-key --model openai --key "sk-..."
+        ```
+      </Step>
+
+      <Step title="Set as default (optional)">
+        ```bash
+        gw set-defaults --model openai --model-variant gpt-4o
+        ```
+      </Step>
+
+      <Step title="Test it out">
+        ```bash
+        # Make some changes
+        echo "function hello() { return 'world'; }" > utils.js
+        git add utils.js
+        
+        # Generate commit (uses your defaults)
+        gw
+        ```
+      </Step>
+    </Steps>
+
+    <Note>
+      Available variants: `gpt-4`, `gpt-4o`, `gpt-4o-mini`, `gpt-4.5-preview`, `gpt-3.5-turbo`, `o1-preview`, `o1-mini`, `o3-mini`
+    </Note>
+  </Tab>
+
+  <Tab title="Claude">
+    ### Anthropic Claude
+
+    <Steps>
+      <Step title="Get an Anthropic API key">
+        Visit [Anthropic's console](https://console.anthropic.com/) and create an API key
+      </Step>
+
+      <Step title="Save your API key">
+        ```bash
+        gw save-key --model claude --key "sk-ant-..."
+        ```
+      </Step>
+
+      <Step title="Set as default (optional)">
+        ```bash
+        gw set-defaults --model claude --model-variant claude-3-5-sonnet-20241022
+        ```
+      </Step>
+
+      <Step title="Test it out">
+        ```bash
+        # Make some changes
+        echo "export const API_URL = 'https://api.example.com';" > config.js
+        git add config.js
+        
+        # Generate commit
+        gw commit --model claude
+        ```
+      </Step>
+    </Steps>
+
+    <Note>
+      Available variants: `claude-3-opus-20240307`, `claude-3-sonnet-20240307`, `claude-3-haiku-20240307`, `claude-3-5-sonnet-20240620`, `claude-3-5-sonnet-20241022`, `claude-3-7-sonnet-20250219`
+    </Note>
+  </Tab>
+
+  <Tab title="Gemini">
+    ### Google Gemini
+
+    <Steps>
+      <Step title="Get a Gemini API key">
+        Visit [Google AI Studio](https://makersuite.google.com/app/apikey) and create an API key
+      </Step>
+
+      <Step title="Save your API key">
+        ```bash
+        gw save-key --model gemini --key "AIza..."
+        ```
+      </Step>
+
+      <Step title="Set as default (optional)">
+        ```bash
+        gw set-defaults --model gemini --model-variant gemini-2.0-flash
+        ```
+      </Step>
+
+      <Step title="Test it out">
+        ```bash
+        # Make some changes
+        echo "# TODO: Implement user authentication" > TODO.md
+        git add TODO.md
+        
+        # Generate commit
+        gw commit --model gemini
+        ```
+      </Step>
+    </Steps>
+
+    <Note>
+      Available variants: `gemini-2.5-pro-preview-05-06`, `gemini-2.5-flash-preview-04-17`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`, `gemini-1.5-pro-002`, `gemini-1.5-flash-002`
+    </Note>
+  </Tab>
+
+  <Tab title="GitHub Models">
+    ### GitHub Models (free tier available)
+
+    <Steps>
+      <Step title="Generate a GitHub PAT">
+        Create a Personal Access Token at [GitHub Settings](https://github.com/settings/tokens)
+        
+        Required scopes: No special scopes needed for model access
+      </Step>
+
+      <Step title="Save your token">
+        ```bash
+        gw save-key --model github --key "ghp_..."
+        ```
+      </Step>
+
+      <Step title="Set as default (optional)">
+        ```bash
+        gw set-defaults --model github --model-variant gpt-4o
+        ```
+      </Step>
+
+      <Step title="Test it out">
+        ```bash
+        # Make some changes and commit
+        echo "test" > test.txt
+        git add test.txt
+        gw commit --model github
+        ```
+      </Step>
+    </Steps>
+
+    <Tip>
+      GitHub Models offers free, rate-limited access to models like `gpt-4o`, `Llama-3.3-70B-Instruct`, and `DeepSeek-R1`. Check the [GitHub marketplace](https://github.com/marketplace?type=models) for available models.
+    </Tip>
+  </Tab>
+
+  <Tab title="Ollama">
+    ### Ollama (self-hosted)
+
+    <Steps>
+      <Step title="Install and run Ollama">
+        Download from [ollama.com](https://ollama.com) and start the service:
+        
+        ```bash
+        # Pull a model (e.g., llama3)
+        ollama pull llama3
+        
+        # Ollama runs on http://localhost:11434 by default
+        ```
+      </Step>
+
+      <Step title="Set Ollama as default">
+        ```bash
+        gw set-defaults --model ollama --model-variant llama3 --base-url http://localhost:11434
+        ```
+      </Step>
+
+      <Step title="Test it out">
+        ```bash
+        # Make some changes
+        echo "print('Hello from Ollama')" > script.py
+        git add script.py
+        
+        # Generate commit (no API key needed)
+        gw commit --model ollama --model-variant llama3
+        ```
+      </Step>
+    </Steps>
+
+    <Note>
+      Ollama runs locally and doesn't require an API key. You can use any model from [ollama.com/search](https://ollama.com/search).
+    </Note>
+  </Tab>
+</Tabs>
+
+## Your first commit
+
+Let's create your first AI-generated commit with a real-world example:
+
+<Steps>
+  <Step title="Create a new file or modify existing code">
+    ```bash
+    # Example: Add a new authentication function
+    cat << 'EOF' > auth.js
+    export function authenticateUser(username, password) {
+      if (!username || !password) {
+        throw new Error('Username and password are required');
+      }
+      
+      // Hash password and verify against database
+      const hashedPassword = hashPassword(password);
+      return verifyCredentials(username, hashedPassword);
+    }
+    
+    function hashPassword(password) {
+      // Implementation details...
+      return btoa(password);
+    }
+    EOF
+    ```
+  </Step>
+
+  <Step title="Stage your changes">
+    ```bash
+    git add auth.js
+    ```
+  </Step>
+
+  <Step title="Run GitWhisper">
+    ```bash
+    # Use the short alias
+    gw
+    
+    # Or the full command
+    gitwhisper commit
+    
+    # Or specify a model
+    gw commit --model openai --model-variant gpt-4o
+    ```
+  </Step>
+
+  <Step title="Review the generated message">
+    GitWhisper will display something like:
+    
+    ```
+    🔮 Analyzing your changes...
+    ✨ Generated commit message:
+    
+    ---------------------------------
+    feat: ✨ Add user authentication function
+    
+    Implement authenticateUser function with password hashing
+    and credential verification for secure user login
+    ---------------------------------
+    
+    What would you like to do with this commit message?
+    [commit] | edit | retry | discard:
+    ```
+  </Step>
+
+  <Step title="Choose an action">
+    - Type **`commit`** (or press Enter) to use the message
+    - Type **`edit`** to modify in your Git editor
+    - Type **`retry`** to:
+      - Generate a new message with the same model
+      - Try a different AI model
+      - Add custom context for the AI
+    - Type **`discard`** to cancel
+  </Step>
+
+  <Step title="Commit is created">
+    ```
+    ✅ Commit created successfully!
+    [main a1b2c3d] feat: ✨ Add user authentication function
+     1 file changed, 15 insertions(+)
+     create mode 100644 auth.js
+    ```
+  </Step>
+</Steps>
+
+## Common workflows
+
+### Basic commit
+
+```bash
+# Make changes
+echo "const VERSION = '1.0.0';" > version.js
+
+# Stage and commit
+git add version.js
+gw
+```
+
+### Commit with ticket number
+
+```bash
+# Add JIRA ticket prefix
+git add src/
+gw commit --prefix "JIRA-123"
+
+# Result: feat: ✨ JIRA-123 -> Add new dashboard component
+```
+
+### Commit and auto-push
+
+```bash
+# Stage changes
+git add .
+
+# Commit and push in one command
+gw commit --auto-push
+# or shorthand
+gw commit -a
+```
+
+### Create a tagged release
+
+```bash
+# Stage changes
+git add CHANGELOG.md package.json
+
+# Commit with a git tag
+gw commit --tag v1.2.0
+
+# Commit, tag, and push everything
+gw commit --tag v1.2.0 --auto-push
+```
+
+### Analyze changes before committing
+
+```bash
+# Stage your changes
+git add .
+
+# Get AI analysis and suggestions
+gw analyze
+
+# Review the feedback, then commit
+gw commit
+```
+
+### Use specific model variant
+
+```bash
+# Use Claude 3.5 Sonnet
+gw commit --model claude --model-variant claude-3-5-sonnet-20241022
+
+# Use GPT-4o
+gw commit --model openai --model-variant gpt-4o
+
+# Use Gemini 2.5 Pro
+gw commit --model gemini --model-variant gemini-2.5-pro-preview-05-06
+```
+
+## Interactive commit workflow
+
+GitWhisper provides an interactive workflow for reviewing and refining commit messages:
+
+```bash
+gw commit
+```
+
+<Steps>
+  <Step title="Review generated message">
+    GitWhisper shows you the AI-generated commit message
+  </Step>
+
+  <Step title="Choose your action">
+    Available options:
+    
+    - **commit** - Accept and commit with this message
+    - **edit** - Open your Git editor to modify the message
+    - **retry** - Generate a new message:
+      - With the **same model** (for variations)
+      - With a **different model** (to compare approaches)
+      - With **additional context** (guide the AI with instructions)
+    - **discard** - Cancel and exit without committing
+  </Step>
+
+  <Step title="Refine as needed">
+    Keep iterating until you're happy with the message
+  </Step>
+</Steps>
+
+<Tip>
+  Use the `retry` option with "add context" to guide the AI. For example: "make it more technical" or "focus on performance improvements".
+</Tip>
+
+## Tips for better commit messages
 
 <AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
+  <Accordion title="Stage related changes together">
+    Group related changes in a single commit for more coherent messages:
     
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
+    ```bash
+    # Good: Stage related authentication files
+    git add src/auth/ tests/auth.test.js
+    gw commit
+    
+    # Less ideal: Stage everything at once
+    git add .
+    gw commit
+    ```
   </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
+
+  <Accordion title="Use meaningful file and function names">
+    The AI analyzes your code structure. Clear naming helps generate better messages:
     
-    <Tip>Your preview updates automatically as you edit files.</Tip>
+    ```javascript
+    // Good: Clear, descriptive naming
+    function authenticateUser(credentials) { ... }
+    
+    // Less helpful for AI
+    function doAuth(data) { ... }
+    ```
+  </Accordion>
+
+  <Accordion title="Try different models for different tasks">
+    Different AI models excel at different things:
+    
+    - **OpenAI GPT-4o**: Great all-rounder, detailed descriptions
+    - **Claude 3.5 Sonnet**: Excellent for code understanding, concise
+    - **Gemini 2.0 Flash**: Fast, good for quick commits
+    - **Free model**: Perfect for trying out or personal projects
+  </Accordion>
+
+  <Accordion title="Use prefixes for team workflows">
+    Integrate with your team's workflow using prefixes:
+    
+    ```bash
+    # JIRA integration
+    gw commit --prefix "PROJ-456"
+    
+    # GitHub issues
+    gw commit --prefix "#123"
+    
+    # Custom prefixes
+    gw commit --prefix "HOTFIX"
+    ```
+  </Accordion>
+
+  <Accordion title="Set defaults for your preferred workflow">
+    Save time by configuring your preferences once:
+    
+    ```bash
+    # Set your favorite model and variant
+    gw set-defaults --model openai --model-variant gpt-4o
+    
+    # View current settings
+    gw show-defaults
+    
+    # Now just use 'gw' without specifying model
+    gw commit
+    ```
   </Accordion>
 </AccordionGroup>
 
-### Step 2: Deploy your changes
+## Environment variables
+
+Instead of saving API keys, you can use environment variables:
+
+```bash
+# OpenAI
+export OPENAI_API_KEY="sk-..."
+
+# Anthropic Claude
+export ANTHROPIC_API_KEY="sk-ant-..."
+
+# Google Gemini
+export GEMINI_API_KEY="AIza..."
+
+# xAI Grok
+export GROK_API_KEY="xai-..."
+
+# Meta Llama
+export LLAMA_API_KEY="..."
+
+# DeepSeek
+export DEEPSEEK_API_KEY="..."
+
+# Then use GitWhisper without --key flag
+gw commit --model openai
+```
+
+<Tip>
+  Add these to your `~/.bashrc`, `~/.zshrc`, or equivalent for persistent configuration.
+</Tip>
+
+## Troubleshooting
 
 <AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
+  <Accordion title="No staged changes found">
+    GitWhisper needs staged changes to analyze:
     
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
+    ```bash
+    # Check status
+    git status
+    
+    # Stage your changes
+    git add <files>
+    
+    # Or enable auto-staging
+    gw always-add true
+    ```
+  </Accordion>
 
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
+  <Accordion title="API key errors">
+    Verify your API key is saved correctly:
+    
+    ```bash
+    # Check saved configuration
+    gw show-config
+    
+    # Re-save your key
+    gw save-key --model openai --key "your-key"
+    
+    # Or use environment variable
+    export OPENAI_API_KEY="your-key"
+    ```
+  </Accordion>
 
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
+  <Accordion title="Model not responding">
+    Try these steps:
+    
+    1. Check your internet connection
+    2. Verify API key has sufficient credits/quota
+    3. Try a different model:
+       ```bash
+       gw commit --model free
+       ```
+    4. For Ollama, ensure the service is running:
+       ```bash
+       ollama list
+       ```
+  </Accordion>
+
+  <Accordion title="Diff too large">
+    For very large changesets, GitWhisper automatically processes files individually:
+    
+    ```bash
+    # Adjust max diff size (default: 50000 chars)
+    gw set-defaults --max-diff-size 100000
+    
+    # Or commit files in smaller batches
+    git add specific-file.js
+    gw commit
+    ```
   </Accordion>
 </AccordionGroup>
-
-### Step 3: Go live
-
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
 
 ## Next steps
 
-Now that you have your docs running, explore these key features:
-
 <CardGroup cols={2}>
-
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
-
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
-
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
-
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
-
+  <Card
+    title="Explore all commands"
+    icon="terminal"
+    href="/commands"
+  >
+    Learn about analyze, list-models, change-language, and more
+  </Card>
+  <Card
+    title="Configure GitWhisper"
+    icon="gear"
+    href="/configuration"
+  >
+    Customize defaults, language preferences, and advanced settings
+  </Card>
+  <Card
+    title="AI models guide"
+    icon="brain"
+    href="/ai-models"
+  >
+    Compare models, variants, and choose the best for your needs
+  </Card>
+  <Card
+    title="Best practices"
+    icon="star"
+    href="/best-practices"
+  >
+    Tips and workflows for effective commit messages
+  </Card>
 </CardGroup>
-
-<Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
-</Note>

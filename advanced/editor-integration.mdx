@@ -1,0 +1,385 @@
+---
+title: Git Editor Integration
+description: Learn how GitWhisper integrates with your Git editor for manual commit message editing and refinement
+---
+
+GitWhisper seamlessly integrates with your configured Git editor, allowing you to review and edit AI-generated commit messages before finalizing them.
+
+## How Editor Integration Works
+
+When using GitWhisper's interactive confirmation mode, you can choose to edit the generated commit message. GitWhisper opens your configured Git editor with the message pre-filled, just like a standard `git commit` workflow.
+
+From `git_utils.dart:314-377`, the implementation:
+
+```dart
+static Future<String?> openGitEditor(String initialMessage) async {
+  // Get the configured Git editor
+  final editorResult = await Process.run('git', ['var', 'GIT_EDITOR']);
+  String editor;
+
+  if (editorResult.exitCode == 0 &&
+      (editorResult.stdout as String).trim().isNotEmpty) {
+    editor = (editorResult.stdout as String).trim();
+  } else {
+    // Fall back to EDITOR environment variable or vi
+    editor = Platform.environment['EDITOR'] ?? 'vi';
+  }
+
+  // Create a temporary file for the commit message
+  final tempDir = Directory.systemTemp;
+  final tempFile = File(
+      '${tempDir.path}/GITWHISPER_EDITMSG_${DateTime.now().millisecondsSinceEpoch}');
+
+  try {
+    // Write the initial message to the temp file
+    await tempFile.writeAsString(initialMessage);
+
+    // Open the editor
+    final process = await Process.start(
+      '/bin/sh',
+      ['-c', '$editor "${tempFile.path}"'],
+      mode: ProcessStartMode.inheritStdio,
+    );
+
+    final exitCode = await process.exitCode;
+
+    if (exitCode != 0) {
+      return null;
+    }
+
+    // Read the edited message
+    final editedMessage = await tempFile.readAsString();
+
+    // Clean up: remove comment lines (lines starting with #) and trim
+    final cleanedLines = editedMessage
+        .split('\n')
+        .where((line) => !line.trimLeft().startsWith('#'))
+        .toList();
+
+    final cleaned = cleanedLines.join('\n').trim();
+
+    return cleaned.isNotEmpty ? cleaned : null;
+  } finally {
+    // Clean up the temp file
+    if (await tempFile.exists()) {
+      await tempFile.delete();
+    }
+  }
+}
+```
+
+## Interactive Confirmation Workflow
+
+Enable interactive confirmation to get the option to edit messages:
+
+```bash
+# Enable confirmation for this commit
+gw commit --confirm
+
+# Use short flag
+gw commit -c
+```
+
+When enabled, GitWhisper presents you with options:
+
+```
+---------------------------------
+feat: ✨ Add user authentication
+---------------------------------
+
+What would you like to do with this commit message?
+[commit] commit
+[edit] edit  
+[retry] retry
+[discard] discard
+```
+
+Choose **edit** to open your Git editor.
+
+## Configuring Your Git Editor
+
+GitWhisper respects your Git editor configuration in this order:
+
+1. **Git's `core.editor` configuration**
+2. **`$EDITOR` environment variable**  
+3. **Default fallback**: `vi`
+
+### Setting Your Git Editor
+
+#### VS Code
+
+```bash
+git config --global core.editor "code --wait"
+```
+
+#### Vim
+
+```bash
+git config --global core.editor "vim"
+```
+
+#### Nano
+
+```bash
+git config --global core.editor "nano"
+```
+
+#### Emacs
+
+```bash
+git config --global core.editor "emacs"
+```
+
+#### Sublime Text
+
+```bash
+git config --global core.editor "subl -n -w"
+```
+
+#### Atom
+
+```bash
+git config --global core.editor "atom --wait"
+```
+
+#### Neovim
+
+```bash
+git config --global core.editor "nvim"
+```
+
+<Note>
+The `--wait` flag (or equivalent) is important for GUI editors. It tells the editor to wait until you close the file before returning control to GitWhisper.
+</Note>
+
+## Editor Workflow Example
+
+Here's a complete workflow using editor integration:
+
+```bash
+# 1. Stage your changes
+git add .
+
+# 2. Generate commit with confirmation
+gw commit --confirm
+
+# 3. GitWhisper generates a message:
+# feat: ✨ Add user authentication system
+
+# 4. Choose to edit
+# [E] Edit commit message
+
+# 5. Your editor opens with:
+# feat: ✨ Add user authentication system
+#
+# You can now edit the message manually
+
+# 6. Save and close the editor
+
+# 7. GitWhisper shows the updated message and asks for confirmation again
+```
+
+## Message Cleanup
+
+GitWhisper automatically cleans up the edited message:
+
+- **Removes comment lines**: Lines starting with `#` are stripped (like standard git commit)
+- **Trims whitespace**: Leading and trailing whitespace is removed
+- **Validates content**: Empty messages are rejected
+
+From `git_utils.dart:362-369`:
+
+```dart
+// Clean up: remove comment lines (lines starting with #) and trim
+final cleanedLines = editedMessage
+    .split('\n')
+    .where((line) => !line.trimLeft().startsWith('#'))
+    .toList();
+
+final cleaned = cleanedLines.join('\n').trim();
+```
+
+## Advanced Editing Scenarios
+
+### Adding Multi-Line Descriptions
+
+While GitWhisper generates concise single-line commits, you can add detailed multi-line descriptions in the editor:
+
+```
+feat: ✨ Add user authentication system
+
+Implemented JWT-based authentication with the following features:
+- Login and registration endpoints
+- Token refresh mechanism  
+- Role-based access control
+- Password hashing with bcrypt
+
+Closes #123
+```
+
+### Editing with Prefixes
+
+When using ticket prefixes, the prefix is already included in the generated message:
+
+```bash
+gw commit --prefix "JIRA-456" --confirm
+
+# Generated message:
+JIRA-456 -> feat: ✨ Add dashboard
+
+# You can edit to:
+JIRA-456 -> feat: ✨ Add user analytics dashboard
+
+Implemented comprehensive analytics dashboard with:
+- Real-time user metrics
+- Customizable date ranges
+- Export to CSV functionality
+```
+
+## Retry Options
+
+If you're not satisfied with the edited message, you can retry:
+
+```
+What would you like to do with this commit message?
+[commit] commit
+[edit] edit
+[retry] retry  ← Choose this
+[discard] discard
+
+How would you like to retry?
+[same model] same model
+[different model] different model
+[add context] add context
+```
+
+This generates a fresh message that you can edit again.
+
+## Terminal-Based Editors
+
+GitWhisper works seamlessly with terminal-based editors:
+
+### Vim/Neovim
+
+```bash
+# The file opens in vim/nvim
+# Press 'i' to enter insert mode
+# Edit the message
+# Press 'Esc' then ':wq' to save and exit
+```
+
+### Nano
+
+```bash
+# The file opens in nano
+# Edit the message  
+# Press 'Ctrl+X', then 'Y', then 'Enter' to save and exit
+```
+
+### Emacs
+
+```bash
+# The file opens in emacs
+# Edit the message
+# Press 'Ctrl+X Ctrl+S' to save
+# Press 'Ctrl+X Ctrl+C' to exit
+```
+
+## GUI Editor Best Practices
+
+<Tip>
+**Use `--wait` flag**: Always configure GUI editors with the `--wait` flag so they block until you close the file:
+```bash
+git config --global core.editor "code --wait"
+```
+</Tip>
+
+<Tip>
+**Close the tab/window**: After editing, close the specific tab or window (not the entire editor) to signal completion.
+</Tip>
+
+## Canceling Edits
+
+You can cancel the edit in several ways:
+
+1. **Empty the file**: Delete all content and save (GitWhisper rejects empty messages)
+2. **Exit without saving**: Use your editor's quit-without-saving command
+3. **Choose discard**: After editing, you can still choose "discard" in the confirmation menu
+
+## Combining with Other Features
+
+### Editor + Auto-Push
+
+```bash
+gw commit --confirm --auto-push
+# Edit the message, then it's committed and pushed automatically
+```
+
+### Editor + Tags
+
+```bash
+gw commit --confirm --tag v1.0.0
+# Edit the message, commit is created with tag
+```
+
+### Editor + Prefix
+
+```bash
+gw commit --confirm --prefix "PROJ-123"
+# Edit the prefixed message
+```
+
+## Best Practices
+
+<Tip>
+**Use confirmation mode for important commits**: Enable `--confirm` for releases, major features, or any commit you want to carefully review.
+</Tip>
+
+<Tip>
+**Set a comfortable editor**: Choose an editor you're familiar with. Don't use `vi` if you prefer VS Code or nano.
+</Tip>
+
+<Tip>
+**Keep conventional format**: When editing, maintain the conventional commit format (`type: emoji description`) for consistency.
+</Tip>
+
+<Note>
+**Editor integration is non-blocking**: GitWhisper waits for you to finish editing. Take your time to craft the perfect commit message.
+</Note>
+
+## Troubleshooting
+
+### Editor doesn't open
+
+Check your Git editor configuration:
+
+```bash
+git config --global core.editor
+echo $EDITOR
+```
+
+Set it if not configured:
+
+```bash
+git config --global core.editor "nano"
+```
+
+### GUI editor closes immediately
+
+Ensure you're using the `--wait` flag:
+
+```bash
+# Wrong
+git config --global core.editor "code"
+
+# Correct  
+git config --global core.editor "code --wait"
+```
+
+### Changes aren't saved
+
+Make sure you're using the save command for your editor:
+- **Vim**: `:wq` or `ZZ`
+- **Nano**: `Ctrl+X`, then `Y`
+- **Emacs**: `Ctrl+X Ctrl+S`
+- **VS Code**: `Ctrl+S` (Cmd+S on Mac), then close the tab

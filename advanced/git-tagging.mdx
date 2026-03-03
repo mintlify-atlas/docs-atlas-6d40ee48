@@ -1,0 +1,262 @@
+---
+title: Git Tagging and Auto-Push
+description: Learn how to create git tags alongside commits and automatically push both to remote repositories
+---
+
+GitWhisper supports creating git tags alongside your commits, making it easy to mark releases, milestones, and important checkpoints in your codebase.
+
+## Basic Tagging
+
+Create a git tag when committing using the `--tag` flag:
+
+```bash
+gitwhisper commit --tag v1.0.0
+gw commit --tag v2.1.0
+gw commit -t v1.0.0-beta.1
+```
+
+This creates both the commit and the tag in a single operation.
+
+## How It Works
+
+When you provide a tag, GitWhisper:
+
+1. Generates the commit message from your staged changes
+2. Creates the commit
+3. Immediately creates a git tag pointing to that commit
+4. Optionally pushes both to remote (with `--auto-push`)
+
+From `git_utils.dart:177-193`, the implementation:
+
+```dart
+// Create tag if provided
+if (tag != null && tag.isNotEmpty) {
+  final tagResult = await Process.run(
+    'git',
+    ['tag', tag],
+    workingDirectory: folderPath,
+  );
+  if (tagResult.exitCode != 0) {
+    throw Exception('Error creating tag: ${tagResult.stderr}');
+  }
+  $logger.success('Tag $tag created successfully!');
+}
+```
+
+## Combining Tags with Auto-Push
+
+The real power of GitWhisper's tagging comes from combining it with `--auto-push`:
+
+```bash
+gw commit --tag v1.0.0 --auto-push
+gw commit -t v1.0.0 -a
+```
+
+This workflow:
+1. Creates the commit
+2. Creates the tag `v1.0.0`
+3. Pushes the commit to remote
+4. Pushes the tag to remote
+
+From `git_utils.dart:241-258`, when auto-push is enabled:
+
+```dart
+// Push tag if it was created
+if (tag != null && tag.isNotEmpty) {
+  final pushTagResult = await Process.run(
+    'git',
+    ['push', remoteNoneUrl, tag],
+    workingDirectory: folderPath,
+  );
+  if (pushTagResult.exitCode != 0) {
+    throw Exception('Error pushing tag: ${pushTagResult.stderr}');
+  } else {
+    $logger.success('Tag $tag pushed successfully!');
+  }
+}
+```
+
+## Tag Naming Conventions
+
+GitWhisper accepts any tag format, but common conventions include:
+
+### Semantic Versioning
+
+```bash
+gw commit -t v1.0.0      # Major release
+gw commit -t v1.1.0      # Minor release  
+gw commit -t v1.1.1      # Patch release
+gw commit -t v2.0.0-rc.1 # Release candidate
+gw commit -t v1.0.0-beta # Beta version
+gw commit -t v1.0.0-alpha.2 # Alpha version
+```
+
+### Date-Based Tags
+
+```bash
+gw commit -t 2026-03-03
+gw commit -t release-2026-03
+```
+
+### Custom Tags
+
+```bash
+gw commit -t milestone-1
+gw commit -t production-deploy
+gw commit -t hotfix-auth-bug
+```
+
+## Complete Release Workflow
+
+Here's a typical release workflow using GitWhisper:
+
+```bash
+# 1. Finish your feature work
+git add .
+
+# 2. Create release commit and tag, push everything
+gw commit --tag v1.2.0 --auto-push
+
+# Output:
+# ✓ Analyzing staged changes using openai...
+# ✓ Generated commit message: feat: ✨ Add user dashboard
+# ✓ Commit successful! 🎉
+# ✓ Tag v1.2.0 created successfully!
+# ✓ Pushed to origin/main successfully! 🎉
+# ✓ Tag v1.2.0 pushed successfully!
+```
+
+## Combining with Ticket Prefixes
+
+Tags work seamlessly with ticket prefixes:
+
+```bash
+gw commit --prefix "RELEASE-100" --tag v1.0.0 --auto-push
+gw commit -p "RELEASE-100" -t v1.0.0 -a
+```
+
+This creates a commit like:
+```
+RELEASE-100 -> feat: ✨ Add user authentication system
+```
+
+And tags it with `v1.0.0`.
+
+<Note>
+The prefix appears in the commit message but not in the tag. Tags remain version-focused for clarity.
+</Note>
+
+## Interactive Confirmation with Tags
+
+Use `--confirm` to review your commit before creating the tag:
+
+```bash
+gw commit --tag v1.0.0 --confirm
+```
+
+GitWhisper will:
+1. Generate the commit message
+2. Show you the message for review/editing
+3. Let you approve or regenerate
+4. Create both commit and tag only after confirmation
+
+## Multi-Repository Support
+
+When working with multiple git repositories in subfolders, GitWhisper handles tags for each repository:
+
+```bash
+# In a folder with multiple git repos
+gw commit --tag v1.0.0
+
+# Output:
+# [repo1] Commit successful! 🎉
+# [repo1] Tag v1.0.0 created successfully!
+# [repo2] Commit successful! 🎉  
+# [repo2] Tag v1.0.0 created successfully!
+```
+
+## Common Use Cases
+
+### Production Releases
+
+```bash
+# Create release and push to production
+gw commit --tag v1.0.0 --auto-push --model claude
+```
+
+### Pre-Release Versions
+
+```bash
+# Tag beta version
+gw commit --tag v2.0.0-beta.1 --auto-push
+
+# Tag release candidate
+gw commit --tag v2.0.0-rc.1 --auto-push
+```
+
+### Hotfixes
+
+```bash
+# Quick hotfix with tag
+gw commit --prefix "HOTFIX-789" --tag v1.0.1 --auto-push
+```
+
+### Milestone Markers
+
+```bash
+# Mark important milestones
+gw commit --tag milestone-mvp --auto-push
+gw commit --tag feature-complete --auto-push
+```
+
+## Best Practices
+
+<Tip>
+**Use semantic versioning**: Follow the [SemVer](https://semver.org) convention (MAJOR.MINOR.PATCH) for version tags to communicate the nature of changes clearly.
+</Tip>
+
+<Tip>
+**Always push tags**: Use `--auto-push` to ensure your tags reach the remote repository immediately. Unpushed tags can cause confusion in team environments.
+</Tip>
+
+<Tip>
+**Tag significant commits**: Reserve tags for releases, milestones, and important checkpoints. Not every commit needs a tag.
+</Tip>
+
+<Note>
+**Tag immutability**: Once pushed, tags should be treated as immutable. Avoid deleting or changing tags that others may depend on.
+</Note>
+
+## Listing and Managing Tags
+
+After creating tags with GitWhisper, use standard git commands to manage them:
+
+```bash
+# List all tags
+git tag
+
+# List tags matching a pattern
+git tag -l "v1.*"
+
+# Show tag details
+git show v1.0.0
+
+# Delete a local tag (if needed)
+git tag -d v1.0.0
+
+# Delete a remote tag (if needed)
+git push origin --delete v1.0.0
+```
+
+## Automated Workflows
+
+GitWhisper's tagging integrates well with CI/CD pipelines:
+
+```bash
+# In CI/CD script
+if [ "$BRANCH" = "main" ]; then
+  gw commit --tag "v$(cat VERSION)" --auto-push --model openai
+fi
+```
+
+Many platforms (GitHub, GitLab, etc.) can trigger automated deployments when tags matching specific patterns are pushed.

@@ -1,0 +1,569 @@
+---
+title: AI Models & Providers
+description: Overview of supported AI models and providers in GitWhisper, including OpenAI, Claude, Gemini, Grok, and more
+---
+
+GitWhisper supports 9 different AI providers, giving you flexibility to choose the model that best fits your needs, budget, and preferences.
+
+## Supported Providers
+
+<CardGroup cols={2}>
+  <Card title="OpenAI" icon="openai" color="#10a37f">
+    GPT-4 models for high-quality commit messages
+    
+    **Default:** gpt-4o
+  </Card>
+  
+  <Card title="Anthropic Claude" icon="brain" color="#d4a373">
+    Advanced reasoning with Claude Sonnet
+    
+    **Default:** claude-sonnet-4-5
+  </Card>
+  
+  <Card title="Google Gemini" icon="google" color="#4285f4">
+    Fast and efficient with Gemini Flash
+    
+    **Default:** gemini-2.0-flash
+  </Card>
+  
+  <Card title="xAI Grok" icon="x" color="#000000">
+    Grok's latest models
+    
+    **Default:** grok-2-latest
+  </Card>
+  
+  <Card title="Meta Llama" icon="meta" color="#0668e1">
+    Open-weight models via Llama API
+    
+    **Default:** llama-3-70b-instruct
+  </Card>
+  
+  <Card title="DeepSeek" icon="code" color="#1e40af">
+    Cost-effective Chinese AI provider
+    
+    **Default:** deepseek-chat
+  </Card>
+  
+  <Card title="GitHub Models" icon="github" color="#24292e">
+    AI models via GitHub's platform
+    
+    **Default:** gpt-4o
+  </Card>
+  
+  <Card title="Ollama" icon="server" color="#000000">
+    Run models locally on your machine
+    
+    **Default:** llama3.2:latest
+  </Card>
+  
+  <Card title="Free (LLM7.io)" icon="gift" color="#10b981">
+    No API key required - free tier
+    
+    **Default:** N/A
+  </Card>
+</CardGroup>
+
+## Quick Start
+
+### Using a Specific Model
+
+Specify a model with the `--model` or `-m` flag:
+
+```bash
+# Use Claude
+gw commit --model claude
+
+# Use Gemini
+gw commit -m gemini
+
+# Use free tier (no API key needed)
+gw commit --model free
+```
+
+### Model Variants
+
+Each provider supports multiple model variants. Specify with `--model-variant` or `-v`:
+
+```bash
+# Use GPT-4o (default OpenAI)
+gw commit --model openai --model-variant gpt-4o
+
+# Use GPT-4o mini (faster, cheaper)
+gw commit --model openai --model-variant gpt-4o-mini
+
+# Use Claude Opus (most capable)
+gw commit --model claude --model-variant claude-opus-4-20250514
+```
+
+## Provider Details
+
+### OpenAI
+
+<Tabs>
+  <Tab title="Overview">
+    OpenAI's GPT models are known for high-quality, coherent commit messages.
+
+    **Default Variant:** `gpt-4o`
+
+    **API Key Required:** Yes
+
+    **API Endpoint:** `https://api.openai.com/v1/chat/completions`
+  </Tab>
+  
+  <Tab title="Setup">
+    Get your API key from [OpenAI Platform](https://platform.openai.com/api-keys).
+
+    Save it with GitWhisper:
+    ```bash
+    gw save-key --model openai --key sk-proj-...
+    ```
+
+    Or set as environment variable:
+    ```bash
+    export OPENAI_API_KEY=sk-proj-...
+    ```
+  </Tab>
+  
+  <Tab title="Variants">
+    - `gpt-4o` (default) - Most capable GPT-4 model
+    - `gpt-4o-mini` - Faster, more affordable
+    - `gpt-4-turbo` - Previous generation
+    - `gpt-3.5-turbo` - Legacy, cheapest option
+  </Tab>
+</Tabs>
+
+### Anthropic Claude
+
+<Tabs>
+  <Tab title="Overview">
+    Claude excels at understanding context and writing clear, technical commit messages.
+
+    **Default Variant:** `claude-sonnet-4-5-20250929`
+
+    **API Key Required:** Yes
+
+    **API Endpoint:** `https://api.anthropic.com/v1/messages`
+  </Tab>
+  
+  <Tab title="Setup">
+    Get your API key from [Anthropic Console](https://console.anthropic.com/).
+
+    Save it with GitWhisper:
+    ```bash
+    gw save-key --model claude --key sk-ant-...
+    ```
+
+    Or set as environment variable:
+    ```bash
+    export ANTHROPIC_API_KEY=sk-ant-...
+    ```
+  </Tab>
+  
+  <Tab title="Variants">
+    - `claude-sonnet-4-5-20250929` (default) - Latest Claude Sonnet
+    - `claude-opus-4-20250514` - Most capable, slower
+    - `claude-3-5-sonnet-20241022` - Previous generation
+    - `claude-3-haiku-20240307` - Fastest, cheapest
+  </Tab>
+</Tabs>
+
+### Google Gemini
+
+<Tabs>
+  <Tab title="Overview">
+    Gemini offers fast response times with good quality output.
+
+    **Default Variant:** `gemini-2.0-flash`
+
+    **API Key Required:** Yes
+
+    **API Endpoint:** `https://generativelanguage.googleapis.com/v1beta/models/`
+  </Tab>
+  
+  <Tab title="Setup">
+    Get your API key from [Google AI Studio](https://makersuite.google.com/app/apikey).
+
+    Save it with GitWhisper:
+    ```bash
+    gw save-key --model gemini --key AIza...
+    ```
+
+    Or set as environment variable:
+    ```bash
+    export GEMINI_API_KEY=AIza...
+    ```
+  </Tab>
+  
+  <Tab title="Variants">
+    - `gemini-2.0-flash` (default) - Fast and efficient
+    - `gemini-1.5-pro` - More capable, slower
+    - `gemini-1.5-flash` - Previous generation
+  </Tab>
+</Tabs>
+
+### xAI Grok
+
+<Tabs>
+  <Tab title="Overview">
+    Grok models from xAI, known for being up-to-date and witty.
+
+    **Default Variant:** `grok-2-latest`
+
+    **API Key Required:** Yes
+  </Tab>
+  
+  <Tab title="Setup">
+    Save your API key:
+    ```bash
+    gw save-key --model grok --key xai-...
+    ```
+
+    Or set as environment variable:
+    ```bash
+    export GROK_API_KEY=xai-...
+    ```
+  </Tab>
+</Tabs>
+
+### Meta Llama
+
+<Tabs>
+  <Tab title="Overview">
+    Access to Meta's Llama models via API.
+
+    **Default Variant:** `llama-3-70b-instruct`
+
+    **API Key Required:** Yes
+  </Tab>
+  
+  <Tab title="Setup">
+    ```bash
+    gw save-key --model llama --key llama-...
+    ```
+
+    Or set as environment variable:
+    ```bash
+    export LLAMA_API_KEY=llama-...
+    ```
+  </Tab>
+</Tabs>
+
+### DeepSeek
+
+<Tabs>
+  <Tab title="Overview">
+    Cost-effective AI models with good performance.
+
+    **Default Variant:** `deepseek-chat`
+
+    **API Key Required:** Yes
+  </Tab>
+  
+  <Tab title="Setup">
+    ```bash
+    gw save-key --model deepseek --key sk-...
+    ```
+
+    Or set as environment variable:
+    ```bash
+    export DEEPSEEK_API_KEY=sk-...
+    ```
+  </Tab>
+</Tabs>
+
+### GitHub Models
+
+<Tabs>
+  <Tab title="Overview">
+    Access AI models through GitHub's platform.
+
+    **Default Variant:** `gpt-4o`
+
+    **API Key Required:** Yes (GitHub token)
+  </Tab>
+  
+  <Tab title="Setup">
+    Use your GitHub personal access token:
+    ```bash
+    gw save-key --model github --key ghp_...
+    ```
+  </Tab>
+</Tabs>
+
+### Ollama (Local)
+
+<Tabs>
+  <Tab title="Overview">
+    Run AI models locally without sending data to external APIs.
+
+    **Default Variant:** `llama3.2:latest`
+
+    **API Key Required:** No
+
+    **Requirements:** Ollama must be installed and running
+  </Tab>
+  
+  <Tab title="Setup">
+    Install Ollama:
+    ```bash
+    # macOS/Linux
+    curl -fsSL https://ollama.com/install.sh | sh
+
+    # Pull a model
+    ollama pull llama3.2
+    ```
+
+    Use with GitWhisper:
+    ```bash
+    gw commit --model ollama
+    ```
+
+    Custom base URL:
+    ```bash
+    gw set-defaults --ollama-base-url http://localhost:11434
+    ```
+  </Tab>
+  
+  <Tab title="Variants">
+    Any model available in Ollama:
+    - `llama3.2:latest` (default)
+    - `llama3.1:8b`
+    - `codellama:7b`
+    - `mistral:latest`
+    - `phi3:latest`
+
+    Specify with:
+    ```bash
+    gw commit --model ollama --model-variant mistral:latest
+    ```
+  </Tab>
+</Tabs>
+
+### Free Tier (LLM7.io)
+
+<Tabs>
+  <Tab title="Overview">
+    Free, anonymous access to AI models - no API key required.
+
+    **Powered by:** LLM7.io
+
+    **API Key Required:** No
+
+    **Limitations:**
+    - 8,000 characters per request
+    - 60 requests/hour
+    - 10 requests/minute
+    - 1 request/second
+  </Tab>
+  
+  <Tab title="Usage">
+    Just use the `free` model:
+    ```bash
+    gw commit --model free
+    ```
+
+    On first use, you'll see a disclaimer:
+    ```bash
+    ┌─────────────────────────────────────────────────┐
+    │            FREE MODEL DISCLAIMER                │
+    ├─────────────────────────────────────────────────┤
+    │ This free model is powered by LLM7.io          │
+    │ • Your code diffs will be sent to LLM7.io      │
+    │ • Service availability is not guaranteed        │
+    │ • For production use, consider a paid provider  │
+    │                                                 │
+    │ Learn more: https://llm7.io                     │
+    └─────────────────────────────────────────────────┘
+
+    Do you accept these terms and wish to continue?
+    > yes
+    ```
+  </Tab>
+  
+  <Tab title="When to Use">
+    <Check>
+    **Good for:**
+    - Testing GitWhisper
+    - Personal projects
+    - Learning and experimentation
+    - Small commits
+    </Check>
+
+    <Warning>
+    **Not recommended for:**
+    - Production environments
+    - Sensitive code
+    - High-frequency commits
+    - Large teams
+    </Warning>
+  </Tab>
+</Tabs>
+
+## Setting Default Model
+
+Set your preferred model as the default:
+
+```bash
+# Set default model
+gw set-defaults --model claude
+
+# Set default model with variant
+gw set-defaults --model openai --model-variant gpt-4o-mini
+
+# View current defaults
+gw show-defaults
+```
+
+Once set, you can simply run:
+```bash
+gw commit  # Uses your default model
+```
+
+## Model Comparison
+
+<Tabs>
+  <Tab title="Quality">
+    Based on commit message quality:
+
+    1. **Claude (Opus/Sonnet)** - Most detailed and contextual
+    2. **OpenAI (GPT-4o)** - Excellent balance of quality and speed
+    3. **Gemini (2.0 Flash)** - Good quality, very fast
+    4. **Grok** - Good quality with personality
+    5. **DeepSeek** - Solid quality, budget-friendly
+    6. **Llama** - Good for technical commits
+    7. **GitHub Models** - Similar to OpenAI
+    8. **Ollama** - Varies by model, privacy-focused
+    9. **Free** - Basic quality, rate-limited
+  </Tab>
+  
+  <Tab title="Speed">
+    Response time comparison:
+
+    **Fastest:**
+    - Gemini 2.0 Flash
+    - GPT-4o mini
+    - Ollama (local)
+
+    **Moderate:**
+    - GPT-4o
+    - Claude Sonnet
+    - DeepSeek
+
+    **Slower:**
+    - Claude Opus
+    - Grok
+    - Free (variable)
+  </Tab>
+  
+  <Tab title="Cost">
+    Approximate cost per commit:
+
+    **Free:**
+    - Free tier (LLM7.io)
+    - Ollama (local compute)
+
+    **Low:**
+    - GPT-4o mini: ~$0.001
+    - Gemini Flash: ~$0.001
+    - DeepSeek: ~$0.001
+
+    **Moderate:**
+    - GPT-4o: ~$0.005
+    - Claude Sonnet: ~$0.005
+
+    **Higher:**
+    - Claude Opus: ~$0.015
+  </Tab>
+  
+  <Tab title="Privacy">
+    **Most Private:**
+    - Ollama (fully local, no data leaves your machine)
+
+    **Cloud-Based:**
+    - All other providers (data sent to external APIs)
+    - Follow each provider's privacy policy
+
+    <Tip>
+    For sensitive code, use Ollama to keep everything local.
+    </Tip>
+  </Tab>
+</Tabs>
+
+## Code Implementation
+
+The model factory is implemented in `commit_generator_factory.dart:22`:
+
+```dart
+class CommitGeneratorFactory {
+  static CommitGenerator create(
+    String model,
+    String? apiKey, {
+    String? variant,
+    String? baseUrl,
+  }) {
+    return switch (model.toLowerCase()) {
+      'claude' => ClaudeGenerator(apiKey, variant: variant),
+      'openai' => OpenAIGenerator(apiKey, variant: variant),
+      'gemini' => GeminiGenerator(apiKey, variant: variant),
+      'grok' => GrokGenerator(apiKey, variant: variant),
+      'llama' => LlamaGenerator(apiKey, variant: variant),
+      'deepseek' => DeepseekGenerator(apiKey, variant: variant),
+      'github' => GithubGenerator(apiKey, variant: variant),
+      'ollama' => OllamaGenerator(baseUrl!, apiKey, variant: variant),
+      'free' => FreeGenerator(),
+      _ => throw ArgumentError('Unsupported model: $model'),
+    };
+  }
+}
+```
+
+Default variants are defined in `model_variants.dart:10`:
+
+```dart
+class ModelVariants {
+  static const String openaiDefault = 'gpt-4o';
+  static const String claudeDefault = 'claude-sonnet-4-5-20250929';
+  static const String geminiDefault = 'gemini-2.0-flash';
+  static const String grokDefault = 'grok-2-latest';
+  static const String llamaDefault = 'llama-3-70b-instruct';
+  static const String deepseekDefault = 'deepseek-chat';
+  static const String githubDefault = 'gpt-4o';
+  static const String ollamaDefault = 'llama3.2:latest';
+}
+```
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Try Multiple Models" icon="shuffle">
+    Different models have different strengths. Try a few to find your favorite.
+  </Card>
+  
+  <Card title="Use Variants Wisely" icon="sliders">
+    Use faster/cheaper variants for simple commits, powerful ones for complex changes.
+  </Card>
+  
+  <Card title="Go Local for Privacy" icon="shield">
+    Use Ollama if you're working with sensitive code.
+  </Card>
+  
+  <Card title="Set Sensible Defaults" icon="star">
+    Configure your preferred model as default to save time.
+  </Card>
+</CardGroup>
+
+## Related Features
+
+<CardGroup cols={2}>
+  <Card title="Interactive Confirmation" icon="check-circle" href="/features/interactive-confirmation">
+    Try different models during the confirmation workflow
+  </Card>
+  
+  <Card title="API Key Management" icon="key" href="/configuration/api-keys">
+    Learn how to manage API keys for each provider
+  </Card>
+  
+  <Card title="Configuration" icon="gear" href="/configuration/defaults">
+    Set default model and other preferences
+  </Card>
+</CardGroup>

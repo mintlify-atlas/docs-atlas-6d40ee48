@@ -1,0 +1,275 @@
+---
+title: 'OpenAI Models'
+description: 'Use OpenAI GPT models for generating commit messages and code analysis'
+icon: 'openai'
+---
+
+OpenAI provides industry-leading language models that excel at understanding code and generating concise, meaningful commit messages.
+
+## Available Models
+
+GitWhisper supports the full range of OpenAI models:
+
+### GPT-5 Series (Latest)
+
+The newest generation with enhanced capabilities:
+
+- **gpt-5** - Most advanced model with superior reasoning
+- **gpt-5-pro** - Enhanced version for complex tasks
+- **gpt-5-mini** - Faster, cost-effective option
+- **gpt-5-nano** - Ultra-fast for simple tasks
+
+### GPT-4.1 Series
+
+Improved GPT-4 with better performance:
+
+- **gpt-4.1** - Enhanced GPT-4 with improved accuracy
+- **gpt-4.1-mini** - Balanced speed and quality
+- **gpt-4.1-nano** - Lightweight and efficient
+
+### GPT-4o Series
+
+- **gpt-4o** ⭐ (default) - Optimized for speed and cost
+- **gpt-4o-mini** - Most cost-effective option
+- **gpt-4.5-preview** - Preview of upcoming features
+
+### Realtime Series
+
+Real-time optimized models:
+
+- **gpt-realtime** - Low-latency responses
+- **gpt-realtime-mini** - Fastest option available
+
+### o-Series (Reasoning Models)
+
+Specialized models with enhanced reasoning:
+
+- **o1-preview** - Advanced reasoning capabilities
+- **o1-mini** - Compact reasoning model
+- **o3-mini** - Latest reasoning model
+
+<Note>
+  The default model **gpt-4o** provides an excellent balance of quality, speed, and cost for most use cases.
+</Note>
+
+## Usage
+
+### Basic Usage
+
+Generate commit messages with OpenAI:
+
+```bash
+# Use default OpenAI model (gpt-4o)
+gitwhisper commit --model openai
+
+# Shorthand
+gw commit -m openai
+```
+
+### Specific Variant
+
+Choose a specific model variant:
+
+```bash
+# Use GPT-5
+gitwhisper commit --model openai --model-variant gpt-5
+
+# Use o3-mini for reasoning
+gitwhisper commit --model openai --model-variant o3-mini
+```
+
+### Set as Default
+
+Make OpenAI your default model:
+
+```bash
+# Set OpenAI as default
+gitwhisper set-defaults --model openai
+
+# Set specific variant as default
+gitwhisper set-defaults --model openai --model-variant gpt-5
+```
+
+## API Key Setup
+
+You need an OpenAI API key to use these models. Get one at [platform.openai.com](https://platform.openai.com).
+
+<Tabs>
+  <Tab title="Save Permanently">
+    ```bash
+    gitwhisper save-key --model openai --key "sk-..."
+    ```
+    The key is stored securely in `~/.git_whisper.yaml`
+  </Tab>
+  <Tab title="Environment Variable">
+    ```bash
+    export OPENAI_API_KEY="sk-..."
+    ```
+    Add to your `.bashrc` or `.zshrc` for persistence
+  </Tab>
+  <Tab title="Command Line">
+    ```bash
+    gitwhisper commit --model openai --key "sk-..."
+    ```
+    Not recommended for security reasons
+  </Tab>
+</Tabs>
+
+## Model Comparison
+
+<Tabs>
+  <Tab title="Quality vs Speed">
+    | Model | Quality | Speed | Cost | Best For |
+    |-------|---------|-------|------|----------|
+    | gpt-5 | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | 💰💰💰 | Complex codebases |
+    | gpt-4.1 | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | 💰💰 | Balanced usage |
+    | gpt-4o | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | 💰💰 | Default choice |
+    | gpt-4o-mini | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | 💰 | High volume |
+  </Tab>
+  <Tab title="Reasoning Models">
+    | Model | Reasoning | Speed | Use Case |
+    |-------|-----------|-------|----------|
+    | o3-mini | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | Complex logic analysis |
+    | o1-preview | ⭐⭐⭐⭐ | ⭐⭐ | Deep code understanding |
+    | o1-mini | ⭐⭐⭐ | ⭐⭐⭐⭐ | Faster reasoning tasks |
+  </Tab>
+</Tabs>
+
+## Features
+
+### Advanced Code Understanding
+
+OpenAI models excel at:
+
+- Understanding complex code changes across multiple files
+- Identifying the intent behind refactorings
+- Generating context-aware commit messages
+- Following conventional commit formats
+
+### Interactive Confirmation
+
+After generating a commit message, you can:
+
+<Steps>
+  <Step title="Review">
+    Review the generated commit message
+  </Step>
+  <Step title="Edit">
+    Edit the message if needed
+  </Step>
+  <Step title="Retry">
+    Generate a new message with the same model
+  </Step>
+  <Step title="Switch Model">
+    Try a different model for comparison
+  </Step>
+</Steps>
+
+## Code Analysis
+
+Use OpenAI models for detailed code analysis:
+
+```bash
+# Analyze staged changes
+gitwhisper analyze --model openai
+
+# Analyze with specific variant
+gitwhisper analyze --model openai --model-variant gpt-5
+```
+
+The analysis includes:
+
+- Summary of changes
+- Potential issues or bugs
+- Suggestions for improvements
+- Code quality recommendations
+
+## Tips for Best Results
+
+<AccordionGroup>
+  <Accordion title="Choose the Right Model">
+    - Use **gpt-5** for complex, multi-file changes
+    - Use **gpt-4o** for everyday commits
+    - Use **gpt-4o-mini** for simple, single-file changes
+    - Use **o-series** when you need deep reasoning about code logic
+  </Accordion>
+  <Accordion title="Optimize Your Diffs">
+    - Stage related changes together
+    - Keep commits focused on a single purpose
+    - Avoid mixing formatting changes with logic changes
+  </Accordion>
+  <Accordion title="Use Prefixes">
+    ```bash
+    gitwhisper commit --model openai --prefix "JIRA-123"
+    ```
+    Add ticket numbers to link commits to issues
+  </Accordion>
+</AccordionGroup>
+
+## Pricing
+
+OpenAI charges based on tokens used. Typical commit message generation uses:
+
+- Small changes: ~500-1,000 tokens
+- Medium changes: ~1,500-3,000 tokens
+- Large changes: ~5,000+ tokens
+
+Check [OpenAI's pricing page](https://openai.com/pricing) for current rates.
+
+<Warning>
+  **Cost Management**: For large diffs, GitWhisper prompts you to interactively stage files to keep token usage manageable.
+</Warning>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Invalid API Key">
+    ```
+    Error: Invalid API key
+    ```
+    
+    **Solution**: Verify your API key is correct and active:
+    ```bash
+    gitwhisper save-key --model openai --key "sk-..."
+    ```
+  </Accordion>
+  <Accordion title="Rate Limit Exceeded">
+    ```
+    Error: Rate limit exceeded
+    ```
+    
+    **Solution**: Wait a few moments or upgrade your OpenAI plan for higher limits.
+  </Accordion>
+  <Accordion title="Model Not Found">
+    ```
+    Error: Model not found
+    ```
+    
+    **Solution**: Check the model name spelling or list available variants:
+    ```bash
+    gitwhisper list-variants --model openai
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+
+<Card title="Claude Models" icon="message-bot" href="/models/claude">
+  Compare with Anthropic's Claude models
+</Card>
+
+<Card title="All Variants" icon="list" href="/models/variants">
+  View complete list of OpenAI variants
+</Card>
+
+<Card title="Configuration" icon="gear" href="/configuration/api-keys">
+  Learn more about API key management
+</Card>
+
+<Card title="Code Analysis" icon="magnifying-glass-chart" href="/features/code-analysis">
+  Use OpenAI for code analysis
+</Card>
+
+</CardGroup>

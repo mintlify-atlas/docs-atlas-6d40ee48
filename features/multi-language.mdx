@@ -1,0 +1,605 @@
+---
+title: Multi-Language Support
+description: Generate commit messages in 20+ languages including English, Spanish, French, German, Chinese, Japanese, and more
+---
+
+GitWhisper supports commit messages and analysis in over 20 languages, making it easy for international teams and non-English speakers to maintain clear, professional commit histories in their preferred language.
+
+## Supported Languages
+
+<CardGroup cols={3}>
+  <Card title="🇺🇸 English" icon="flag-usa">
+    English (US) and English (UK)
+  </Card>
+  <Card title="🇪🇸 Spanish" icon="flag">
+    Español
+  </Card>
+  <Card title="🇫🇷 French" icon="flag">
+    Français
+  </Card>
+  <Card title="🇩🇪 German" icon="flag">
+    Deutsch
+  </Card>
+  <Card title="🇨🇳 Chinese" icon="flag">
+    简体中文 / 繁體中文
+  </Card>
+  <Card title="🇯🇵 Japanese" icon="flag">
+    日本語
+  </Card>
+  <Card title="🇰🇷 Korean" icon="flag">
+    한국어
+  </Card>
+  <Card title="🇸🇦 Arabic" icon="flag">
+    العربية
+  </Card>
+  <Card title="🇮🇹 Italian" icon="flag">
+    Italiano
+  </Card>
+  <Card title="🇵🇹 Portuguese" icon="flag">
+    Português
+  </Card>
+  <Card title="🇷🇺 Russian" icon="flag">
+    Русский
+  </Card>
+  <Card title="🇳🇱 Dutch" icon="flag">
+    Nederlands
+  </Card>
+  <Card title="🇸🇪 Swedish" icon="flag">
+    Svenska
+  </Card>
+  <Card title="🇳🇴 Norwegian" icon="flag">
+    Norsk
+  </Card>
+  <Card title="🇩🇰 Danish" icon="flag">
+    Dansk
+  </Card>
+  <Card title="🇫🇮 Finnish" icon="flag">
+    Suomi
+  </Card>
+  <Card title="🇬🇷 Greek" icon="flag">
+    Ελληνικά
+  </Card>
+  <Card title="🇹🇷 Turkish" icon="flag">
+    Türkçe
+  </Card>
+  <Card title="🇮🇳 Hindi" icon="flag">
+    हिन्दी
+  </Card>
+  <Card title="🇿🇼 Shona" icon="flag">
+    ChiShona
+  </Card>
+  <Card title="🇿🇦 Zulu" icon="flag">
+    IsiZulu
+  </Card>
+</CardGroup>
+
+## Changing Your Language
+
+<Steps>
+  <Step title="Run the change-language command">
+    ```bash
+    gw change-language
+    ```
+  </Step>
+
+  <Step title="Select your preferred language">
+    Use arrow keys to navigate and press Enter to select:
+
+    ```bash
+    Please select your preferred language for commit messages:
+    > English
+      Spanish
+      French
+      German
+      Chinese (simplified)
+      Chinese (traditional)
+      Japanese
+      Korean
+      Arabic
+      Italian
+      Portuguese
+      Russian
+      Dutch
+      Swedish
+      Norwegian
+      Danish
+      Finnish
+      Greek
+      Turkish
+      Hindi
+      English (US)
+      English (UK)
+      Shona
+      Zulu
+    ```
+  </Step>
+
+  <Step title="Confirmation">
+    Your language preference is saved globally:
+
+    ```bash
+    ✨ Great! Spanish has been set as your default language for Git commit messages.
+    ```
+  </Step>
+</Steps>
+
+## Language Examples
+
+See how commit messages look in different languages:
+
+<Tabs>
+  <Tab title="English">
+    ```bash
+    $ gw commit
+    
+    feat: add user authentication with JWT tokens
+
+    Implement secure authentication system using JSON Web Tokens
+    for stateless session management. Add login and registration
+    endpoints with bcrypt password hashing.
+
+    ✓ Commit created successfully
+    ```
+  </Tab>
+
+  <Tab title="Spanish">
+    ```bash
+    $ gw commit
+    
+    feat: agregar autenticación de usuario con tokens JWT
+
+    Implementar sistema de autenticación seguro usando JSON Web
+    Tokens para gestión de sesiones sin estado. Agregar endpoints
+    de inicio de sesión y registro con hash de contraseñas bcrypt.
+
+    ✓ Commit creado exitosamente
+    ```
+  </Tab>
+
+  <Tab title="French">
+    ```bash
+    $ gw commit
+    
+    feat: ajouter l'authentification utilisateur avec tokens JWT
+
+    Implémenter un système d'authentification sécurisé utilisant
+    les JSON Web Tokens pour la gestion de sessions sans état.
+    Ajouter des endpoints de connexion et d'inscription avec
+    hachage de mots de passe bcrypt.
+
+    ✓ Commit créé avec succès
+    ```
+  </Tab>
+
+  <Tab title="German">
+    ```bash
+    $ gw commit
+    
+    feat: Benutzerauthentifizierung mit JWT-Tokens hinzufügen
+
+    Sicheres Authentifizierungssystem mit JSON Web Tokens für
+    zustandslose Sitzungsverwaltung implementieren. Login- und
+    Registrierungsendpunkte mit bcrypt-Passwort-Hashing hinzufügen.
+
+    ✓ Commit erfolgreich erstellt
+    ```
+  </Tab>
+
+  <Tab title="Chinese (Simplified)">
+    ```bash
+    $ gw commit
+    
+    feat: 添加使用JWT令牌的用户身份验证
+
+    实现使用JSON Web令牌的安全身份验证系统,用于无状态会话
+    管理。添加使用bcrypt密码哈希的登录和注册端点。
+
+    ✓ 提交成功创建
+    ```
+  </Tab>
+
+  <Tab title="Japanese">
+    ```bash
+    $ gw commit
+    
+    feat: JWTトークンを使用したユーザー認証を追加
+
+    ステートレスセッション管理のためのJSON Webトークンを
+    使用した安全な認証システムを実装。bcryptパスワード
+    ハッシュを使用したログインと登録エンドポイントを追加。
+
+    ✓ コミットが正常に作成されました
+    ```
+  </Tab>
+
+  <Tab title="Korean">
+    ```bash
+    $ gw commit
+    
+    feat: JWT 토큰을 사용한 사용자 인증 추가
+
+    상태 비저장 세션 관리를 위한 JSON 웹 토큰을 사용하는
+    보안 인증 시스템 구현. bcrypt 비밀번호 해싱을 사용하는
+    로그인 및 등록 엔드포인트 추가.
+
+    ✓ 커밋이 성공적으로 생성되었습니다
+    ```
+  </Tab>
+
+  <Tab title="Arabic">
+    ```bash
+    $ gw commit
+    
+    feat: إضافة مصادقة المستخدم باستخدام رموز JWT
+
+    تنفيذ نظام مصادقة آمن باستخدام رموز الويب JSON لإدارة
+    الجلسات بدون حالة. إضافة نقاط نهاية لتسجيل الدخول والتسجيل
+    مع تجزئة كلمة المرور bcrypt.
+
+    ✓ تم إنشاء الالتزام بنجاح
+    ```
+  </Tab>
+
+  <Tab title="Portuguese">
+    ```bash
+    $ gw commit
+    
+    feat: adicionar autenticação de usuário com tokens JWT
+
+    Implementar sistema de autenticação seguro usando JSON Web
+    Tokens para gerenciamento de sessões sem estado. Adicionar
+    endpoints de login e registro com hash de senhas bcrypt.
+
+    ✓ Commit criado com sucesso
+    ```
+  </Tab>
+
+  <Tab title="Russian">
+    ```bash
+    $ gw commit
+    
+    feat: добавить аутентификацию пользователя с JWT токенами
+
+    Реализовать безопасную систему аутентификации с использованием
+    JSON Web Tokens для управления сеансами без состояния.
+    Добавить конечные точки входа и регистрации с хешированием
+    паролей bcrypt.
+
+    ✓ Коммит успешно создан
+    ```
+  </Tab>
+</Tabs>
+
+## Analysis in Multiple Languages
+
+The `analyze` command also respects your language setting:
+
+<Tabs>
+  <Tab title="English Analysis">
+    ```bash
+    $ gw analyze
+    
+    Analyzing changes using openai (gpt-4o)...
+
+    ✓ Analysis complete:
+
+    ## Summary
+    Added JWT authentication system with user registration
+    and login endpoints.
+
+    ## Key Changes
+    - Authentication middleware using JWT tokens
+    - User model with bcrypt password hashing
+    - Login endpoint with token generation
+
+    ## Potential Issues
+    ⚠️  No rate limiting on authentication endpoints
+    ⚠️  Missing password strength validation
+
+    ## Recommendations
+    1. Add rate limiting to prevent brute force attacks
+    2. Implement password complexity requirements
+    ```
+  </Tab>
+
+  <Tab title="Spanish Analysis">
+    ```bash
+    $ gw analyze
+    
+    Analizando cambios usando openai (gpt-4o)...
+
+    ✓ Análisis completado:
+
+    ## Resumen
+    Se agregó sistema de autenticación JWT con endpoints de
+    registro e inicio de sesión de usuario.
+
+    ## Cambios Principales
+    - Middleware de autenticación usando tokens JWT
+    - Modelo de usuario con hash bcrypt de contraseñas
+    - Endpoint de inicio de sesión con generación de tokens
+
+    ## Problemas Potenciales
+    ⚠️  Sin limitación de tasa en endpoints de autenticación
+    ⚠️  Falta validación de fortaleza de contraseña
+
+    ## Recomendaciones
+    1. Agregar limitación de tasa para prevenir ataques de fuerza bruta
+    2. Implementar requisitos de complejidad de contraseña
+    ```
+  </Tab>
+
+  <Tab title="Japanese Analysis">
+    ```bash
+    $ gw analyze
+    
+    openai (gpt-4o)を使用して変更を分析中...
+
+    ✓ 分析完了:
+
+    ## 概要
+    ユーザー登録とログインエンドポイントを持つJWT認証
+    システムを追加しました。
+
+    ## 主な変更点
+    - JWTトークンを使用した認証ミドルウェア
+    - bcryptパスワードハッシュを使用したユーザーモデル
+    - トークン生成機能付きログインエンドポイント
+
+    ## 潜在的な問題
+    ⚠️  認証エンドポイントにレート制限がありません
+    ⚠️  パスワード強度検証が不足しています
+
+    ## 推奨事項
+    1. ブルートフォース攻撃を防ぐためレート制限を追加
+    2. パスワードの複雑性要件を実装
+    ```
+  </Tab>
+</Tabs>
+
+## Viewing Current Language
+
+Check your current language configuration:
+
+```bash
+gw show-config
+```
+
+Output:
+```bash
+╔════════════════════════════════════════════╗
+║        GitWhisper Configuration            ║
+╠════════════════════════════════════════════╣
+║ Language: Spanish (es)                     ║
+║ Default Model: openai                      ║
+║ Model Variant: gpt-4o                      ║
+║ Confirm Commits: Yes                       ║
+║ Allow Emojis: Yes                          ║
+╚════════════════════════════════════════════╝
+```
+
+## Code Implementation
+
+Languages are defined as an enum in `language.dart:9`:
+
+```dart
+enum Language {
+  english('English', 'en', 'US'),
+  spanish('Spanish', 'es', 'ES'),
+  french('French', 'fr', 'FR'),
+  german('German', 'de', 'DE'),
+  chineseSimplified('Chinese (simplified)', 'zh', 'CN'),
+  chineseTraditional('Chinese (traditional)', 'zh', 'TW'),
+  japanese('Japanese', 'ja', 'JP'),
+  korean('Korean', 'ko', 'KR'),
+  arabic('Arabic', 'ar', 'SA'),
+  italian('Italian', 'it', 'IT'),
+  portuguese('Portuguese', 'pt', 'PT'),
+  russian('Russian', 'ru', 'RU'),
+  dutch('Dutch', 'nl', 'NL'),
+  swedish('Swedish', 'sv', 'SE'),
+  norwegian('Norwegian', 'no', 'NO'),
+  danish('Danish', 'da', 'DK'),
+  finnish('Finnish', 'fi', 'FI'),
+  greek('Greek', 'el', 'GR'),
+  turkish('Turkish', 'tr', 'TR'),
+  hindi('Hindi', 'hi', 'IN'),
+  englishUS('English (US)', 'en', 'US'),
+  englishUK('English (UK)', 'en', 'GB'),
+  shona('Shona', 'sn', 'ZW'),
+  zulu('Zulu', 'zu', 'ZA');
+
+  const Language(this.name, this.code, this.countryCode);
+  final String name;
+  final String code;
+  final String countryCode;
+}
+```
+
+The language is passed to the AI model in the commit prompt:
+
+```dart
+// From commit_utils.dart
+String getCommitPrompt(
+  String diff,
+  Language language, {
+  String? prefix,
+  bool withEmoji = true,
+}) {
+  return '''
+Generate a git commit message in ${language.name} for the following diff:
+
+$diff
+
+Follow conventional commit format.
+${prefix != null ? 'Include prefix: $prefix' : ''}
+${withEmoji ? 'You may include relevant emojis.' : 'Do not include emojis.'}
+''';
+}
+```
+
+## Language Selection Command
+
+Implemented in `change_language_command.dart:29`:
+
+```dart
+@override
+Future<int> run() async {
+  final configManager = ConfigManager();
+  await configManager.load();
+
+  const languages = Language.values;
+
+  final Language language = _logger.chooseOne<Language>(
+    'Please select your preferred language for commit messages:',
+    choices: languages,
+    defaultValue: Language.english,
+    display: (language) => language.name,
+  );
+
+  configManager.setWhisperLanguage(language);
+  await configManager.save();
+
+  _logger.success(
+    '✨ Great! ${language.name} has been set as your default language for '
+    'Git commit messages.',
+  );
+  return ExitCode.success.code;
+}
+```
+
+## Use Cases
+
+<CardGroup cols={2}>
+  <Card title="International Teams" icon="globe">
+    Teams working across different regions can use their native language
+    for commit messages, improving clarity and communication.
+  </Card>
+  
+  <Card title="Non-English Speakers" icon="language">
+    Developers more comfortable in their native language can maintain
+    professional commit histories without translation struggles.
+  </Card>
+  
+  <Card title="Localized Projects" icon="map">
+    Projects targeting specific regions can maintain commit histories
+    in the target language for consistency.
+  </Card>
+  
+  <Card title="Educational Settings" icon="graduation-cap">
+    Students learning programming can use their native language to
+    better understand version control practices.
+  </Card>
+</CardGroup>
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Choose one language per repository" icon="check">
+    Maintain consistency by using the same language throughout a repository's
+    commit history. Mixed languages can be confusing for team members.
+
+    ```bash
+    # Set at repository level
+    cd my-project
+    gw change-language
+    > Spanish
+    ```
+  </Accordion>
+
+  <Accordion title="Document language choice in README" icon="book">
+    Make it clear which language is used for commits:
+
+    ```markdown
+    ## Contributing
+    
+    This project uses **Spanish** for commit messages. Please set
+    your GitWhisper language accordingly:
+    
+    ```bash
+    gw change-language
+    > Spanish
+    ```
+    ```
+  </Accordion>
+
+  <Accordion title="Consider international collaboration" icon="users">
+    For projects with international contributors, English might be the
+    most accessible choice:
+
+    ```bash
+    gw change-language
+    > English
+    ```
+  </Accordion>
+
+  <Accordion title="Use conventional commits in all languages" icon="git">
+    Conventional commit prefixes (feat, fix, etc.) remain in English
+    across all languages for tool compatibility:
+
+    ```bash
+    # Spanish commit
+    feat: agregar autenticación de usuario
+    
+    # Not: característica: agregar autenticación de usuario
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Translation Quality
+
+GitWhisper leverages advanced AI models for translation, ensuring:
+
+<Check>**Context-aware translations**</Check>
+The AI understands technical context and uses appropriate terminology.
+
+<Check>**Natural language output**</Check>
+Commit messages read naturally, not like machine translations.
+
+<Check>**Technical terminology**</Check>
+Programming terms and conventions are preserved correctly.
+
+<Check>**Cultural appropriateness**</Check>
+Phrasing follows conventions of the target language.
+
+<Note>
+Translation quality depends on the AI model used. Claude and GPT-4o generally
+provide the best results across all languages.
+</Note>
+
+## Adding New Languages
+
+Want support for a language not listed? GitWhisper is open source!
+
+<Steps>
+  <Step title="Open an issue">
+    Request a new language on the [GitWhisper GitHub repository](https://github.com/Ngonidzashe/gitwhisper).
+  </Step>
+
+  <Step title="Or contribute directly">
+    Add the language to `language.dart` and submit a pull request:
+
+    ```dart
+    enum Language {
+      // ... existing languages ...
+      vietnamese('Vietnamese', 'vi', 'VN'),
+    }
+    ```
+  </Step>
+</Steps>
+
+## Related Features
+
+<CardGroup cols={2}>
+  <Card title="Configuration" icon="gear" href="/configuration/defaults">
+    Set language and other default preferences
+  </Card>
+  
+  <Card title="AI Models" icon="brain" href="/features/ai-models">
+    Different models excel at different languages
+  </Card>
+  
+  <Card title="Code Analysis" icon="magnifying-glass" href="/features/code-analysis">
+    Get analysis output in your preferred language
+  </Card>
+</CardGroup>

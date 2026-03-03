@@ -1,0 +1,362 @@
+---
+title: Configuration Commands
+description: Manage GitWhisper settings, API keys, and default preferences
+---
+
+GitWhisper provides several commands to manage your configuration and preferences.
+
+## save-key
+
+Save API keys for different AI models to avoid entering them repeatedly.
+
+### Usage
+
+```bash
+gitwhisper save-key
+# or use the shorthand
+gw save-key
+```
+
+### Options
+
+<ParamField path="--model" type="string">
+  AI model to save the key for.
+  
+  **Allowed values:**
+  - `claude` - Anthropic Claude
+  - `openai` - OpenAI GPT models
+  - `gemini` - Google Gemini
+  - `grok` - xAI Grok
+  - `llama` - Meta Llama
+  - `deepseek` - DeepSeek, Inc.
+  - `github` - GitHub Models
+  - `ollama` - Ollama
+  
+  **Note:** `free` model doesn't require an API key
+  
+  **Shorthand:** `-m`
+</ParamField>
+
+<ParamField path="--key" type="string">
+  The API key to save. If not provided, you'll be prompted to enter it securely (hidden input).
+  
+  **Shorthand:** `-k`
+</ParamField>
+
+### Examples
+
+<CodeGroup>
+```bash Interactive mode
+gw save-key
+# Prompts:
+# 1. Select the AI model
+# 2. Enter API key (hidden)
+```
+
+```bash With arguments
+gw save-key --model openai --key sk-...
+```
+
+```bash For Ollama (optional)
+gw save-key --model ollama
+# Asks if you need to set a key (typically no)
+```
+</CodeGroup>
+
+### Terminal Output
+
+```bash
+$ gw save-key --model claude
+Enter the API key for claude: ********
+API key for claude saved successfully.
+```
+
+---
+
+## set-defaults
+
+Configure default settings for commits, including model selection, confirmation preferences, and behavior options.
+
+### Usage
+
+```bash
+gw set-defaults
+```
+
+### Options
+
+<ParamField path="--model" type="string">
+  Set the default AI model for all commits.
+  
+  **Allowed values:** `claude`, `openai`, `gemini`, `grok`, `llama`, `deepseek`, `github`, `ollama`, `free`
+  
+  **Shorthand:** `-m`
+</ParamField>
+
+<ParamField path="--model-variant" type="string">
+  Set the default model variant.
+  
+  **Examples:** `gpt-4o`, `claude-sonnet-4-20250514`, `gemini-2.0-flash`
+  
+  **Shorthand:** `-v`
+</ParamField>
+
+<ParamField path="--base-url" type="string" default="http://localhost:11434">
+  Base URL for Ollama server (Ollama only).
+  
+  **Shorthand:** `-u`
+</ParamField>
+
+<ParamField path="--confirm-commits" type="boolean" default="false">
+  Always confirm commit messages before applying. Enables interactive review workflow.
+</ParamField>
+
+<ParamField path="--no-confirm-commits" type="boolean" default="false">
+  Never confirm commit messages (auto-commit mode).
+  
+  **Note:** Cannot be used with `--confirm-commits`
+</ParamField>
+
+<ParamField path="--allow-emojis" type="boolean" default="true">
+  Include emojis in commit messages.
+  
+  Set to `--no-allow-emojis` to disable.
+</ParamField>
+
+<ParamField path="--max-diff-size" type="number" default="50000">
+  Maximum diff size (in characters) before switching to file-by-file processing.
+</ParamField>
+
+<ParamField path="--max-file-size" type="number" default="10">
+  Maximum file size (in MB) before warning about large files.
+</ParamField>
+
+### Examples
+
+<CodeGroup>
+```bash Interactive setup
+gw set-defaults
+# Prompts for model, variant, and preferences
+```
+
+```bash Set default model
+gw set-defaults --model claude
+```
+
+```bash Set model with variant
+gw set-defaults --model openai --model-variant gpt-4o
+```
+
+```bash Enable commit confirmation
+gw set-defaults --confirm-commits
+```
+
+```bash Disable emojis
+gw set-defaults --no-allow-emojis
+```
+
+```bash Configure Ollama
+gw set-defaults --model ollama --base-url http://localhost:11434
+```
+
+```bash Set diff size threshold
+gw set-defaults --max-diff-size 100000
+```
+
+```bash Complete configuration
+gw set-defaults \
+  --model claude \
+  --model-variant claude-sonnet-4-20250514 \
+  --confirm-commits \
+  --allow-emojis \
+  --max-diff-size 75000 \
+  --max-file-size 15
+```
+</CodeGroup>
+
+### Terminal Output
+
+```bash
+$ gw set-defaults --model claude --confirm-commits
+claude -> claude-sonnet-4-20250514 has been set as the default model for commits.
+Commit confirmation enabled. All commits will require confirmation.
+```
+
+---
+
+## show-defaults
+
+Display your current default settings.
+
+### Usage
+
+```bash
+gw show-defaults
+```
+
+### Terminal Output
+
+```bash
+$ gw show-defaults
+Current defaults:
+  Model: claude
+  Variant: claude-sonnet-4-20250514
+  Confirm commits: enabled
+  Allow emojis: enabled
+  Always add: disabled
+```
+
+---
+
+## clear-defaults
+
+Remove all saved default settings.
+
+### Usage
+
+```bash
+gw clear-defaults
+```
+
+### Terminal Output
+
+```bash
+$ gw clear-defaults
+All set defaults have been cleared 🍻
+```
+
+---
+
+## show-config
+
+Display your complete GitWhisper configuration file.
+
+### Usage
+
+```bash
+gw show-config
+```
+
+### Terminal Output
+
+```bash
+$ gw show-config
+Gitwhisper Configs:
+
+Api Keys:
+  Claude:
+    sk-ant-***
+  Openai:
+    sk-***
+
+Defaults:
+  Model:
+    claude
+  Variant:
+    claude-sonnet-4-20250514
+
+Settings:
+  Confirm Commits:
+    true
+  Allow Emojis:
+    true
+  Always Add:
+    false
+  Max Diff Size:
+    50000
+  Max File Size:
+    10485760
+```
+
+---
+
+## always-add
+
+Configure whether GitWhisper should automatically stage changes when no staged files are found.
+
+### Usage
+
+```bash
+gw always-add <true|false>
+```
+
+### Examples
+
+<CodeGroup>
+```bash Enable auto-staging
+gw always-add true
+```
+
+```bash Disable auto-staging
+gw always-add false
+```
+
+```bash Interactive mode
+gw always-add
+# Prompts: "Should GitWhisper automatically stage unstaged changes?"
+```
+</CodeGroup>
+
+### Terminal Output
+
+```bash
+$ gw always-add true
+If there are no staged changes GitWhisper will now try to stage first before making a commit!
+
+$ gw always-add false
+If there are no staged changes, GitWhisper will abort mission!
+```
+
+### Behavior
+
+**When enabled** (`true`):
+- If no files are staged, GitWhisper automatically runs `git add .`
+- Proceeds directly to commit generation
+- No prompts or confirmations
+
+**When disabled** (`false`):
+- If no files are staged, GitWhisper prompts you to stage them
+- You can choose to stage or cancel
+- More control over what gets committed
+
+---
+
+## Configuration File Location
+
+GitWhisper stores configuration in:
+- **Linux/macOS:** `~/.gitwhisper/config.yaml`
+- **Windows:** `%USERPROFILE%\.gitwhisper\config.yaml`
+
+API keys are stored securely in this file.
+
+## Best Practices
+
+1. **Save API Keys Once**
+   ```bash
+   gw save-key --model openai
+   ```
+   Avoid passing `--key` flag on every command.
+
+2. **Set Sensible Defaults**
+   ```bash
+   gw set-defaults --model claude --confirm-commits
+   ```
+   Configure your preferred model and enable confirmation for safety.
+
+3. **Use Environment Variables for CI/CD**
+   ```bash
+   export OPENAI_API_KEY="sk-..."
+   ```
+   Don't commit API keys to repositories.
+
+4. **Enable `always-add` for Solo Projects**
+   ```bash
+   gw always-add true
+   ```
+   Streamlines workflow when you trust your changes.
+
+5. **Review Configuration Periodically**
+   ```bash
+   gw show-config
+   ```
+   Ensure settings match your current workflow.

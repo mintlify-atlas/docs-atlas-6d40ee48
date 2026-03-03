@@ -1,0 +1,617 @@
+---
+title: AI-Powered Code Analysis
+description: Get comprehensive AI analysis of your code changes with insights on quality, potential issues, and improvements
+---
+
+GitWhisper's `analyze` command provides intelligent code review powered by AI. Get detailed insights about your changes, including what was modified, potential issues, and suggestions for improvements.
+
+## Quick Start
+
+Analyze your staged changes:
+
+```bash
+gw analyze
+```
+
+Analyze unstaged changes:
+
+```bash
+# Make changes without staging
+echo "console.log('debug');" >> app.js
+
+# Analyze will automatically check unstaged files if nothing is staged
+gw analyze
+```
+
+<Info>
+The `analyze` command automatically detects whether you have staged or unstaged changes and analyzes accordingly.
+</Info>
+
+## Basic Usage
+
+<Tabs>
+  <Tab title="Default Model">
+    Use your configured default model:
+
+    ```bash
+    gw analyze
+    ```
+
+    Output:
+    ```bash
+    Analyzing changes using openai (gpt-4o)...
+
+    ✓ Analysis complete:
+
+    ## Summary
+    Added JWT authentication system with user registration and login
+    endpoints. Implemented secure password hashing and token generation.
+
+    ## Key Changes
+    - New authentication middleware using JWT tokens
+    - User model with bcrypt password hashing
+    - Login endpoint with token generation
+    - Registration endpoint with validation
+
+    ## Potential Issues
+    ⚠️  No rate limiting on authentication endpoints
+    ⚠️  Missing password strength validation
+    ⚠️  Token expiration not configured
+
+    ## Recommendations
+    1. Add rate limiting to prevent brute force attacks
+    2. Implement password complexity requirements
+    3. Configure JWT token expiration (recommend 1h)
+    4. Add refresh token mechanism for better UX
+    ```
+  </Tab>
+  
+  <Tab title="Specific Model">
+    Use a specific AI model:
+
+    ```bash
+    gw analyze --model claude
+    ```
+
+    Claude often provides more detailed technical analysis:
+    ```bash
+    Analyzing changes using claude (claude-sonnet-4-5)...
+
+    ✓ Analysis complete:
+
+    ## Code Changes Overview
+    This commit introduces a JWT-based authentication system for your
+    application. The implementation follows industry best practices for
+    password storage but has several security considerations.
+
+    ## Technical Details
+
+    ### Authentication Flow
+    1. User registration:
+       - Password hashed with bcrypt (cost factor: 10)
+       - User record stored in database
+       - Returns 201 Created on success
+
+    2. User login:
+       - Credentials validated against stored hash
+       - JWT token generated with user ID payload
+       - Token returned in response body
+
+    ### Security Analysis
+    ✅ Strengths:
+    - Bcrypt used for password hashing (good choice)
+    - Passwords never stored in plain text
+    - JWT tokens for stateless authentication
+
+    ⚠️  Concerns:
+    - No rate limiting (vulnerable to brute force)
+    - Token expiration not set (tokens valid forever)
+    - No refresh token mechanism
+    - Password requirements not enforced
+    - Missing HTTPS enforcement check
+
+    ## Recommendations
+
+    1. **Critical:** Add rate limiting
+       ```javascript
+       const rateLimit = require('express-rate-limit');
+       const authLimiter = rateLimit({
+         windowMs: 15 * 60 * 1000,
+         max: 5
+       });
+       app.use('/auth', authLimiter);
+       ```
+
+    2. **Important:** Configure token expiration
+       ```javascript
+       const token = jwt.sign(
+         { userId: user.id },
+         secret,
+         { expiresIn: '1h' }
+       );
+       ```
+
+    3. **Recommended:** Add password validation
+       - Minimum 8 characters
+       - Mix of uppercase, lowercase, numbers
+       - At least one special character
+    ```
+  </Tab>
+  
+  <Tab title="With Variant">
+    Use a specific model variant:
+
+    ```bash
+    # Use GPT-4o mini for faster analysis
+    gw analyze --model openai --model-variant gpt-4o-mini
+
+    # Use Claude Opus for most detailed analysis
+    gw analyze --model claude --model-variant claude-opus-4-20250514
+    ```
+  </Tab>
+</Tabs>
+
+## Command Options
+
+```bash
+gw analyze [options]
+```
+
+### Available Flags
+
+<ParamField path="--model" type="string" default="configured default">
+  AI model to use for analysis
+
+  **Allowed values:** `claude`, `openai`, `gemini`, `grok`, `llama`, `deepseek`, `github`, `ollama`, `free`
+
+  ```bash
+  gw analyze --model claude
+  ```
+</ParamField>
+
+<ParamField path="--key" type="string" default="saved or env key">
+  API key for the selected model (optional if already configured)
+
+  ```bash
+  gw analyze --model openai --key sk-proj-...
+  ```
+</ParamField>
+
+<ParamField path="--model-variant" type="string" default="model default">
+  Specific variant of the AI model
+
+  ```bash
+  gw analyze --model openai --model-variant gpt-4o-mini
+  ```
+</ParamField>
+
+<ParamField path="-m" type="string">
+  Short form of `--model`
+
+  ```bash
+  gw analyze -m gemini
+  ```
+</ParamField>
+
+<ParamField path="-k" type="string">
+  Short form of `--key`
+
+  ```bash
+  gw analyze -m claude -k sk-ant-...
+  ```
+</ParamField>
+
+<ParamField path="-v" type="string">
+  Short form of `--model-variant`
+
+  ```bash
+  gw analyze -m openai -v gpt-4o
+  ```
+</ParamField>
+
+## Multi-Language Support
+
+Analysis output respects your configured language:
+
+```bash
+# Set language to Spanish
+gw change-language
+> Spanish
+
+# Analysis will be in Spanish
+gw analyze
+```
+
+```bash
+Analizando cambios usando openai (gpt-4o)...
+
+✓ Análisis completado:
+
+## Resumen
+Se agregó sistema de autenticación JWT con endpoints de registro
+e inicio de sesión. Se implementó hash seguro de contraseñas.
+
+## Cambios Principales
+- Middleware de autenticación usando tokens JWT
+- Modelo de usuario con hash bcrypt de contraseñas
+...
+```
+
+<Tip>
+GitWhisper supports 20+ languages. Change your language with `gw change-language`.
+</Tip>
+
+## Real-World Examples
+
+### Example 1: Performance Optimization
+
+```bash
+$ git add src/api/queries.js
+$ gw analyze --model claude
+
+Analyzing staged changes using claude (claude-sonnet-4-5)...
+
+✓ Analysis complete:
+
+## Performance Optimization Analysis
+
+### Changes Made
+Optimized database queries in the user dashboard endpoint:
+
+1. **Added Compound Index**
+   - Columns: `user_id`, `created_at`
+   - Impact: 92% query time reduction
+   - Before: 2,300ms → After: 180ms
+
+2. **Query Optimization**
+   - Replaced N+1 query pattern with single JOIN
+   - Reduced database round trips from 50+ to 1
+   - Added eager loading for related entities
+
+### Performance Impact
+- Response time: 2.5s → 200ms (92% faster)
+- Database load: -95%
+- Memory usage: Unchanged
+
+### Verification
+✅ Index created successfully
+✅ Query plan shows index usage
+✅ Load tested with 1000 concurrent users
+
+### Recommendations
+1. Monitor index size growth over time
+2. Consider adding cache layer for top 10% of users
+3. Set up query performance tracking
+```
+
+### Example 2: Bug Fix Analysis
+
+```bash
+$ git add src/payment/processor.js
+$ gw analyze
+
+Analyzing staged changes using openai (gpt-4o)...
+
+✓ Analysis complete:
+
+## Bug Fix: Race Condition in Payment Processing
+
+### Issue Identified
+Race condition when processing concurrent payments for the same user.
+Multiple payment requests could be processed simultaneously, leading
+to duplicate charges.
+
+### Solution Implemented
+1. **Database-Level Locking**
+   ```javascript
+   // Added FOR UPDATE lock
+   const user = await User.findByPk(userId, {
+     transaction,
+     lock: Transaction.LOCK.UPDATE
+   });
+   ```
+
+2. **Idempotency Key**
+   - Added unique constraint on payment_id
+   - Prevents duplicate payment records
+   - Returns existing payment if retry detected
+
+3. **Transaction Wrapping**
+   - Entire payment flow in single transaction
+   - Rollback on any failure
+   - Ensures data consistency
+
+### Testing
+✅ Added test case for concurrent payment attempts
+✅ Verified idempotency with duplicate requests
+✅ Confirmed proper error handling
+
+### Potential Concerns
+⚠️  Transaction locks could impact performance under high load
+    - Consider using optimistic locking for read-heavy workloads
+    - Monitor transaction wait times
+
+💡 Consider adding payment request queue for better scalability
+```
+
+### Example 3: Feature Addition Analysis
+
+```bash
+$ git add src/notifications/
+$ gw analyze --model claude
+
+Analyzing staged changes using claude (claude-sonnet-4-5)...
+
+✓ Analysis complete:
+
+## New Feature: Real-time Notifications System
+
+### Architecture Overview
+Implemented WebSocket-based real-time notification system with:
+- Server-Sent Events (SSE) fallback
+- Redis pub/sub for multi-server support
+- Notification persistence in PostgreSQL
+
+### Components Added
+
+1. **WebSocket Server** (`notifications/server.js`)
+   - Socket.io integration
+   - JWT authentication on connection
+   - Room-based subscriptions per user
+   - Automatic reconnection handling
+
+2. **Notification Service** (`notifications/service.js`)
+   - Create, read, mark-as-read operations
+   - Redis pub/sub for distribution
+   - Database persistence with TTL
+   - Type-based routing (email, push, in-app)
+
+3. **Client SDK** (`notifications/client.js`)
+   - Auto-reconnection with exponential backoff
+   - Offline queue for missed notifications
+   - React hooks for easy integration
+
+### Code Quality Assessment
+
+✅ **Strengths:**
+- Comprehensive error handling
+- Well-structured with clear separation of concerns
+- Good test coverage (85%)
+- Documentation included
+- TypeScript types defined
+
+⚠️  **Areas for Improvement:**
+1. **Scalability Concerns:**
+   - No connection limit set (could exhaust server resources)
+   - Missing rate limiting on notification creation
+   - Consider adding connection pooling
+
+2. **Security:**
+   - Missing CORS configuration for WebSocket endpoint
+   - No validation on notification payload size
+   - Consider adding message signing for integrity
+
+3. **Observability:**
+   - Missing metrics for connection count
+   - No alerting for Redis pub/sub failures
+   - Add distributed tracing
+
+### Recommendations
+
+1. **Immediate:**
+   ```javascript
+   // Add connection limits
+   const io = new Server(server, {
+     maxHttpBufferSize: 1e6,
+     pingTimeout: 60000,
+     connectionStateRecovery: {}
+   });
+   ```
+
+2. **Short-term:**
+   - Implement rate limiting (max 100 notifications/user/minute)
+   - Add monitoring dashboard
+   - Set up Redis cluster for HA
+
+3. **Long-term:**
+   - Consider moving to managed service (e.g., Pusher, Ably)
+   - Implement notification batching for high-volume users
+   - Add A/B testing framework for notification effectiveness
+```
+
+## Multi-Repository Analysis
+
+Analyze multiple repositories at once:
+
+```bash
+$ cd workspace/
+$ gw analyze
+
+Not a git repository. Checking subfolders for git repos...
+
+GitWhisper has discovered git repositories in subfolders, continue?
+> continue
+
+Analysis complete for 3 git repos.
+
+----------- frontend -----------
+
+✓ UI component refactoring:
+- Extracted reusable Button component
+- Added TypeScript prop types
+- Improved accessibility with ARIA labels
+
+⚠️  Missing unit tests for new component
+
+----------------------------------
+
+----------- backend -----------
+
+✓ API endpoint optimization:
+- Reduced response payload size by 60%
+- Added response compression
+- Implemented field filtering
+
+----------------------------------
+
+----------- mobile -----------
+
+✓ Offline support implementation:
+- Added local SQLite cache
+- Sync queue for pending requests
+- Conflict resolution strategy
+
+⚠️  No handling for large sync backlogs
+
+----------------------------------
+```
+
+## Analysis vs Commit
+
+<Tabs>
+  <Tab title="When to Analyze">
+    Use `gw analyze` when you:
+
+    <Check>**Want feedback before committing**</Check>
+    - Get suggestions for improvements
+    - Identify potential issues early
+    - Understand the impact of changes
+
+    <Check>**Need detailed review**</Check>
+    - Complex refactoring
+    - Security-sensitive changes
+    - Performance optimizations
+
+    <Check>**Learning or teaching**</Check>
+    - Understand code patterns
+    - Get best practice recommendations
+    - Educational code reviews
+  </Tab>
+  
+  <Tab title="Analyze vs Commit">
+    **Analysis** (`gw analyze`):
+    - Provides detailed insights and recommendations
+    - Analyzes code quality and potential issues
+    - No changes made to repository
+    - Can suggest improvements
+
+    **Commit** (`gw commit`):
+    - Generates and applies commit message
+    - Creates actual git commit
+    - Focuses on describing changes concisely
+    - Modifies repository history
+
+    <Tip>
+    Use both together:
+    ```bash
+    gw analyze  # Review changes first
+    gw commit   # Then commit
+    ```
+    </Tip>
+  </Tab>
+</Tabs>
+
+## Code Implementation
+
+The analyze command is implemented in `analyze_command.dart:74`:
+
+```dart
+@override
+Future<int> run() async {
+  final configManager = ConfigManager();
+  await configManager.load();
+
+  // Get the language to use for analysis
+  final language = configManager.getWhisperLanguage();
+
+  // Check if we're in a git repository
+  if (!await GitUtils.isGitRepository()) {
+    // Check subfolders for git repos
+    subGitRepos = await GitUtils.findGitReposInSubfolders();
+  }
+
+  // Get staged or unstaged diff
+  late final String diff;
+  if (await GitUtils.hasStagedChanges()) {
+    diff = await GitUtils.getStagedDiff();
+  } else {
+    diff = await GitUtils.getUnstagedDiff();
+  }
+
+  // Generate analysis with AI
+  final analysis = await generator.analyzeChanges(diff, language);
+  
+  _logger.success(analysis);
+  return ExitCode.success.code;
+}
+```
+
+The analysis prompt is generated in `commit_utils.dart`:
+
+```dart
+String getAnalysisPrompt(String diff, Language language) {
+  return '''
+Analyze the following code changes and provide insights:
+
+1. Summary of changes
+2. Key modifications
+3. Potential issues or concerns
+4. Recommendations for improvements
+5. Security considerations (if applicable)
+6. Performance impact (if applicable)
+
+Provide the analysis in ${language.name}.
+
+$diff
+''';
+}
+```
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Analyze Before Committing" icon="magnifying-glass">
+    Use `gw analyze` to review changes before creating commits.
+  </Card>
+  
+  <Card title="Use Appropriate Models" icon="brain">
+    Claude and GPT-4o provide the most detailed analysis.
+  </Card>
+  
+  <Card title="Act on Recommendations" icon="list-check">
+    Take AI suggestions seriously - they often catch real issues.
+  </Card>
+  
+  <Card title="Combine with Code Review" icon="users">
+    AI analysis complements, doesn't replace, human code review.
+  </Card>
+</CardGroup>
+
+## Limitations
+
+<Warning>
+AI analysis has limitations:
+- May miss context-specific issues
+- Suggestions aren't always applicable
+- No understanding of business logic
+- Cannot test code execution
+- Limited by diff size (max 8,000 tokens)
+</Warning>
+
+Always use professional judgment when applying AI recommendations.
+
+## Related Features
+
+<CardGroup cols={2}>
+  <Card title="AI Models" icon="robot" href="/features/ai-models">
+    Learn about different models for analysis
+  </Card>
+  
+  <Card title="Commit Messages" icon="message" href="/features/interactive-confirmation">
+    Generate commit messages after analysis
+  </Card>
+  
+  <Card title="Multi-Language" icon="globe" href="/features/multi-language">
+    Get analysis in your preferred language
+  </Card>
+</CardGroup>

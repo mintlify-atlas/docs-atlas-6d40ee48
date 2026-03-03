@@ -1,0 +1,482 @@
+---
+title: Language Settings
+description: Configure language preferences for commit messages and code analysis in GitWhisper
+---
+
+GitWhisper supports multiple languages for commit messages and code analysis. By default, all messages are generated in English, but you can configure your preferred language to match your team's or project's requirements.
+
+## Changing Language
+
+Use the `change-language` command to set your preferred language:
+
+```bash
+gw change-language
+```
+
+This will launch an interactive selector:
+
+```bash
+$ gw change-language
+? Please select your preferred language for commit messages:
+  English
+  Spanish
+  French
+  German
+  Chinese (simplified)
+  Japanese
+  Korean
+  ...
+
+✨ Great! Spanish has been set as your default language for Git commit messages.
+```
+
+## Supported Languages
+
+GitWhisper supports the following languages:
+
+<CardGroup cols={3}>
+  <Card title="English" icon="flag-usa">
+    - English (US)
+    - English (UK)
+  </Card>
+  <Card title="European" icon="flag">
+    - Spanish
+    - French
+    - German
+    - Italian
+    - Portuguese
+    - Russian
+    - Dutch
+    - Swedish
+    - Norwegian
+    - Danish
+    - Finnish
+    - Greek
+  </Card>
+  <Card title="Asian" icon="globe">
+    - Chinese (Simplified)
+    - Chinese (Traditional)
+    - Japanese
+    - Korean
+    - Hindi
+  </Card>
+  <Card title="Middle Eastern" icon="flag">
+    - Arabic
+    - Turkish
+  </Card>
+  <Card title="African" icon="flag">
+    - Shona
+    - Zulu
+  </Card>
+</CardGroup>
+
+## Language Configuration
+
+The language setting is stored in your configuration file (`~/.git_whisper.yaml`):
+
+```yaml
+language: es;ES  # Spanish (Spain)
+```
+
+The format is `language_code;country_code`:
+- `en;US` - English (United States)
+- `en;GB` - English (United Kingdom)
+- `es;ES` - Spanish (Spain)
+- `fr;FR` - French (France)
+- `de;DE` - German (Germany)
+- `zh;CN` - Chinese (Simplified, China)
+- `zh;TW` - Chinese (Traditional, Taiwan)
+- `ja;JP` - Japanese (Japan)
+- `ko;KR` - Korean (Korea)
+- `ar;SA` - Arabic (Saudi Arabia)
+- `sn;ZW` - Shona (Zimbabwe)
+- `zu;ZA` - Zulu (South Africa)
+
+## Commit Message Examples
+
+Here's how commit messages appear in different languages:
+
+<CodeGroup>
+
+```text English
+✨ feat: Add user authentication system
+
+Implement JWT-based authentication with login, logout, and token refresh endpoints.
+Includes middleware for protected routes and session management.
+```
+
+```text Spanish
+✨ feat: Agregar sistema de autenticación de usuarios
+
+Implementar autenticación basada en JWT con endpoints de inicio de sesión,
+cierre de sesión y actualización de tokens. Incluye middleware para rutas
+protegidas y gestión de sesiones.
+```
+
+```text French
+✨ feat: Ajouter un système d'authentification utilisateur
+
+Mettre en œuvre une authentification basée sur JWT avec des points de terminaison
+de connexion, de déconnexion et de rafraîchissement de jeton. Comprend un
+middleware pour les routes protégées et la gestion des sessions.
+```
+
+```text German
+✨ feat: Benutzerauthentifizierungssystem hinzufügen
+
+Implementierung einer JWT-basierten Authentifizierung mit Endpunkten für Anmeldung,
+Abmeldung und Token-Aktualisierung. Enthält Middleware für geschützte Routen und
+Sitzungsverwaltung.
+```
+
+```text Japanese
+✨ feat: ユーザー認証システムを追加
+
+ログイン、ログアウト、トークンリフレッシュエンドポイントを備えた
+JWTベースの認証を実装。保護されたルートとセッション管理のための
+ミドルウェアが含まれます。
+```
+
+```text Chinese (Simplified)
+✨ feat: 添加用户认证系统
+
+实现基于JWT的身份验证,包括登录、登出和令牌刷新端点。
+包含用于受保护路由和会话管理的中间件。
+```
+
+</CodeGroup>
+
+## Conventional Commit Prefixes
+
+GitWhisper follows the [Conventional Commits](https://www.conventionalcommits.org/) specification. The prefixes remain in English for compatibility with tools and parsers:
+
+- `feat:` - New feature
+- `fix:` - Bug fix
+- `docs:` - Documentation changes
+- `style:` - Code style changes (formatting, etc.)
+- `refactor:` - Code refactoring
+- `test:` - Adding or updating tests
+- `chore:` - Maintenance tasks
+- `perf:` - Performance improvements
+- `ci:` - CI/CD changes
+- `build:` - Build system changes
+
+<Info>
+While the commit type prefixes remain in English, the commit message description and body will be in your configured language.
+</Info>
+
+## How It Works
+
+When you generate a commit message:
+
+1. GitWhisper analyzes your staged changes
+2. Sends the changes to the AI model with your language preference
+3. The AI generates a commit message in your specified language
+4. Conventional commit prefixes remain in English
+5. The description and body are in your configured language
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Choosing a language for your team">
+    **Consider your team's composition:**
+    
+    - **International teams:** Use English as the common language
+    - **Regional teams:** Use the local language for better communication
+    - **Open source projects:** English is recommended for wider accessibility
+    - **Private projects:** Use whatever language your team is most comfortable with
+    
+    **Document your decision:**
+    ```markdown
+    ## Commit Message Language
+    
+    This project uses Spanish for commit messages. All team members should configure:
+    ```bash
+    gw change-language
+    # Select: Spanish
+    ```
+    ```
+  </Accordion>
+
+  <Accordion title="Maintaining consistency">
+    **All team members should use the same language:**
+    
+    1. **Add to your team's onboarding docs:**
+       ```markdown
+       ### GitWhisper Configuration
+       
+       Set your language preference to match the team:
+       ```bash
+       gw change-language
+       # Select: French
+       ```
+       ```
+    
+    2. **Include in your CONTRIBUTING.md:**
+       ```markdown
+       ### Commit Messages
+       
+       We use GitWhisper to generate commit messages in German.
+       Please configure your GitWhisper installation accordingly.
+       ```
+    
+    3. **Use code review to enforce:**
+       - Check that commit messages are in the agreed language
+       - Request changes if messages are in a different language
+  </Accordion>
+
+  <Accordion title="Multilingual projects">
+    **For projects with international contributors:**
+    
+    - Stick with English for maximum compatibility
+    - Document this requirement clearly in your README
+    - Consider that tools and CI/CD systems may expect English
+    
+    **However, if your project serves a specific region:**
+    ```yaml
+    # Example: A Spanish government project
+    language: es;ES
+    
+    # Example: A Japanese company's internal tool
+    language: ja;JP
+    ```
+  </Accordion>
+
+  <Accordion title="Impact on commit history searchability">
+    **Consider how language affects searching:**
+    
+    **English commits:**
+    ```bash
+    git log --grep="authentication"
+    git log --grep="fix.*memory leak"
+    ```
+    
+    **Spanish commits:**
+    ```bash
+    git log --grep="autenticación"
+    git log --grep="fix.*fuga de memoria"
+    ```
+    
+    **Tips:**
+    - Document common search terms in your project wiki
+    - Consider creating aliases for frequently searched terms
+    - Use issue/ticket numbers in commits for language-agnostic searching:
+      ```
+      feat: Agregar autenticación de usuarios (#123)
+      ```
+  </Accordion>
+
+  <Accordion title="CI/CD and tooling compatibility">
+    **Most CI/CD tools expect English:**
+    
+    - Semantic release tools often parse English keywords
+    - Changelog generators may not understand non-English messages
+    - Some git hooks might validate against English patterns
+    
+    **If using non-English:**
+    - Verify your tooling supports it
+    - You may need to customize parsers and validators
+    - Consider using English for automated commits (CI/CD) and your language for manual commits
+    
+    **Example workflow:**
+    ```bash
+    # Manual commits: Spanish
+    gw commit  # Uses language: es;ES
+    
+    # Automated commits: English
+    git commit -m "chore(deps): Update dependencies"  # CI/CD system
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Viewing Current Language
+
+Check your current language configuration:
+
+```bash
+gw show-config
+```
+
+Output:
+```
+Gitwhisper Configs:
+
+Language:
+  es;ES
+
+Defaults:
+  model:
+    openai
+  variant:
+    gpt-4o
+```
+
+## Configuration File
+
+The language setting is part of your `~/.git_whisper.yaml`:
+
+```yaml
+language: es;ES
+
+api_keys:
+  openai: sk-xxx
+
+defaults:
+  model: openai
+  variant: gpt-4o
+
+confirm_commits: true
+allow_emojis: true
+```
+
+## Changing Language Manually
+
+While the `change-language` command is recommended, you can manually edit the configuration file:
+
+```yaml
+# ~/.git_whisper.yaml
+language: ja;JP  # Change to Japanese
+```
+
+Restart GitWhisper after manual changes:
+
+```bash
+gw commit  # Will now use Japanese
+```
+
+## Language-Specific Features
+
+### Date Formats
+
+Dates in commit messages follow regional formats:
+
+- **en;US**: 12/31/2025 (MM/DD/YYYY)
+- **en;GB**: 31/12/2025 (DD/MM/YYYY)
+- **ja;JP**: 2025年12月31日
+- **zh;CN**: 2025-12-31
+
+### Number Formats
+
+Numbers may be formatted according to regional conventions:
+
+- **en;US**: 1,000.50
+- **de;DE**: 1.000,50
+- **fr;FR**: 1 000,50
+
+## Fallback Behavior
+
+If the language is not set or invalid:
+
+1. GitWhisper defaults to `en;US` (English, United States)
+2. A message is logged: "Using default language: English"
+3. No error is thrown - the commit proceeds with English messages
+
+## Code Analysis Language
+
+The language setting also affects code analysis output:
+
+```bash
+# Analyze code in Spanish
+gw analyze
+```
+
+Output:
+```
+📊 Análisis del Código
+
+📈 Resumen:
+  - Archivos modificados: 5
+  - Líneas agregadas: 120
+  - Líneas eliminadas: 45
+
+💡 Observaciones:
+  - La función de autenticación necesita mejor manejo de errores
+  - Considere agregar pruebas unitarias para los nuevos endpoints
+  - La complejidad del módulo de base de datos está aumentando
+```
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Language not changing">
+    1. Verify the configuration was saved:
+       ```bash
+       gw show-config
+       ```
+    2. Check file permissions on `~/.git_whisper.yaml`
+    3. Try running `change-language` again
+    4. Restart your terminal session
+  </Accordion>
+
+  <Accordion title="Mixed language commits in history">
+    If your commit history has mixed languages:
+    
+    - This is normal when changing language settings
+    - Old commits retain their original language
+    - New commits will use the new language
+    - To standardize, you would need to rewrite history (not recommended)
+  </Accordion>
+
+  <Accordion title="AI generates wrong language">
+    If the AI generates commits in a different language:
+    
+    1. Verify your language configuration:
+       ```bash
+       gw show-config
+       ```
+    2. Check that the format is correct: `language_code;country_code`
+    3. Some AI models might occasionally slip into another language - regenerate:
+       ```bash
+       gw commit --regenerate
+       ```
+    4. Try a different model that has better multilingual support
+  </Accordion>
+
+  <Accordion title="Special characters not displaying">
+    If you see garbled text or boxes instead of characters:
+    
+    1. Ensure your terminal supports UTF-8:
+       ```bash
+       echo $LANG
+       # Should show something like: en_US.UTF-8
+       ```
+    2. On Windows, use Windows Terminal or a UTF-8 compatible terminal
+    3. Configure your git to use UTF-8:
+       ```bash
+       git config --global core.quotepath false
+       git config --global i18n.commitencoding utf-8
+       git config --global i18n.logoutputencoding utf-8
+       ```
+  </Accordion>
+</AccordionGroup>
+
+## Regional Variants
+
+Some languages have regional variants:
+
+### English
+- `en;US` - American English (color, analyze)
+- `en;GB` - British English (colour, analyse)
+
+### Chinese
+- `zh;CN` - Simplified Chinese (简体中文)
+- `zh;TW` - Traditional Chinese (繁體中文)
+
+Choose the variant that matches your region or preference.
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="API Keys" icon="key" href="/configuration/api-keys">
+    Learn how to manage API keys for different providers
+  </Card>
+  <Card title="Default Settings" icon="sliders" href="/configuration/defaults">
+    Configure default model and behavior preferences
+  </Card>
+  <Card title="Usage Guide" icon="book" href="/usage/basic-usage">
+    Start using GitWhisper with your configured language
+  </Card>
+  <Card title="Advanced Features" icon="wand-magic-sparkles" href="/usage/advanced-features">
+    Explore advanced language-specific features
+  </Card>
+</CardGroup>

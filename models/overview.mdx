@@ -1,0 +1,177 @@
+---
+title: 'AI Model Support'
+description: 'Overview of supported AI models and how to choose the right one for your workflow'
+icon: 'brain-circuit'
+---
+
+GitWhisper supports multiple AI model providers, giving you flexibility to choose the model that best fits your needs, budget, and infrastructure.
+
+## Supported Providers
+
+GitWhisper integrates with leading AI providers and offers both cloud-based and self-hosted options:
+
+<CardGroup cols={2}>
+
+<Card title="OpenAI" icon="openai" href="/models/openai">
+  Industry-leading models including GPT-4o, GPT-5, and o-series reasoning models
+</Card>
+
+<Card title="Claude" icon="message-bot" href="/models/claude">
+  Anthropic's powerful Claude models, including Opus 4 and Sonnet 4.5
+</Card>
+
+<Card title="Gemini" icon="google" href="/models/gemini">
+  Google's advanced Gemini 2.5 with thinking modes and large context windows
+</Card>
+
+<Card title="Ollama" icon="server" href="/models/ollama">
+  Self-hosted open-source models for complete privacy and control
+</Card>
+
+<Card title="Free Model" icon="gift" href="/models/free-model">
+  No API key required - powered by LLM7.io
+</Card>
+
+<Card title="GitHub Models" icon="github" href="/models/github">
+  Free access to premium models with your GitHub account
+</Card>
+
+</CardGroup>
+
+## Choosing a Model
+
+### For Best Quality
+
+If you want the highest quality commit messages and code analysis:
+
+- **OpenAI GPT-4o** or **GPT-5** - Best overall performance and reasoning
+- **Claude Opus 4** - Excellent for understanding complex code changes
+- **Gemini 2.5 Pro** - Advanced reasoning with thinking mode
+
+### For Speed and Cost
+
+If you prioritize fast responses and lower costs:
+
+- **OpenAI GPT-4o-mini** - Fast and cost-effective
+- **Claude Sonnet** - Good balance of speed and quality
+- **Gemini 2.5 Flash** - Efficient with low latency
+
+### For Privacy
+
+If you need to keep your code completely private:
+
+- **Ollama** - Run models locally on your own hardware
+- No data leaves your machine
+- Supports llama3, codellama, mistral, and more
+
+### For Free Usage
+
+If you want to try GitWhisper without API keys:
+
+- **Free Model** - Powered by LLM7.io, no signup required
+- **GitHub Models** - Free tier with GitHub PAT (rate limited)
+
+<Note>
+  **Rate limits apply**: Free and GitHub models have usage limits. For production use, consider a paid API provider.
+</Note>
+
+## Setting Your Default Model
+
+Set a default model to avoid specifying it with each command:
+
+```bash
+# Set default model
+gitwhisper set-defaults --model openai
+
+# Set default model with specific variant
+gitwhisper set-defaults --model claude --model-variant claude-opus-4-20250514
+
+# View current defaults
+gitwhisper show-defaults
+```
+
+## Using Different Models
+
+You can switch models for any commit:
+
+```bash
+# Use OpenAI
+gitwhisper commit --model openai
+
+# Use Claude with specific variant
+gitwhisper commit --model claude --model-variant claude-opus-4-20250514
+
+# Use free model
+gitwhisper commit --model free
+```
+
+## Model Variants
+
+Each provider offers multiple model variants with different capabilities:
+
+- **Default variants** are used when no variant is specified
+- **Latest models** offer the newest features and improvements
+- **Mini/Fast variants** provide faster, more economical options
+- **Specialized variants** like reasoning models for complex analysis
+
+See the [Model Variants](/models/variants) page for a complete list.
+
+## API Key Management
+
+Most models require an API key. GitWhisper provides multiple ways to configure keys:
+
+<Tabs>
+  <Tab title="Save Key">
+    Store your API key permanently:
+    ```bash
+    gitwhisper save-key --model openai --key "your-api-key"
+    ```
+  </Tab>
+  <Tab title="Environment Variable">
+    Set environment variables:
+    ```bash
+    export OPENAI_API_KEY="your-api-key"
+    export ANTHROPIC_API_KEY="your-claude-key"
+    ```
+  </Tab>
+  <Tab title="Command Line">
+    Pass key directly (not recommended for security):
+    ```bash
+    gitwhisper commit --model openai --key "your-api-key"
+    ```
+  </Tab>
+</Tabs>
+
+Learn more about API key configuration in the [Configuration Guide](/configuration/api-keys).
+
+## Custom Endpoints
+
+For Ollama and other self-hosted solutions, you can configure custom base URLs:
+
+```bash
+gitwhisper set-defaults --model ollama --model-variant llama3 --base-url http://localhost:11434
+```
+
+See [Custom Endpoints](/models/custom-endpoints) for more details.
+
+## Next Steps
+
+<CardGroup cols={2}>
+
+<Card title="View All Variants" icon="list" href="/models/variants">
+  Complete list of available model variants
+</Card>
+
+<Card title="API Keys Setup" icon="key" href="/configuration/api-keys">
+  Configure your API keys securely
+</Card>
+
+<Card title="OpenAI Models" icon="openai" href="/models/openai">
+  Learn about OpenAI model options
+</Card>
+
+<Card title="Claude Models" icon="message-bot" href="/models/claude">
+  Explore Claude model capabilities
+</Card>
+
+</CardGroup>

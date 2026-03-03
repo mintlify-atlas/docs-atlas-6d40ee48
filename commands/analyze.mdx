@@ -1,0 +1,191 @@
+---
+title: Analyze Command
+description: Generate detailed analysis of code changes without creating a commit
+---
+
+The `analyze` command provides AI-powered insights about your code changes without creating a commit. Use it to understand the impact and nature of your modifications before committing.
+
+## Basic Usage
+
+```bash
+gitwhisper analyze
+# or use the shorthand
+gw analyze
+```
+
+The command will:
+1. Check for staged changes (falls back to unstaged if none are staged)
+2. Analyze the diff using AI
+3. Display a detailed analysis of the changes
+
+## Command Options
+
+<ParamField path="--model" type="string" default="openai">
+  AI model to use for analysis.
+  
+  **Allowed values:**
+  - `claude` - Anthropic Claude
+  - `openai` - OpenAI GPT models
+  - `gemini` - Google Gemini
+  - `grok` - xAI Grok
+  - `llama` - Meta Llama
+  - `deepseek` - DeepSeek, Inc.
+  - `github` - GitHub Models
+  - `ollama` - Ollama (local models)
+  - `free` - Free tier via LLM7.io (no API key required)
+  
+  **Shorthand:** `-m`
+</ParamField>
+
+<ParamField path="--key" type="string">
+  API key for the selected model. If not provided, GitWhisper will use:
+  1. Saved configuration (via `gw save-key`)
+  2. Environment variables
+  
+  Not required for `ollama` and `free` models.
+  
+  **Shorthand:** `-k`
+</ParamField>
+
+<ParamField path="--model-variant" type="string">
+  Specific variant of the AI model to use.
+  
+  **Examples:**
+  - `gpt-4o` (OpenAI)
+  - `claude-sonnet-4-20250514` (Claude)
+  - `gemini-2.0-flash` (Gemini)
+  
+  See [list-variants](/commands/models#list-variants) for all available variants.
+  
+  **Shorthand:** `-v`
+</ParamField>
+
+## Usage Examples
+
+<CodeGroup>
+```bash Basic analysis
+gw analyze
+```
+
+```bash With specific model
+gw analyze --model claude
+```
+
+```bash With model variant
+gw analyze --model gemini --model-variant gemini-2.5-pro
+```
+
+```bash Using free tier
+gw analyze --model free
+```
+
+```bash With custom API key
+gw analyze --model openai --key sk-...
+```
+</CodeGroup>
+
+## Terminal Output Example
+
+```bash
+$ gw analyze
+Checking staged files for changes.
+Analyzing changes using openai (gpt-4o)...
+
+This changeset introduces a new user authentication system with the following key components:
+
+**Security Enhancements:**
+- JWT-based token authentication
+- Bcrypt password hashing (cost factor: 12)
+- Refresh token mechanism with 7-day expiration
+
+**New Endpoints:**
+- POST /auth/login - User authentication
+- POST /auth/logout - Session termination
+- POST /auth/refresh - Token renewal
+
+**Database Changes:**
+- New 'sessions' table for token management
+- Added 'last_login' column to users table
+
+**Potential Concerns:**
+- Consider adding rate limiting to login endpoint
+- Token storage in localStorage may need HttpOnly cookie alternative
+- Missing password complexity requirements
+
+**Testing Coverage:**
+- Unit tests added for authentication flow
+- Integration tests for all new endpoints
+- Missing edge cases: expired tokens, concurrent sessions
+```
+
+## When to Use Analyze
+
+### Code Review Preparation
+
+Before creating a pull request, use `analyze` to:
+- Understand the full scope of your changes
+- Identify potential issues or improvements
+- Prepare better PR descriptions
+
+### Learning and Understanding
+
+When working with unfamiliar code:
+- Analyze changes made by others
+- Understand the impact of refactoring
+- Learn about architectural decisions
+
+### Pre-Commit Validation
+
+Before committing:
+- Verify changes align with intended goals
+- Catch unintended modifications
+- Ensure nothing important was missed
+
+### Multi-Repository Analysis
+
+If run from a parent directory containing multiple git repositories, GitWhisper will:
+1. Detect all subdirectories with changes (staged or unstaged)
+2. Generate individual analyses for each repository
+3. Display results grouped by repository name
+
+## Staged vs Unstaged Changes
+
+**Staged changes** (default priority):
+```bash
+git add file.js
+gw analyze  # Analyzes staged changes
+```
+
+**Unstaged changes** (fallback):
+```bash
+# No files staged
+gw analyze  # Analyzes unstaged changes
+```
+
+## Analysis Language
+
+By default, analysis is generated in English. You can change the language using:
+```bash
+gw change-language
+```
+
+The language setting applies to both `commit` and `analyze` commands.
+
+## Environment Variables
+
+API keys can be provided via environment variables:
+
+```bash
+export OPENAI_API_KEY="sk-..."
+export ANTHROPIC_API_KEY="sk-ant-..."
+export GEMINI_API_KEY="..."
+export GROK_API_KEY="..."
+export LLAMA_API_KEY="..."
+export DEEPSEEK_API_KEY="..."
+```
+
+## Related Commands
+
+- [commit](/commands/commit) - Generate commit messages from changes
+- [set-defaults](/commands/configuration#set-defaults) - Configure default model
+- [list-models](/commands/models#list-models) - View available AI models

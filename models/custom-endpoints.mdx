@@ -1,0 +1,538 @@
+---
+title: 'Custom Endpoints'
+description: 'Configure custom base URLs for Ollama and other self-hosted AI providers'
+icon: 'plug'
+---
+
+GitWhisper allows you to configure custom API endpoints, making it possible to use self-hosted models, proxy servers, or alternative API implementations.
+
+## Overview
+
+Custom endpoints are useful for:
+
+<CardGroup cols={2}>
+
+<Card title="Self-Hosted Ollama" icon="server">
+  Run Ollama on custom ports or remote servers
+</Card>
+
+<Card title="Corporate Proxies" icon="shield">
+  Route API calls through company infrastructure
+</Card>
+
+<Card title="API Gateways" icon="network-wired">
+  Use centralized API management systems
+</Card>
+
+<Card title="Development Testing" icon="flask">
+  Test against local mock servers or staging environments
+</Card>
+
+</CardGroup>
+
+## Ollama Custom Endpoints
+
+The most common use case is configuring Ollama with custom base URLs.
+
+### Default Ollama Configuration
+
+By default, GitWhisper expects Ollama at:
+
+```
+http://localhost:11434
+```
+
+### Custom Port
+
+If Ollama is running on a different port:
+
+```bash
+# Use custom port
+gitwhisper commit --model ollama --base-url http://localhost:8080
+
+# Set as default
+gitwhisper set-defaults --model ollama --base-url http://localhost:8080
+```
+
+### Remote Ollama Server
+
+Access Ollama running on another machine:
+
+```bash
+# Use remote Ollama server
+gitwhisper commit --model ollama --base-url http://192.168.1.100:11434
+
+# Or use hostname
+gitwhisper commit --model ollama --base-url http://ollama-server.local:11434
+
+# Set as default
+gitwhisper set-defaults --model ollama --base-url http://ollama-server.local:11434
+```
+
+### Docker Ollama
+
+If Ollama is in a Docker container with port mapping:
+
+```bash
+# Docker with custom port mapping
+docker run -d -p 8080:11434 ollama/ollama
+
+# Configure GitWhisper
+gitwhisper set-defaults --model ollama --base-url http://localhost:8080
+```
+
+## Setting Custom Endpoints
+
+### Command Line Usage
+
+Use `--base-url` flag for one-time usage:
+
+```bash
+# Commit with custom endpoint
+gitwhisper commit --model ollama --base-url http://custom-host:11434
+
+# Analyze with custom endpoint
+gitwhisper analyze --model ollama --base-url http://custom-host:11434
+```
+
+### Set as Default
+
+Save custom endpoint as default:
+
+```bash
+# Set default base URL for Ollama
+gitwhisper set-defaults --model ollama --base-url http://localhost:8080
+
+# Include model variant
+gitwhisper set-defaults --model ollama --model-variant codellama --base-url http://localhost:8080
+
+# View current configuration
+gitwhisper show-defaults
+```
+
+### Configuration File
+
+Custom endpoints are stored in `~/.git_whisper.yaml`:
+
+```yaml
+defaults:
+  model: ollama
+  model_variant: codellama
+  base_url: http://localhost:8080
+```
+
+## Advanced Configurations
+
+### HTTPS Endpoints
+
+Use HTTPS for secure connections:
+
+```bash
+# HTTPS endpoint
+gitwhisper set-defaults --model ollama --base-url https://ollama.company.com:443
+```
+
+### URL with Paths
+
+If your API is behind a reverse proxy with a path:
+
+```bash
+# Endpoint with path
+gitwhisper set-defaults --model ollama --base-url http://api.company.com/ai/ollama
+```
+
+### Multiple Ollama Instances
+
+Switch between different Ollama servers:
+
+```bash
+# Development server
+gitwhisper commit --model ollama --base-url http://dev-ollama:11434
+
+# Production server
+gitwhisper commit --model ollama --base-url http://prod-ollama:11434
+
+# Local instance
+gitwhisper commit --model ollama --base-url http://localhost:11434
+```
+
+## Network Configuration
+
+### Firewall Rules
+
+Ensure your firewall allows connections:
+
+<Tabs>
+  <Tab title="Linux (iptables)">
+    ```bash
+    # Allow incoming connections on Ollama port
+    sudo iptables -A INPUT -p tcp --dport 11434 -j ACCEPT
+    
+    # Save rules
+    sudo iptables-save
+    ```
+  </Tab>
+  <Tab title="Linux (ufw)">
+    ```bash
+    # Allow Ollama port
+    sudo ufw allow 11434/tcp
+    
+    # Check status
+    sudo ufw status
+    ```
+  </Tab>
+  <Tab title="macOS">
+    ```bash
+    # macOS firewall settings
+    # Go to System Preferences > Security & Privacy > Firewall
+    # Add Ollama to allowed apps
+    ```
+  </Tab>
+</Tabs>
+
+### Network Binding
+
+Configure Ollama to accept remote connections:
+
+```bash
+# Start Ollama with specific bind address
+OLLAMA_HOST=0.0.0.0:11434 ollama serve
+
+# Or use environment variable
+export OLLAMA_HOST=0.0.0.0:11434
+ollama serve
+```
+
+<Warning>
+  Binding to `0.0.0.0` exposes Ollama to all network interfaces. Use firewall rules to restrict access in production.
+</Warning>
+
+## Docker Compose Setup
+
+### Complete Docker Configuration
+
+```yaml
+# docker-compose.yml
+version: '3.8'
+
+services:
+  ollama:
+    image: ollama/ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0:11434
+    restart: unless-stopped
+
+volumes:
+  ollama_data:
+```
+
+Start and configure:
+
+```bash
+# Start Ollama in Docker
+docker-compose up -d
+
+# Pull a model
+docker-compose exec ollama ollama pull llama3.2
+
+# Configure GitWhisper
+gitwhisper set-defaults --model ollama --base-url http://localhost:11434
+```
+
+## Kubernetes Deployment
+
+### Ollama in Kubernetes
+
+```yaml
+# ollama-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ollama
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ollama
+  template:
+    metadata:
+      labels:
+        app: ollama
+    spec:
+      containers:
+      - name: ollama
+        image: ollama/ollama
+        ports:
+        - containerPort: 11434
+        env:
+        - name: OLLAMA_HOST
+          value: "0.0.0.0:11434"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ollama-service
+spec:
+  selector:
+    app: ollama
+  ports:
+  - protocol: TCP
+    port: 11434
+    targetPort: 11434
+  type: LoadBalancer
+```
+
+Deploy and use:
+
+```bash
+# Deploy to Kubernetes
+kubectl apply -f ollama-deployment.yaml
+
+# Get service endpoint
+kubectl get svc ollama-service
+
+# Configure GitWhisper with service endpoint
+gitwhisper set-defaults --model ollama --base-url http://<EXTERNAL-IP>:11434
+```
+
+## Proxy Configuration
+
+### Corporate Proxy Setup
+
+If GitWhisper needs to go through a corporate proxy:
+
+```bash
+# Set HTTP proxy environment variables
+export HTTP_PROXY=http://proxy.company.com:8080
+export HTTPS_PROXY=http://proxy.company.com:8080
+
+# Then use GitWhisper normally
+gitwhisper commit --model ollama
+```
+
+### Nginx Reverse Proxy
+
+```nginx
+# /etc/nginx/sites-available/ollama
+server {
+    listen 80;
+    server_name ollama.company.com;
+
+    location / {
+        proxy_pass http://localhost:11434;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+Configure GitWhisper:
+
+```bash
+gitwhisper set-defaults --model ollama --base-url http://ollama.company.com
+```
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Connection Refused">
+    ```
+    Error: Connection refused
+    ```
+    
+    **Checklist:**
+    1. Verify Ollama is running: `curl http://localhost:11434/api/version`
+    2. Check the port is correct
+    3. Verify firewall settings
+    4. Check Ollama logs: `docker logs ollama` (if using Docker)
+  </Accordion>
+  <Accordion title="Connection Timeout">
+    ```
+    Error: Connection timeout
+    ```
+    
+    **Solutions:**
+    1. Check network connectivity: `ping <hostname>`
+    2. Verify firewall allows connections
+    3. Check if Ollama is bound to correct interface
+    4. Try increasing timeout (if supported)
+  </Accordion>
+  <Accordion title="Invalid URL Format">
+    ```
+    Error: Invalid base URL
+    ```
+    
+    **Format requirements:**
+    - Must include protocol: `http://` or `https://`
+    - Include port if not default: `:11434`
+    - No trailing slash
+    
+    **Correct:**
+    - `http://localhost:11434`
+    - `https://ollama.company.com`
+    
+    **Incorrect:**
+    - `localhost:11434` (missing protocol)
+    - `http://localhost:11434/` (trailing slash)
+  </Accordion>
+  <Accordion title="Certificate Errors (HTTPS)">
+    ```
+    Error: SSL certificate verification failed
+    ```
+    
+    **For self-signed certificates:**
+    1. Add certificate to system trust store
+    2. Or use HTTP instead (if on trusted network)
+    3. Configure certificate validation (if GitWhisper supports it)
+  </Accordion>
+  <Accordion title="DNS Resolution Failed">
+    ```
+    Error: Could not resolve hostname
+    ```
+    
+    **Solutions:**
+    1. Check DNS: `nslookup <hostname>`
+    2. Use IP address instead: `http://192.168.1.100:11434`
+    3. Add to `/etc/hosts` if local server
+    4. Verify VPN connection if required
+  </Accordion>
+</AccordionGroup>
+
+## Security Considerations
+
+<Warning>
+  **Security Best Practices:**
+  
+  1. **Use HTTPS** for remote endpoints when possible
+  2. **Restrict access** with firewall rules
+  3. **Use authentication** if available
+  4. **Avoid public exposure** of Ollama servers
+  5. **Use VPN** for remote access to internal servers
+</Warning>
+
+### Secure Remote Access
+
+```bash
+# Option 1: SSH Tunnel
+ssh -L 11434:localhost:11434 user@remote-host
+gitwhisper commit --model ollama --base-url http://localhost:11434
+
+# Option 2: VPN
+# Connect to VPN first, then:
+gitwhisper commit --model ollama --base-url http://internal-ollama:11434
+
+# Option 3: Tailscale/WireGuard
+# Use private network addresses
+gitwhisper commit --model ollama --base-url http://100.64.0.1:11434
+```
+
+## Testing Custom Endpoints
+
+### Verify Connectivity
+
+```bash
+# Test if endpoint is reachable
+curl http://localhost:11434/api/version
+
+# Test with remote endpoint
+curl http://remote-host:11434/api/version
+
+# Test HTTPS endpoint
+curl https://ollama.company.com/api/version
+```
+
+### Test with GitWhisper
+
+```bash
+# Test custom endpoint
+gitwhisper list-models --base-url http://localhost:8080
+
+# If it works, set as default
+gitwhisper set-defaults --model ollama --base-url http://localhost:8080
+```
+
+## Common Scenarios
+
+### Scenario 1: Development Team
+
+**Setup:** Shared Ollama server for team
+
+```bash
+# Server admin sets up Ollama
+OLLAMA_HOST=0.0.0.0:11434 ollama serve
+
+# Team members configure GitWhisper
+gitwhisper set-defaults --model ollama --base-url http://dev-ai-server:11434
+```
+
+### Scenario 2: CI/CD Pipeline
+
+**Setup:** Ollama in CI environment
+
+```yaml
+# .gitlab-ci.yml or .github/workflows/main.yml
+services:
+  - name: ollama/ollama
+    alias: ollama
+
+variables:
+  OLLAMA_BASE_URL: "http://ollama:11434"
+
+script:
+  - gitwhisper commit --model ollama --base-url $OLLAMA_BASE_URL
+```
+
+### Scenario 3: Home Lab
+
+**Setup:** Ollama on home server
+
+```bash
+# Access from multiple machines
+gitwhisper set-defaults --model ollama --base-url http://homeserver.local:11434
+```
+
+## Configuration Examples
+
+### Example 1: Multi-Environment
+
+```bash
+# ~/.bashrc or ~/.zshrc
+alias gw-local="gitwhisper commit --model ollama --base-url http://localhost:11434"
+alias gw-dev="gitwhisper commit --model ollama --base-url http://dev-ollama:11434"
+alias gw-prod="gitwhisper commit --model ollama --base-url http://prod-ollama:11434"
+```
+
+### Example 2: Load Balanced
+
+```bash
+# Behind load balancer
+gitwhisper set-defaults --model ollama --base-url http://ollama-lb.company.com
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+
+<Card title="Ollama Guide" icon="server" href="/models/ollama">
+  Learn more about using Ollama
+</Card>
+
+<Card title="Configuration" icon="gear" href="/configuration/defaults">
+  Configure default settings
+</Card>
+
+<Card title="Docker Setup" icon="docker" href="https://hub.docker.com/r/ollama/ollama">
+  Official Ollama Docker image
+</Card>
+
+<Card title="Troubleshooting" icon="wrench" href="/resources/troubleshooting">
+  Common issues and solutions
+</Card>
+
+</CardGroup>

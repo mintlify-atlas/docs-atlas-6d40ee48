@@ -1,0 +1,194 @@
+---
+title: Introduction
+description: GitWhisper is an AI-powered Git commit message generator that creates perfect, conventional commit messages from your staged changes.
+---
+
+<img
+  className="block dark:hidden"
+  src="/images/hero-light.png"
+  alt="GitWhisper Hero Light"
+/>
+<img
+  className="hidden dark:block"
+  src="/images/hero-dark.png"
+  alt="GitWhisper Hero Dark"
+/>
+
+## What is GitWhisper?
+
+GitWhisper is an AI-powered Git commit message generator that whispers the perfect commit message based on your staged changes. It leverages various AI models to analyze your code changes and generate meaningful commit messages that follow the conventional commit format with emojis.
+
+Instead of staring at a blank commit message prompt, let AI understand your changes and suggest professional, descriptive commit messages that follow best practices.
+
+## Key features
+
+<CardGroup cols={2}>
+  <Card
+    title="AI-powered commit messages"
+    icon="wand-magic-sparkles"
+  >
+    Leverages multiple AI models (Claude, OpenAI, Gemini, Grok, Llama, DeepSeek, GitHub Models, Ollama, and free options) to generate meaningful commit messages
+  </Card>
+  <Card
+    title="Interactive confirmation"
+    icon="hand-pointer"
+  >
+    Review, edit, retry with different models, or discard generated messages before committing
+  </Card>
+  <Card
+    title="Conventional commit format"
+    icon="code-commit"
+  >
+    Follows conventional commit format with emojis: `<emoji> <type>: <description>`
+  </Card>
+  <Card
+    title="Code analysis"
+    icon="magnifying-glass-chart"
+  >
+    Analyze staged or unstaged changes to understand code modifications and get improvement suggestions
+  </Card>
+  <Card
+    title="Multi-language support"
+    icon="globe"
+  >
+    Generate commit messages and analysis in 20+ languages including English, Spanish, French, German, Chinese, Japanese, and more
+  </Card>
+  <Card
+    title="Ticket number prefixing"
+    icon="ticket"
+  >
+    Automatically add ticket numbers (e.g., JIRA-123) to your commit messages
+  </Card>
+  <Card
+    title="Auto-push & tagging"
+    icon="upload"
+  >
+    Automatically push commits to remote and create git tags alongside commits
+  </Card>
+  <Card
+    title="Model customization"
+    icon="sliders"
+  >
+    Choose specific model variants (gpt-4o, claude-3-opus, etc.) and set default preferences
+  </Card>
+</CardGroup>
+
+## Supported AI models
+
+GitWhisper supports a wide range of AI models to fit your needs and budget:
+
+- **Claude** (Anthropic) - claude-3-opus, claude-3-sonnet, claude-3-5-sonnet, claude-3-7-sonnet
+- **OpenAI** (GPT) - gpt-4, gpt-4o, gpt-4o-mini, gpt-4.5-preview, o1-preview, o3-mini
+- **Gemini** (Google) - gemini-2.5-pro, gemini-2.5-flash, gemini-2.0-flash
+- **Grok** (xAI) - grok-1, grok-2, grok-3, grok-2-mini
+- **Llama** (Meta) - llama-3-70b-instruct, llama-3.1-405b-instruct, llama-3.3-70b-instruct
+- **DeepSeek** (DeepSeek, Inc.) - deepseek-chat, deepseek-reasoner
+- **GitHub Models** - Free, rate-limited access to models like gpt-4o, Llama-3.3-70B, DeepSeek-R1
+- **Ollama** - All Ollama models (self-hosted)
+- **Free** (LLM7.io) - No API key required!
+
+<Note>
+  The free model powered by [LLM7.io](https://llm7.io) requires no signup or API key. It's perfect for trying out GitWhisper with anonymous tier limits: 8k chars per request, 60 requests/hour.
+</Note>
+
+## How it works
+
+GitWhisper follows a simple workflow:
+
+<Steps>
+  <Step title="Stage your changes">
+    Make your code changes and stage them with `git add`
+  </Step>
+  <Step title="Run GitWhisper">
+    Execute `gitwhisper` or `gw` to analyze your staged changes
+  </Step>
+  <Step title="AI analyzes the diff">
+    The selected AI model examines your staged diff and understands the changes
+  </Step>
+  <Step title="Review the commit message">
+    GitWhisper presents a generated commit message following conventional commit format
+  </Step>
+  <Step title="Interactive confirmation">
+    Choose to apply, edit, retry with same/different model, or discard the message
+  </Step>
+  <Step title="Commit is created">
+    Your approved message is committed (and optionally pushed/tagged)
+  </Step>
+</Steps>
+
+## Getting started
+
+<CardGroup cols={2}>
+  <Card
+    title="Installation"
+    icon="download"
+    href="/installation"
+  >
+    Install GitWhisper using Dart pub, Homebrew, APT, curl, PowerShell, or binary downloads
+  </Card>
+  <Card
+    title="Quick start"
+    icon="rocket"
+    href="/quickstart"
+  >
+    Get from installation to your first AI-generated commit in under 5 minutes
+  </Card>
+  <Card
+    title="Commands"
+    icon="terminal"
+    href="/commands/commit"
+  >
+    Explore all available commands and their options
+  </Card>
+  <Card
+    title="Configuration"
+    icon="gear"
+    href="/configuration/api-keys"
+  >
+    Configure API keys, default models, languages, and more
+  </Card>
+</CardGroup>
+
+## Editor integrations
+
+GitWhisper is also available as plugins for popular editors:
+
+### Visual Studio Code
+Install the GitWhisper extension directly from the marketplace:
+- **Extension**: [GitWhisper for VS Code](https://marketplace.visualstudio.com/items?itemName=gitwhisper.gitwhisper)
+- **Features**: Generate commit messages directly within VS Code's Git interface
+
+### JetBrains IDEs
+Available for all JetBrains IDEs (IntelliJ IDEA, WebStorm, PhpStorm, etc.):
+- **Plugin**: [GitWhisper for JetBrains](https://plugins.jetbrains.com/plugin/28057-gitwhisper)
+- **Features**: Seamless integration with JetBrains VCS tools
+
+## Conventional commit format
+
+GitWhisper generates commit messages following the **conventional commit format** with emojis:
+
+```
+feat: ✨ Add user authentication system
+fix: 🐛 Fix login validation error
+docs: 📚 Update API documentation
+```
+
+### Common commit types
+
+| Type       | Emoji | Description                                      |
+|------------|-------|--------------------------------------------------|
+| `feat`     | ✨     | New feature                                      |
+| `fix`      | 🐛     | Bug fix                                          |
+| `docs`     | 📚     | Documentation changes                            |
+| `style`    | 💄     | Code style changes (formatting, whitespace, etc.)|
+| `refactor` | ♻️     | Code refactoring (no new features or fixes)      |
+| `test`     | 🧪     | Adding or updating tests                         |
+| `chore`    | 🔧     | Build process or auxiliary tool changes          |
+| `perf`     | ⚡     | Performance improvements                         |
+| `ci`       | 👷     | Continuous Integration/Deployment changes        |
+| `build`    | 📦     | Build system or dependency changes               |
+| `revert`   | ⏪     | Revert a previous commit                         |
+
+<Tip>
+  When using a prefix (e.g., JIRA ticket number), GitWhisper intelligently formats it after the emoji for single commits or at the top for multiple commits.
+</Tip>

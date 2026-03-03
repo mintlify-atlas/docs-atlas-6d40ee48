@@ -1,0 +1,147 @@
+---
+title: Conventional Commit Format
+description: Learn about GitWhisper's conventional commit format with emojis, including commit types, emoji mapping, and formatting rules
+---
+
+GitWhisper generates commit messages following the **conventional commit format** with emojis, ensuring your commit history is both structured and visually intuitive.
+
+## Format Structure
+
+Every commit message follows this strict format:
+
+```
+<type>: <emoji> <description>
+```
+
+Where:
+- **`<type>`** - A valid conventional commit type (always in English)
+- **`<emoji>`** - The matching emoji for visual identification
+- **`<description>`** - Imperative mood description ("Add feature", not "Added feature")
+
+### Example Commits
+
+```bash
+feat: ✨ Add dark mode toggle
+fix: 🐛 Resolve token refresh bug
+docs: 📚 Update installation guide
+refactor: ♻️ Simplify authentication logic
+perf: ⚡ Optimize database queries
+```
+
+## Commit Types and Emojis
+
+GitWhisper uses the following approved commit types with their corresponding emojis:
+
+| Type       | Emoji | Description                                      |
+|------------|-------|--------------------------------------------------|
+| `feat`     | ✨     | New feature                                      |
+| `fix`      | 🐛     | Bug fix                                          |
+| `docs`     | 📚     | Documentation changes                            |
+| `style`    | 💄     | Code style changes (formatting, whitespace, etc.)|
+| `refactor` | ♻️     | Code refactoring (no new features or fixes)      |
+| `test`     | 🧪     | Adding or updating tests                         |
+| `chore`    | 🔧     | Build process or auxiliary tool changes          |
+| `perf`     | ⚡     | Performance improvements                         |
+| `ci`       | 👷     | Continuous Integration/Deployment changes        |
+| `build`    | 📦     | Build system or dependency changes               |
+| `revert`   | ⏪     | Revert a previous commit                         |
+
+<Note>
+The commit type and emoji always remain in English, even when using GitWhisper's multi-language support. Only the description is translated to your chosen language.
+</Note>
+
+## Formatting Rules
+
+GitWhisper enforces strict formatting rules based on the implementation in `commit_utils.dart:86-91`:
+
+### 1. Imperative Verb
+
+Always use imperative mood:
+- ✅ "Add user authentication"
+- ✅ "Fix login validation"
+- ✅ "Update documentation"
+- ❌ "Added user authentication"
+- ❌ "Fixed login validation"
+- ❌ "Updated documentation"
+
+### 2. Capitalization
+
+The first word of the description must be capitalized:
+- ✅ `feat: ✨ Add dark mode toggle`
+- ❌ `feat: ✨ add dark mode toggle`
+
+### 3. Concise Descriptions
+
+Keep descriptions concise, preferably under 50 characters:
+- ✅ `fix: 🐛 Resolve token refresh bug`
+- ⚠️ `fix: 🐛 Resolve the bug where the authentication token was not being refreshed properly when the user session expired`
+
+### 4. Additional Context
+
+Optional context must be on the same line, comma-separated:
+- ✅ `fix: 🐛 Fix login validation, handle empty input`
+- ❌ Multiple line commit bodies (unless grouping related changes)
+
+### 5. Single vs Multiple Commits
+
+GitWhisper only generates multiple commit messages if changes are truly unrelated:
+
+**Related changes (single commit):**
+```
+feat: ✨ Add user profile page, implement avatar upload
+```
+
+**Unrelated changes (multiple commits):**
+```
+feat: ✨ Add dark mode toggle
+fix: 🐛 Resolve token refresh bug
+docs: 📚 Update API documentation
+```
+
+## Multi-Language Support
+
+When using non-English languages, the commit structure adapts:
+
+**English:**
+```
+feat: ✨ Add dark mode toggle
+```
+
+**Spanish:**
+```
+feat: ✨ Agregar funcionalidad de modo oscuro
+```
+
+**Japanese:**
+```
+feat: ✨ ダークモードトグルを追加
+```
+
+<Tip>
+The commit type (`feat:`, `fix:`, etc.) and emoji always remain in English for tool compatibility, while the description is generated in your selected language.
+</Tip>
+
+## Disabling Emojis
+
+If you prefer conventional commits without emojis, you can configure GitWhisper to use the standard format:
+
+```
+feat: Add dark mode toggle
+fix: Resolve token refresh bug
+```
+
+The format remains the same, just without the visual emoji indicators.
+
+## Best Practices
+
+<Tip>
+**Keep commits atomic**: Each commit should represent a single logical change. Use GitWhisper's interactive confirmation to review and refine messages.
+</Tip>
+
+<Tip>
+**Review AI-generated messages**: While GitWhisper generates accurate commit messages, always review them using the interactive confirmation feature (`--confirm` flag or global config).
+</Tip>
+
+<Note>
+**Consistency matters**: The conventional commit format makes your git history searchable and enables automated tools like changelog generators and semantic versioning.
+</Note>

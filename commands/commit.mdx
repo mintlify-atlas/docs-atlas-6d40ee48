@@ -1,0 +1,214 @@
+---
+title: Commit Command
+description: Generate AI-powered commit messages from staged changes
+---
+
+The `commit` command is GitWhisper's primary feature. It analyzes your staged changes and generates intelligent, contextual commit messages using AI.
+
+## Basic Usage
+
+```bash
+gitwhisper commit
+# or use the shorthand
+gw commit
+```
+
+By default, GitWhisper will:
+1. Check for staged changes in your repository
+2. Analyze the diff using the default AI model (or prompt you to select one)
+3. Generate a commit message
+4. Create the commit
+
+## Command Options
+
+<ParamField path="--model" type="string" default="openai">
+  AI model to use for generating commit messages.
+  
+  **Allowed values:**
+  - `claude` - Anthropic Claude
+  - `openai` - OpenAI GPT models
+  - `gemini` - Google Gemini
+  - `grok` - xAI Grok
+  - `llama` - Meta Llama
+  - `deepseek` - DeepSeek, Inc.
+  - `github` - GitHub Models
+  - `ollama` - Ollama (local models)
+  - `free` - Free tier via LLM7.io (no API key required)
+  
+  **Shorthand:** `-m`
+</ParamField>
+
+<ParamField path="--key" type="string">
+  API key for the selected model. If not provided, GitWhisper will check:
+  1. Saved configuration (via `gw save-key`)
+  2. Environment variables
+  
+  Not required for `ollama` and `free` models.
+  
+  **Shorthand:** `-k`
+</ParamField>
+
+<ParamField path="--model-variant" type="string">
+  Specific variant of the AI model to use.
+  
+  **Examples:**
+  - `gpt-4o` (OpenAI)
+  - `claude-sonnet-4-20250514` (Claude)
+  - `gemini-2.0-flash` (Gemini)
+  
+  See [list-variants](/commands/models#list-variants) for all available variants.
+  
+  **Shorthand:** `-v`
+</ParamField>
+
+<ParamField path="--prefix" type="string">
+  Add a prefix to the commit message, useful for ticket numbers or issue references.
+  
+  **Example:** `JIRA-123`, `GH-456`
+  
+  **Shorthand:** `-p`
+</ParamField>
+
+<ParamField path="--auto-push" type="boolean" default="false">
+  Automatically push the commit to the remote repository after creating it.
+  
+  **Shorthand:** `-a`
+</ParamField>
+
+<ParamField path="--confirm" type="boolean" default="false">
+  Prompt for confirmation before applying the commit message. When enabled, you can:
+  - **commit** - Accept the generated message
+  - **edit** - Open in your git editor to modify
+  - **retry** - Regenerate with the same or different model
+  - **discard** - Cancel the commit
+  
+  **Shorthand:** `-c`
+  
+  **Note:** Can be set as default via `gw set-defaults --confirm-commits`
+</ParamField>
+
+<ParamField path="--tag" type="string">
+  Create a git tag for this commit.
+  
+  **Example:** `v1.0.0`, `release-2024-03`
+  
+  **Shorthand:** `-t`
+</ParamField>
+
+## Usage Examples
+
+<CodeGroup>
+```bash Basic commit
+gw commit
+```
+
+```bash With specific model
+gw commit --model claude
+```
+
+```bash With model variant
+gw commit --model openai --model-variant gpt-4o
+```
+
+```bash With ticket prefix
+gw commit --prefix JIRA-123
+```
+
+```bash With confirmation
+gw commit --confirm
+```
+
+```bash Auto-push after commit
+gw commit --auto-push
+```
+
+```bash With git tag
+gw commit --tag v1.2.0
+```
+
+```bash Using free tier (no API key)
+gw commit --model free
+```
+
+```bash Complete example
+gw commit \
+  --model claude \
+  --model-variant claude-sonnet-4-20250514 \
+  --prefix TICKET-789 \
+  --confirm \
+  --auto-push
+```
+</CodeGroup>
+
+## Terminal Output Example
+
+```bash
+$ gw commit
+Analyzing staged changes using openai (gpt-4o)...
+
+---------------------------------
+feat: add user authentication module
+
+Implement JWT-based authentication with:
+- Login and logout endpoints
+- Token refresh mechanism
+- Password hashing with bcrypt
+- Session management
+---------------------------------
+
+[main abc1234] feat: add user authentication module
+ 4 files changed, 156 insertions(+), 12 deletions(-)
+```
+
+## Workflow Scenarios
+
+### No Staged Changes
+
+If you haven't staged any changes, GitWhisper will:
+1. Detect unstaged or untracked files
+2. Prompt you to stage them automatically
+3. Proceed with commit generation
+
+If `always-add` is enabled, this happens automatically without prompting.
+
+### Large Diffs
+
+For very large changesets, GitWhisper automatically:
+1. Processes files individually
+2. Generates summaries for each file
+3. Combines summaries into a cohesive commit message
+
+The default threshold is 50,000 characters (configurable via `gw set-defaults --max-diff-size`).
+
+### Large Files
+
+GitWhisper warns about large files (>10MB by default) and offers options to:
+- Proceed anyway
+- Add to `.gitignore` and unstage
+- Cancel the commit
+
+### Multi-Repository Support
+
+If run from a parent directory containing multiple git repositories, GitWhisper will:
+1. Detect all subdirectories with staged changes
+2. Generate individual commits for each repository
+3. Report success/failure for each
+
+## Environment Variables
+
+API keys can be provided via environment variables:
+
+```bash
+export OPENAI_API_KEY="sk-..."
+export ANTHROPIC_API_KEY="sk-ant-..."
+export GEMINI_API_KEY="..."
+export GROK_API_KEY="..."
+export LLAMA_API_KEY="..."
+export DEEPSEEK_API_KEY="..."
+```
+
+## Related Commands
+
+- [analyze](/commands/analyze) - Analyze changes without committing
+- [set-defaults](/commands/configuration#set-defaults) - Configure default model and options
+- [always-add](/commands/configuration#always-add) - Auto-stage changes

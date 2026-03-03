@@ -1,0 +1,702 @@
+---
+title: Frequently Asked Questions
+description: Common questions about GitWhisper
+---
+
+Find answers to commonly asked questions about GitWhisper.
+
+## General Questions
+
+<AccordionGroup>
+  <Accordion title="What is GitWhisper?">
+    GitWhisper is an AI-powered Git commit message generator that analyzes your code changes and generates meaningful, conventional commit messages automatically.
+
+    **Key Features:**
+    - AI-powered commit message generation
+    - Supports multiple AI models (OpenAI, Claude, Gemini, Ollama, etc.)
+    - Interactive commit confirmation and editing
+    - Multi-language support
+    - Code analysis and suggestions
+    - Conventional commits with emojis
+  </Accordion>
+
+  <Accordion title="How does GitWhisper work?">
+    GitWhisper follows this workflow:
+
+    1. Checks for staged changes in your Git repository
+    2. Retrieves the diff of your staged changes
+    3. Sends the diff to your selected AI model
+    4. Generates a commit message following conventional commit format
+    5. Shows you an interactive confirmation menu
+    6. Applies the message (with optional prefix/tag) when you confirm
+
+    You maintain full control with options to edit, retry, or discard the generated message.
+  </Accordion>
+
+  <Accordion title="Is GitWhisper free to use?">
+    GitWhisper itself is **free and open source** (MIT License), but there are different options for AI models:
+
+    **Free Options:**
+    - `free` model powered by LLM7.io (no API key required)
+      - 60 requests/hour, 8k chars per request
+    - Ollama (self-hosted, runs locally)
+      - Unlimited usage, requires local setup
+
+    **Paid Options:**
+    - OpenAI (GPT models) - Pay per usage
+    - Claude (Anthropic) - Pay per usage
+    - Gemini (Google) - Pay per usage
+    - Other cloud AI providers
+
+    **Recommendation:** Start with the free model, then upgrade to paid models for production use.
+  </Accordion>
+
+  <Accordion title="Do I need programming knowledge to use GitWhisper?">
+    Basic Git knowledge is required:
+
+    **You should know:**
+    - How to use Git (staging, committing)
+    - Basic command line usage
+    - How to install command-line tools
+
+    **You don't need to know:**
+    - How to write good commit messages (that's what GitWhisper does!)
+    - How AI models work
+    - Advanced Git workflows
+  </Accordion>
+</AccordionGroup>
+
+## Installation & Setup
+
+<AccordionGroup>
+  <Accordion title="How do I install GitWhisper?">
+    Multiple installation methods are available:
+
+    **For Dart users:**
+    ```bash
+    dart pub global activate gitwhisper
+    ```
+
+    **For macOS (Homebrew):**
+    ```bash
+    brew tap iamngoni/homebrew-gitwhisper
+    brew install gitwhisper
+    ```
+
+    **For Debian/Ubuntu (APT):**
+    ```bash
+    echo "deb [trusted=yes] https://iamngoni.github.io/gitwhisper-apt stable main" | sudo tee /etc/apt/sources.list.d/gitwhisper.list
+    sudo apt update
+    sudo apt install gitwhisper
+    ```
+
+    **For all platforms (curl):**
+    ```bash
+    curl -sSL https://raw.githubusercontent.com/iamngoni/gitwhisper/master/install.sh | bash
+    ```
+
+    **For Windows (PowerShell as Administrator):**
+    ```powershell
+    irm https://raw.githubusercontent.com/iamngoni/gitwhisper/master/install.ps1 | iex
+    ```
+
+    See the [Installation Guide](/quickstart) for detailed instructions.
+  </Accordion>
+
+  <Accordion title="What are the system requirements?">
+    **Minimum Requirements:**
+    - Git installed and available in PATH
+    - Internet connection (for cloud AI models)
+    - Terminal/command line access
+
+    **Supported Platforms:**
+    - macOS (Intel and Apple Silicon)
+    - Linux (x64 and ARM64)
+    - Windows (x64)
+
+    **For Dart installation:**
+    - Dart SDK ^3.5.0 or higher
+  </Accordion>
+
+  <Accordion title="How do I get an API key?">
+    API keys are obtained from each AI provider:
+
+    **OpenAI:**
+    1. Visit [platform.openai.com](https://platform.openai.com)
+    2. Sign up or log in
+    3. Go to API Keys section
+    4. Create a new API key
+
+    **Claude (Anthropic):**
+    1. Visit [console.anthropic.com](https://console.anthropic.com)
+    2. Sign up or log in
+    3. Navigate to API Keys
+    4. Generate a new key
+
+    **Gemini (Google):**
+    1. Visit [makersuite.google.com](https://makersuite.google.com)
+    2. Sign in with Google account
+    3. Create an API key
+
+    **GitHub Models:**
+    1. Go to GitHub Settings → Developer settings
+    2. Create a Personal Access Token (PAT)
+    3. Use the PAT as your API key
+
+    **Save your key:**
+    ```bash
+    gw save-key --model openai --key "your-api-key"
+    ```
+
+    **No API key needed:**
+    - Free model (LLM7.io)
+    - Ollama (self-hosted)
+  </Accordion>
+
+  <Accordion title="Where are my API keys stored?">
+    API keys are stored securely in:
+
+    ```
+    ~/.git_whisper.yaml
+    ```
+
+    **Security measures:**
+    - File permissions set to 600 (owner read/write only) on Unix systems
+    - Keys stored in plain text locally (not transmitted anywhere except to the AI provider)
+    - Configuration file is in your home directory
+
+    **View your configuration:**
+    ```bash
+    gw show-config
+    ```
+
+    **Important:** Never commit this file to version control!
+  </Accordion>
+</AccordionGroup>
+
+## Model Selection
+
+<AccordionGroup>
+  <Accordion title="Which AI model should I use?">
+    **For beginners:**
+    - Start with `free` model (no setup required)
+    - Try `gw commit --model free`
+
+    **For best quality:**
+    - **GPT-4o** (OpenAI) - Excellent quality, fast
+    - **Claude 3.7 Sonnet** (Anthropic) - Great reasoning
+    - **Gemini 2.0 Flash** (Google) - Fast and capable
+
+    **For cost efficiency:**
+    - **GPT-4o-mini** - Good balance of quality and cost
+    - **Claude 3 Haiku** - Fast and affordable
+    - **Gemini 1.5 Flash** - Cost-effective
+
+    **For privacy/local use:**
+    - **Ollama** with Llama 3 - Runs entirely on your machine
+    - No data sent to external servers
+
+    See [Models Guide](/models/overview) for detailed comparison.
+  </Accordion>
+
+  <Accordion title="Can I use multiple models?">
+    Yes! You can switch models anytime:
+
+    **Try different models:**
+    ```bash
+    gw commit --model openai
+    gw commit --model claude
+    gw commit --model gemini
+    ```
+
+    **Set a default model:**
+    ```bash
+    gw set-defaults --model openai --model-variant gpt-4o
+    ```
+
+    **Interactive retry:**
+    When reviewing a generated commit message, you can choose "Try different model" to regenerate with another AI.
+
+    **Save multiple API keys:**
+    ```bash
+    gw save-key --model openai --key "sk-..."
+    gw save-key --model claude --key "sk-ant-..."
+    gw save-key --model gemini --key "AI..."
+    ```
+  </Accordion>
+
+  <Accordion title="What model variants are available?">
+    List all available models:
+    ```bash
+    gw list-models
+    ```
+
+    List variants for a specific model:
+    ```bash
+    gw list-variants --model openai
+    gw list-variants --model claude
+    ```
+
+    **Popular variants:**
+
+    **OpenAI:**
+    - gpt-4o, gpt-4o-mini, gpt-4-turbo, o1-preview, o3-mini
+
+    **Claude:**
+    - claude-3-7-sonnet, claude-3-5-sonnet, claude-3-opus, claude-3-haiku
+
+    **Gemini:**
+    - gemini-2.0-flash, gemini-1.5-pro, gemini-1.5-flash
+
+    **Grok:**
+    - grok-4, grok-3, grok-2, grok-2-mini
+
+    **Ollama:**
+    - Any model from [ollama.com/search](https://ollama.com/search)
+  </Accordion>
+
+  <Accordion title="How do I use Ollama (local models)?">
+    **1. Install Ollama:**
+    - Download from [ollama.com](https://ollama.com)
+    - Install for your platform
+
+    **2. Pull a model:**
+    ```bash
+    ollama pull llama3
+    # or
+    ollama pull mistral
+    ollama pull codellama
+    ```
+
+    **3. Start Ollama service:**
+    ```bash
+    ollama serve
+    ```
+
+    **4. Configure GitWhisper:**
+    ```bash
+    gw set-defaults --model ollama --model-variant llama3 --base-url http://localhost:11434
+    ```
+
+    **5. Use it:**
+    ```bash
+    gw commit
+    ```
+
+    **Advantages:**
+    - Free, unlimited usage
+    - Complete privacy (runs locally)
+    - No API key needed
+    - Works offline
+
+    See [Ollama Setup](/models/ollama) for more details.
+  </Accordion>
+</AccordionGroup>
+
+## Usage & Features
+
+<AccordionGroup>
+  <Accordion title="How do I generate a commit message?">
+    Basic usage:
+
+    **1. Stage your changes:**
+    ```bash
+    git add .
+    ```
+
+    **2. Run GitWhisper:**
+    ```bash
+    gw commit
+    # or
+    gitwhisper commit
+    # or just
+    gw
+    ```
+
+    **3. Review the generated message:**
+    - [A] Apply - Use as-is
+    - [E] Edit - Modify before applying
+    - [R] Retry - Generate again
+    - [M] Try different model
+    - [D] Discard - Cancel
+
+    **With auto-staging:**
+    ```bash
+    gw always-add true
+    gw commit  # Automatically stages all changes
+    ```
+
+    See [Basic Usage](/quickstart) for more examples.
+  </Accordion>
+
+  <Accordion title="Can I edit the generated commit message?">
+    Yes! GitWhisper offers multiple ways to edit:
+
+    **1. Interactive menu:**
+    - Choose [E] Edit when reviewing the message
+    - Opens your Git editor (vim, nano, VS Code, etc.)
+
+    **2. Configure your editor:**
+    ```bash
+    git config --global core.editor "nano"
+    # or
+    git config --global core.editor "code --wait"
+    ```
+
+    **3. Edit and review:**
+    - After editing, the message returns to the confirmation menu
+    - You can apply, edit again, or discard
+
+    **4. Retry with different model:**
+    - Choose [M] to try a different AI model
+    - Generate a new message without committing
+  </Accordion>
+
+  <Accordion title="Does GitWhisper support multi-language commit messages?">
+    Yes! GitWhisper supports 20+ languages:
+
+    **Set your language:**
+    ```bash
+    gw change-language
+    ```
+
+    **Supported languages:**
+    - English, Spanish, French, German
+    - Chinese (Simplified & Traditional), Japanese, Korean
+    - Arabic, Italian, Portuguese, Russian
+    - Dutch, Swedish, Norwegian, Danish, Finnish
+    - Greek, Turkish, Hindi, Shona, Zulu
+
+    **Format:**
+    ```
+    feat: ✨ [Description in your language]
+    ```
+
+    **Note:** Commit types (feat, fix, etc.) and emojis remain in English for tooling compatibility.
+
+    **Example in Spanish:**
+    ```
+    feat: ✨ Agregar funcionalidad de modo oscuro
+    ```
+  </Accordion>
+
+  <Accordion title="Can I add ticket numbers or prefixes to commits?">
+    Yes, use the `--prefix` flag:
+
+    **Single commit:**
+    ```bash
+    gw commit --prefix "JIRA-123"
+    ```
+
+    **Result:**
+    ```
+    fix: 🐛 JIRA-123 Fix login validation error
+    ```
+
+    **Multiple unrelated commits:**
+    ```
+    JIRA-123
+    feat: ✨ Add dark mode toggle
+    fix: 🐛 Resolve token refresh bug
+    ```
+
+    **Common prefix patterns:**
+    - JIRA tickets: `JIRA-123`
+    - GitHub issues: `#123`
+    - Custom tags: `FEAT-456`, `BUG-789`
+  </Accordion>
+
+  <Accordion title="How do I create git tags with commits?">
+    Use the `--tag` or `-t` flag:
+
+    **Create a tag:**
+    ```bash
+    gw commit --tag v1.0.0
+    # or
+    gw commit -t v1.0.0
+    ```
+
+    **Auto-push with tag:**
+    ```bash
+    gw commit -t v1.0.0 --auto-push
+    # or
+    gw commit -t v1.0.0 -a
+    ```
+
+    **What happens:**
+    1. Commit is created with AI-generated message
+    2. Git tag is created
+    3. If `--auto-push` is used, both commit and tag are pushed
+
+    **Semantic versioning:**
+    - `v1.0.0` - Major release
+    - `v1.1.0` - Minor release
+    - `v1.1.1` - Patch release
+  </Accordion>
+
+  <Accordion title="Can GitWhisper analyze my code changes?">
+    Yes! Use the `analyze` command:
+
+    **Analyze staged changes:**
+    ```bash
+    gw analyze
+    ```
+
+    **What you get:**
+    - Detailed explanation of changes
+    - Code quality assessment
+    - Potential issues and concerns
+    - Improvement suggestions
+    - Security considerations
+
+    **Use cases:**
+    - Pre-commit code review
+    - Understanding complex changes
+    - Learning best practices
+    - Catching potential bugs
+
+    **Multi-language analysis:**
+    Analysis is provided in your configured language.
+
+    See [Code Analysis](/features/code-analysis) for examples.
+  </Accordion>
+
+  <Accordion title="How do I handle large diffs?">
+    GitWhisper automatically handles large diffs:
+
+    **Automatic behavior (v0.1.14+):**
+    - Files >10MB are detected and warned
+    - Large diffs are processed file-by-file automatically
+    - Each file gets its own commit message
+
+    **Configure threshold:**
+    ```bash
+    gw set-defaults --max-diff-size 100000
+    ```
+
+    **Best practices:**
+    - Commit smaller, focused changes
+    - Break large features into multiple commits
+    - Use `.gitignore` for large binary files
+    - Consider Git LFS for large assets
+
+    **Interactive staging:**
+    - When diff exceeds threshold, you get options:
+      - Use focused staging (file-by-file)
+      - Commit everything
+      - Cancel
+  </Accordion>
+</AccordionGroup>
+
+## Privacy & Security
+
+<AccordionGroup>
+  <Accordion title="Is my code sent to AI providers?">
+    **Yes, when using cloud AI models:**
+    - Your git diff is sent to the AI provider (OpenAI, Anthropic, etc.)
+    - Only the diff content is sent, not your entire codebase
+    - Data is transmitted over HTTPS
+    - Check each provider's privacy policy
+
+    **No, when using local models:**
+    - Ollama runs entirely on your machine
+    - No data sent to external servers
+    - Complete privacy
+
+    **Important notes:**
+    - GitWhisper itself doesn't store or log your code
+    - API keys are stored locally only
+    - We don't collect any telemetry
+
+    **For sensitive code:**
+    Use Ollama for complete privacy and control.
+  </Accordion>
+
+  <Accordion title="Are my API keys secure?">
+    **Storage:**
+    - Keys stored in `~/.git_whisper.yaml`
+    - File permissions set to 600 (owner only)
+    - Stored in plain text locally
+
+    **Transmission:**
+    - Keys only sent to respective AI providers
+    - Transmitted over HTTPS
+    - Never sent to GitWhisper developers
+
+    **Best practices:**
+    - Don't commit `.git_whisper.yaml` to version control
+    - Use environment variables for CI/CD
+    - Rotate keys periodically
+    - Use keys with minimal required permissions
+
+    **For CI/CD:**
+    ```bash
+    export OPENAI_API_KEY="your-key"
+    gw commit --model openai
+    ```
+  </Accordion>
+
+  <Accordion title="Can I use GitWhisper in a commercial project?">
+    **Yes!** GitWhisper is MIT licensed:
+
+    - ✅ Commercial use allowed
+    - ✅ Modification allowed
+    - ✅ Distribution allowed
+    - ✅ Private use allowed
+
+    **However, check your AI provider's terms:**
+    - OpenAI, Claude, Gemini have commercial tiers
+    - Free tiers may have restrictions
+    - Read each provider's terms of service
+
+    **For commercial use:**
+    - Use paid API plans
+    - Consider Ollama for cost control
+    - Review provider's commercial licenses
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="GitWhisper command not found">
+    **Solutions:**
+
+    **For Dart installation:**
+    ```bash
+    # Add to PATH (add to ~/.bashrc or ~/.zshrc)
+    export PATH="$PATH:$HOME/.pub-cache/bin"
+    ```
+
+    **For Homebrew:**
+    ```bash
+    brew doctor  # Check for issues
+    brew reinstall gitwhisper
+    ```
+
+    **For APT:**
+    ```bash
+    which gitwhisper  # Check if installed
+    sudo apt reinstall gitwhisper
+    ```
+
+    **Verify installation:**
+    ```bash
+    gw --version
+    ```
+  </Accordion>
+
+  <Accordion title="How do I update GitWhisper?">
+    **Using built-in update command:**
+    ```bash
+    gw update
+    ```
+
+    **Or manually:**
+
+    **Dart:**
+    ```bash
+    dart pub global activate gitwhisper
+    ```
+
+    **Homebrew:**
+    ```bash
+    brew upgrade gitwhisper
+    ```
+
+    **APT:**
+    ```bash
+    sudo apt update
+    sudo apt upgrade gitwhisper
+    ```
+
+    **Check version:**
+    ```bash
+    gw --version
+    ```
+  </Accordion>
+
+  <Accordion title="Where can I get help?">
+    **Resources:**
+
+    **Documentation:**
+    - [GitWhisper Docs](/) - Full documentation
+    - [Troubleshooting Guide](/resources/troubleshooting)
+
+    **Community:**
+    - [GitHub Issues](https://github.com/iamngoni/gitwhisper/issues) - Report bugs
+    - [GitHub Discussions](https://github.com/iamngoni/gitwhisper/discussions) - Ask questions
+
+    **Source Code:**
+    - [GitHub Repository](https://github.com/iamngoni/gitwhisper)
+
+    **Support the project:**
+    - [Buy me a coffee](https://www.buymeacoffee.com/modestnerd)
+    - Star the repo on GitHub
+    - Share with others
+  </Accordion>
+</AccordionGroup>
+
+## Contributing
+
+<AccordionGroup>
+  <Accordion title="How can I contribute to GitWhisper?">
+    We welcome all contributions!
+
+    **Ways to contribute:**
+    - 🐛 Fix bugs
+    - ✨ Add new features
+    - 📚 Improve documentation
+    - 🧪 Write tests
+    - 🌍 Add language support
+    - 🤖 Add AI model support
+
+    **Getting started:**
+    1. Fork the repository
+    2. Create a feature branch
+    3. Make your changes
+    4. Run tests: `dart test`
+    5. Submit a Pull Request
+
+    See [Contributing Guide](/resources/contributing) for details.
+  </Accordion>
+
+  <Accordion title="Can I add support for a new AI model?">
+    Yes! Follow these steps:
+
+    **1. Create a generator:**
+    - Implement the `CommitGenerator` interface
+    - Add to `lib/src/models/`
+
+    **2. Add model variants:**
+    - Update `lib/src/models/model_variants.dart`
+
+    **3. Update factory:**
+    - Add to `lib/src/models/commit_generator_factory.dart`
+
+    **4. Test:**
+    ```bash
+    dart test
+    ```
+
+    **5. Document:**
+    - Update README.md
+    - Add usage examples
+
+    **6. Submit PR:**
+    - Open a Pull Request
+    - Explain the new model
+
+    See the [Contributing Guide](/resources/contributing) for detailed instructions.
+  </Accordion>
+</AccordionGroup>
+
+## Additional Resources
+
+- [Installation Guide](/quickstart)
+- [Basic Usage](/quickstart)
+- [Models Overview](/models/overview)
+- [Configuration](/configuration/api-keys)
+- [Troubleshooting](/resources/troubleshooting)
+- [Contributing](/resources/contributing)
+- [Changelog](/resources/changelog)

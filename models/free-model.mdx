@@ -1,0 +1,371 @@
+---
+title: 'Free Model (LLM7.io)'
+description: 'Use GitWhisper completely free without any API keys'
+icon: 'gift'
+---
+
+The Free model is powered by [LLM7.io](https://llm7.io) and requires **no API key, no signup, and no cost** - just start using GitWhisper immediately.
+
+## Quick Start
+
+No setup required - just use it:
+
+```bash
+# Generate commit message with free model
+gitwhisper commit --model free
+
+# Shorthand
+gw commit -m free
+
+# Set as default
+gitwhisper set-defaults --model free
+```
+
+That's it! No API keys, no configuration, no cost.
+
+## Features
+
+<CardGroup cols={2}>
+
+<Card title="Zero Setup" icon="rocket">
+  No API keys, accounts, or configuration needed
+</Card>
+
+<Card title="Completely Free" icon="dollar-sign">
+  No costs, no credit card, no subscriptions
+</Card>
+
+<Card title="Anonymous" icon="user-secret">
+  No signup or personal information required
+</Card>
+
+<Card title="Instant Access" icon="bolt">
+  Start using immediately
+</Card>
+
+</CardGroup>
+
+## Usage Limits
+
+The free model has reasonable limits for anonymous usage:
+
+<Tabs>
+  <Tab title="Anonymous Tier">
+    **Current limits:**
+    - **8,000 characters** per request
+    - **60 requests** per hour
+    - **10 requests** per minute
+    - **1 request** per second
+    
+    Perfect for:
+    - Individual developers
+    - Small projects
+    - Testing GitWhisper
+    - Learning and experimentation
+  </Tab>
+  <Tab title="What This Means">
+    **In practice:**
+    
+    You can typically make:
+    - ~50-60 commits per hour
+    - ~1,500 commits per day
+    
+    Most diffs are under 8,000 characters, so the character limit rarely impacts normal usage.
+  </Tab>
+</Tabs>
+
+<Note>
+  These limits are generous for typical development workflows. Most developers won't hit them during normal use.
+</Note>
+
+## When to Use Free Model
+
+### Perfect For
+
+✅ **Trying GitWhisper for the first time**
+- No commitment required
+- Test all features
+- See if it fits your workflow
+
+✅ **Personal projects**
+- Hobby projects
+- Learning and experimentation
+- Side projects
+
+✅ **Small teams**
+- Low commit volume
+- Testing before purchasing API keys
+- Budget-conscious teams
+
+✅ **Open source contributions**
+- Contributing to projects
+- No need for API keys in CI/CD
+
+### Consider Alternatives For
+
+❌ **High-volume usage**
+- Large teams
+- Continuous integration
+- Many commits per hour
+
+❌ **Maximum quality**
+- Critical production code
+- Complex changes requiring deep analysis
+
+❌ **Privacy-sensitive code**
+- Proprietary code
+- Client projects under NDA
+- Use [Ollama](/models/ollama) instead
+
+## Usage Examples
+
+### Basic Commit
+
+```bash
+# Stage your changes
+git add .
+
+# Generate commit message
+gitwhisper commit --model free
+
+# Review and apply the generated message
+```
+
+### With Ticket Prefix
+
+```bash
+# Add ticket number to commit
+gitwhisper commit --model free --prefix "TASK-123"
+```
+
+### Code Analysis
+
+```bash
+# Analyze your changes
+gitwhisper analyze --model free
+```
+
+### Auto-push
+
+```bash
+# Commit and push in one command
+gitwhisper commit --model free --auto-push
+```
+
+## Comparison with Other Models
+
+<Tabs>
+  <Tab title="vs Paid Models">
+    | Feature | Free Model | OpenAI/Claude | Gemini |
+    |---------|------------|---------------|--------|
+    | Cost | Free | ~$0.01-0.10/commit | ~$0.01-0.05/commit |
+    | Setup | None | API key needed | API key needed |
+    | Quality | Good | Excellent | Excellent |
+    | Speed | Fast | Fast | Fast |
+    | Limits | 60/hour | High/No limit | Generous |
+    | Privacy | Data sent to LLM7.io | Data sent to provider | Data sent to provider |
+  </Tab>
+  <Tab title="vs Ollama">
+    | Feature | Free Model | Ollama |
+    |---------|------------|--------|
+    | Setup | None | Requires installation |
+    | Cost | Free | Free |
+    | Privacy | Data sent externally | Completely local |
+    | Hardware | Not needed | Requires decent hardware |
+    | Speed | Fast | Depends on hardware |
+    | Quality | Good | Varies by model |
+    | Offline | No | Yes |
+  </Tab>
+</Tabs>
+
+## Important Considerations
+
+<Warning>
+  **Privacy**: Your code diffs are sent to LLM7.io servers. Don't use the free model for:
+  - Proprietary code under NDA
+  - Code containing secrets or credentials
+  - Highly sensitive projects
+  
+  For private code, use [Ollama](/models/ollama) instead.
+</Warning>
+
+<Warning>
+  **Availability**: The free model is powered by a third-party service. While generally reliable:
+  - Service availability is not guaranteed
+  - Limits may change
+  - Performance may vary
+  
+  For production use, consider a paid API provider.
+</Warning>
+
+## Quality Expectations
+
+The free model provides:
+
+✅ **Good quality commit messages**
+- Follows conventional commit format
+- Includes appropriate emojis
+- Understands common code patterns
+- Suitable for most use cases
+
+✅ **Decent code analysis**
+- Identifies major changes
+- Spots obvious issues
+- Provides helpful suggestions
+
+⚠️ **May not match premium models for:**
+- Very complex refactorings
+- Subtle bug fixes
+- Large multi-file changes
+- Domain-specific code
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Rate Limit Exceeded">
+    ```
+    Error: Rate limit exceeded
+    ```
+    
+    **Solution**: You've hit the hourly or per-minute limit. Either:
+    1. Wait a few minutes and retry
+    2. Use a different model temporarily:
+    ```bash
+    gitwhisper commit --model openai
+    ```
+    3. Switch to Ollama for unlimited local usage
+  </Accordion>
+  <Accordion title="Request Too Large">
+    ```
+    Error: Request exceeds 8k character limit
+    ```
+    
+    **Solution**: Your diff is too large. Try:
+    1. Stage fewer files:
+    ```bash
+    git add file1.js file2.js
+    gitwhisper commit --model free
+    ```
+    2. Use a different model for large changes:
+    ```bash
+    gitwhisper commit --model gemini
+    ```
+  </Accordion>
+  <Accordion title="Service Unavailable">
+    ```
+    Error: Service unavailable
+    ```
+    
+    **Solution**: LLM7.io may be down temporarily. Try:
+    1. Wait a few minutes
+    2. Use a different model:
+    ```bash
+    gitwhisper commit --model claude
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Upgrading from Free
+
+When you're ready to upgrade:
+
+### Option 1: Paid API Providers
+
+For better quality and higher limits:
+
+```bash
+# Set up OpenAI
+gitwhisper save-key --model openai --key "sk-..."
+gitwhisper set-defaults --model openai
+
+# Or Claude
+gitwhisper save-key --model claude --key "sk-ant-..."
+gitwhisper set-defaults --model claude
+```
+
+See [OpenAI](/models/openai) or [Claude](/models/claude) guides.
+
+### Option 2: Self-Hosted (Ollama)
+
+For unlimited private usage:
+
+```bash
+# Install Ollama
+brew install ollama  # macOS
+
+# Pull a model
+ollama pull llama3.2
+
+# Set as default
+gitwhisper set-defaults --model ollama
+```
+
+See [Ollama](/models/ollama) guide.
+
+## Best Practices
+
+1. **Use for appropriate projects**: Great for personal and open-source work
+2. **Respect rate limits**: Don't try to circumvent them
+3. **Keep diffs reasonable**: Stage related changes together
+4. **Have a backup plan**: Know how to switch models if needed
+5. **Consider upgrading**: For production work or high volume
+
+## Example Workflow
+
+```bash
+# 1. Make changes
+vim src/app.js
+
+# 2. Stage changes
+git add src/app.js
+
+# 3. Generate commit with free model
+gitwhisper commit --model free
+
+# 4. Review and confirm
+# [A] Apply commit message
+
+# 5. Push
+git push
+```
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Is it really free forever?">
+    The free model is provided by LLM7.io and is currently free to use within the rate limits. While we expect it to remain available, we can't guarantee it won't change in the future. For critical production use, consider a paid API provider.
+  </Accordion>
+  <Accordion title="How is it free?">
+    LLM7.io provides free access to AI models as a service. They may monetize through premium tiers or other means. GitWhisper simply integrates with their free tier.
+  </Accordion>
+  <Accordion title="Is my code private?">
+    No - your code diffs are sent to LLM7.io servers. For private code, use Ollama for completely local processing.
+  </Accordion>
+  <Accordion title="Can I use it for commercial projects?">
+    Yes, within the rate limits. However, for commercial projects, consider:
+    - Using Ollama for privacy
+    - Using paid APIs for better quality and support
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+
+<Card title="Try Ollama" icon="server" href="/models/ollama">
+  Self-host for unlimited private usage
+</Card>
+
+<Card title="Upgrade to OpenAI" icon="openai" href="/models/openai">
+  Better quality with GPT models
+</Card>
+
+<Card title="Upgrade to Claude" icon="message-bot" href="/models/claude">
+  Superior reasoning and code understanding
+</Card>
+
+<Card title="Compare Models" icon="scale-balanced" href="/models/overview">
+  See all available options
+</Card>
+
+</CardGroup>

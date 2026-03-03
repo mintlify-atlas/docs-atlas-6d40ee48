@@ -1,0 +1,421 @@
+---
+title: Default Settings
+description: Configure default model, variant, and behavior preferences for GitWhisper
+---
+
+GitWhisper allows you to configure default settings to streamline your workflow. Instead of specifying options with every command, set your preferences once and use them automatically.
+
+## Setting Defaults
+
+Use the `set-defaults` command to configure your preferred model and behavior:
+
+```bash
+# Interactive mode (recommended)
+gw set-defaults
+
+# Specify model directly
+gw set-defaults --model claude
+
+# Set model with specific variant
+gw set-defaults --model openai --model-variant gpt-4o
+
+# Configure multiple options at once
+gw set-defaults --model claude --confirm-commits --allow-emojis
+```
+
+## Configuration Options
+
+### Default Model
+
+Set which AI model to use by default:
+
+```bash
+gw set-defaults --model openai
+```
+
+Available models:
+- `claude` - Anthropic Claude
+- `openai` - OpenAI GPT models
+- `gemini` - Google Gemini
+- `grok` - xAI Grok
+- `llama` - Meta Llama
+- `deepseek` - DeepSeek
+- `github` - GitHub Copilot
+- `ollama` - Local models
+- `free` - Free tier (LLM7.io)
+
+### Model Variant
+
+Specify a particular version of the model:
+
+```bash
+# OpenAI variants
+gw set-defaults --model openai --model-variant gpt-4o
+gw set-defaults --model openai --model-variant gpt-4-turbo
+gw set-defaults --model openai --model-variant gpt-3.5-turbo
+
+# Claude variants
+gw set-defaults --model claude --model-variant claude-3-opus-20240229
+gw set-defaults --model claude --model-variant claude-3-sonnet-20240229
+gw set-defaults --model claude --model-variant claude-3-haiku-20240307
+
+# Gemini variants
+gw set-defaults --model gemini --model-variant gemini-pro
+gw set-defaults --model gemini --model-variant gemini-1.5-pro
+```
+
+<Note>
+If you don't specify a variant, GitWhisper will use the default variant for that model. Each model provider has its own recommended default.
+</Note>
+
+### Ollama Base URL
+
+For Ollama users, configure a custom base URL:
+
+```bash
+# Use default (http://localhost:11434)
+gw set-defaults --model ollama
+
+# Custom base URL
+gw set-defaults --model ollama --base-url http://your-server:11434
+```
+
+### Commit Confirmation
+
+Control whether to confirm commit messages before applying:
+
+```bash
+# Always confirm (recommended for new users)
+gw set-defaults --confirm-commits
+
+# Never confirm (auto-commit)
+gw set-defaults --no-confirm-commits
+```
+
+<Tip>
+Commit confirmation is recommended when you're first getting started with GitWhisper. Once you're comfortable with the generated messages, you can disable it for faster workflows.
+</Tip>
+
+### Emoji Support
+
+Enable or disable emojis in commit messages:
+
+```bash
+# Enable emojis (default)
+gw set-defaults --allow-emojis
+
+# Disable emojis
+gw set-defaults --no-allow-emojis
+```
+
+With emojis enabled:
+```
+✨ feat: Add user authentication system
+🐛 fix: Resolve memory leak in data processor
+📝 docs: Update API documentation
+```
+
+Without emojis:
+```
+feat: Add user authentication system
+fix: Resolve memory leak in data processor
+docs: Update API documentation
+```
+
+### Maximum Diff Size
+
+Set the maximum diff size (in characters) before GitWhisper prompts for interactive staging:
+
+```bash
+# Default: 50000 characters
+gw set-defaults --max-diff-size 50000
+
+# Larger projects
+gw set-defaults --max-diff-size 100000
+
+# Smaller threshold for more prompts
+gw set-defaults --max-diff-size 25000
+```
+
+<Info>
+When your changes exceed this threshold, GitWhisper will suggest using interactive staging (`git add -p`) to commit changes in smaller, more focused chunks.
+</Info>
+
+### Maximum File Size
+
+Set the maximum file size (in MB) before warning about large files:
+
+```bash
+# Default: 10 MB
+gw set-defaults --max-file-size 10
+
+# Allow larger files
+gw set-defaults --max-file-size 25
+
+# Stricter limit
+gw set-defaults --max-file-size 5
+```
+
+## Interactive Configuration
+
+Running `set-defaults` without arguments provides an interactive experience:
+
+```bash
+$ gw set-defaults
+? Select the AI model to set as default: › openai
+  claude
+  openai  ← selected
+  gemini
+  grok
+  llama
+  deepseek
+  github
+  ollama
+
+? Do you want to set a specific model variant for openai? › Yes
+? Enter the model variant: gpt-4o
+
+? Do you want to confirm commit messages before they are applied? › Yes
+
+✓ openai -> gpt-4o has been set as the default model for commits.
+✓ Commit confirmation enabled. All commits will require confirmation.
+```
+
+## Configuration File Structure
+
+Defaults are stored in `~/.git_whisper.yaml`:
+
+```yaml
+api_keys:
+  claude: sk-ant-xxx
+  openai: sk-xxx
+
+defaults:
+  model: openai
+  variant: gpt-4o
+
+confirm_commits: true
+allow_emojis: true
+always_add: false
+max_diff_size: 50000
+max_file_size: 10485760  # 10 MB in bytes
+
+ollamaBaseUrl: http://localhost:11434
+```
+
+## Viewing Current Defaults
+
+Check your current default settings:
+
+```bash
+# View all configuration
+gw show-config
+
+# View just the defaults
+gw show-defaults
+```
+
+Output:
+```
+Gitwhisper Configs:
+
+Defaults:
+  model:
+    openai
+  variant:
+    gpt-4o
+
+Confirm Commits:
+  true
+
+Allow Emojis:
+  true
+```
+
+## Clearing Defaults
+
+Remove your default model configuration:
+
+```bash
+gw clear-defaults
+```
+
+<Warning>
+Clearing defaults only removes the default model and variant. Other settings like `confirm_commits` and `allow_emojis` are preserved.
+</Warning>
+
+## Advanced Configuration
+
+<AccordionGroup>
+  <Accordion title="Always add changes before committing">
+    Configure GitWhisper to automatically stage unstaged changes:
+    
+    ```bash
+    gw always-add true
+    ```
+    
+    When enabled:
+    - If there are no staged changes, GitWhisper will automatically run `git add .`
+    - Useful for faster workflows when you typically commit all changes
+    
+    When disabled (default):
+    - GitWhisper will abort if there are no staged changes
+    - Gives you more control over what gets committed
+    
+    ```bash
+    # Enable
+    gw always-add true
+    
+    # Disable
+    gw always-add false
+    
+    # Interactive prompt
+    gw always-add
+    ```
+  </Accordion>
+
+  <Accordion title="Combining multiple settings">
+    Set multiple preferences in a single command:
+    
+    ```bash
+    gw set-defaults \
+      --model claude \
+      --model-variant claude-3-opus-20240229 \
+      --confirm-commits \
+      --allow-emojis \
+      --max-diff-size 100000 \
+      --max-file-size 20
+    ```
+    
+    This creates a complete configuration in one step.
+  </Accordion>
+
+  <Accordion title="Overriding defaults per command">
+    Even with defaults set, you can override them for individual commands:
+    
+    ```bash
+    # Your default is openai, but use claude for this commit
+    gw commit --model claude
+    
+    # Your default is gpt-4o, but use gpt-3.5-turbo
+    gw commit --model openai --model-variant gpt-3.5-turbo
+    
+    # Override confirmation setting
+    gw commit --no-confirm
+    ```
+    
+    Command-line arguments always take precedence over saved defaults.
+  </Accordion>
+
+  <Accordion title="Per-project configuration">
+    While GitWhisper uses a global configuration file (`~/.git_whisper.yaml`), you can use different settings per project:
+    
+    1. **Use environment variables in project-specific scripts:**
+       ```bash
+       # scripts/commit.sh
+       #!/bin/bash
+       export ANTHROPIC_API_KEY=$CLAUDE_KEY_PROJECT_A
+       gw commit --model claude --model-variant claude-3-opus
+       ```
+    
+    2. **Create shell aliases:**
+       ```bash
+       # ~/.bashrc or ~/.zshrc
+       alias gwc-prod='gw commit --model claude --confirm-commits'
+       alias gwc-dev='gw commit --model openai --no-confirm-commits'
+       ```
+    
+    3. **Use direnv for automatic environment setup:**
+       ```bash
+       # .envrc in project directory
+       export ANTHROPIC_API_KEY=sk-ant-project-specific
+       ```
+  </Accordion>
+
+  <Accordion title="Free disclaimer acceptance">
+    When using the free tier for the first time, GitWhisper stores your acceptance:
+    
+    ```yaml
+    free_disclaimer_accepted: true
+    ```
+    
+    This prevents the disclaimer from appearing on every use of the free tier.
+  </Accordion>
+</AccordionGroup>
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="For Teams" icon="users">
+    **Recommend consistent settings across the team:**
+    - Same model and variant for consistent commit styles
+    - Enable emojis or disable them for all team members
+    - Document your team's configuration in your project README
+  </Card>
+
+  <Card title="For Solo Developers" icon="user">
+    **Optimize for your workflow:**
+    - Disable `confirm-commits` once you trust the generations
+    - Enable `always-add` to skip the staging step
+    - Use faster models (gpt-3.5-turbo) for simple commits
+  </Card>
+
+  <Card title="For Open Source" icon="code-branch">
+    **Balance speed and quality:**
+    - Keep `confirm-commits` enabled to review messages
+    - Use emojis for better commit readability
+    - Set reasonable `max-diff-size` to avoid huge commits
+  </Card>
+
+  <Card title="For CI/CD" icon="robot">
+    **Use environment variables:**
+    - Don't rely on saved configuration in automated environments
+    - Set explicit models and variants in pipeline configs
+    - Disable confirmation prompts
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Default model not being used">
+    1. Check your configuration:
+       ```bash
+       gw show-config
+       ```
+    2. Ensure the `defaults` section exists in your config
+    3. Verify you have an API key saved for the default model
+    4. Command-line arguments override defaults - check if you're passing `--model`
+  </Accordion>
+
+  <Accordion title="Variant not recognized">
+    Some variants are model-specific. Verify the variant exists:
+    ```bash
+    # List available variants for a model
+    gw list-variants --model openai
+    ```
+    
+    If you specify an invalid variant, GitWhisper will use the model's default variant and show a warning.
+  </Accordion>
+
+  <Accordion title="Configuration not persisting">
+    1. Check file permissions:
+       ```bash
+       ls -la ~/.git_whisper.yaml
+       ```
+    2. Verify the file is writable
+    3. On Windows, ensure the file isn't marked as read-only
+    4. Check for disk space issues
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="API Keys" icon="key" href="/configuration/api-keys">
+    Learn how to manage API keys for different providers
+  </Card>
+  <Card title="Language Settings" icon="language" href="/configuration/language-settings">
+    Configure language preferences for commit messages
+  </Card>
+</CardGroup>

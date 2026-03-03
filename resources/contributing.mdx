@@ -1,0 +1,390 @@
+---
+title: Contributing
+description: Guide for contributing to GitWhisper
+---
+
+Thanks for contributing! We appreciate your help in making GitWhisper better.
+
+## Getting Started
+
+### 1. Fork and Clone
+
+Fork the repository and clone your fork locally:
+
+```bash
+git clone https://github.com/YOUR-USERNAME/gitwhisper.git
+cd gitwhisper
+```
+
+### 2. Create a Branch
+
+Create a branch with a descriptive name:
+
+- `feat/brief-description` for new features
+- `fix/brief-description` for bug fixes
+- `docs/brief-description` for documentation changes
+- `refactor/brief-description` for code refactoring
+
+Example:
+```bash
+git checkout -b feat/add-mistral-support
+```
+
+## Development Setup
+
+### Prerequisites
+
+- **Dart SDK** (^3.5.0)
+- **Git** installed and configured
+
+### Installation
+
+Install dependencies:
+
+```bash
+dart pub get
+```
+
+Activate the package locally for testing:
+
+```bash
+dart pub global activate --source=path .
+```
+
+Now you can test your changes using the `gitwhisper` command.
+
+## Making Changes
+
+### 1. Write Your Code
+
+Follow the existing code style and patterns:
+
+- Follow [Dart's official style guide](https://dart.dev/guides/language/effective-dart/style)
+- This project uses [very_good_analysis](https://pub.dev/packages/very_good_analysis) for linting
+- Add comments for complex logic
+- Keep functions focused and single-purpose
+
+### 2. Run Tests
+
+Ensure nothing breaks:
+
+```bash
+dart test
+```
+
+### 3. Run Analysis
+
+Run static analysis before committing:
+
+```bash
+dart analyze
+```
+
+Fix any warnings or errors that appear.
+
+### 4. Test Manually
+
+Test your changes in real scenarios:
+
+```bash
+# Test the CLI locally
+dart run bin/gitwhisper.dart commit --model openai
+
+# Test with different models
+dart run bin/gitwhisper.dart commit --model claude
+
+# Test other commands
+dart run bin/gitwhisper.dart list-models
+dart run bin/gitwhisper.dart analyze
+```
+
+### 5. Update Documentation
+
+If you're adding new features or changing behavior:
+
+- Update the README.md
+- Add/update code comments
+- Update relevant documentation pages
+- Add examples if applicable
+
+## Code Style
+
+### Dart Style Guide
+
+- Use `lowerCamelCase` for variables and functions
+- Use `UpperCamelCase` for classes and types
+- Use `lowercase_with_underscores` for libraries and files
+- Always use trailing commas for better diffs
+- Prefer `final` over `var` where possible
+
+### Linting
+
+This project uses very_good_analysis:
+
+```bash
+dart analyze
+```
+
+All code must pass analysis with no warnings or errors.
+
+### Example Code Pattern
+
+```dart
+/// Generates a commit message using the specified AI model.
+///
+/// Returns the generated message or throws an [ApiException] if the API call fails.
+Future<String> generateCommitMessage({
+  required String diff,
+  required String model,
+  String? apiKey,
+}) async {
+  // Implementation here
+}
+```
+
+## Commit Messages
+
+We use conventional commits with emojis (it's what GitWhisper does!):
+
+- `feat: ✨ Add new feature`
+- `fix: 🐛 Fix bug description`
+- `docs: 📚 Update documentation`
+- `test: 🧪 Add or update tests`
+- `refactor: ♻️ Refactor code`
+- `chore: 🔧 Update build or dependencies`
+- `perf: ⚡ Performance improvements`
+- `ci: 👷 CI/CD changes`
+
+**Pro tip:** Use GitWhisper itself to generate your commit messages!
+
+```bash
+gw commit
+```
+
+## Pull Request Process
+
+### 1. Open a PR
+
+Open a Pull Request against the `master` branch:
+
+- Use a clear, descriptive title
+- Follow the PR template if one exists
+- Link related issues using keywords (Fixes #123, Closes #456)
+
+### 2. Describe Your Changes
+
+Explain what you changed and why:
+
+```markdown
+## What
+
+Added support for Mistral AI models.
+
+## Why
+
+Mistral offers competitive pricing and performance for commit message generation.
+
+## How
+
+- Created `MistralGenerator` class
+- Added Mistral variants to `model_variants.dart`
+- Updated documentation
+- Added tests for Mistral integration
+
+## Testing
+
+- Tested with `mistral-large-latest` model
+- Verified API key handling
+- Confirmed error handling works correctly
+```
+
+### 3. Reference Related Issues
+
+Link to any related issues:
+
+- `Fixes #123` - Closes the issue when PR is merged
+- `Relates to #456` - References without closing
+- `Part of #789` - Part of a larger issue
+
+### 4. Ensure CI Passes
+
+All tests and checks must pass:
+
+- ✅ Tests pass
+- ✅ Analysis passes with no warnings
+- ✅ Code coverage maintained
+- ✅ Build succeeds
+
+### 5. Respond to Feedback
+
+Be open to suggestions and changes:
+
+- Respond to review comments promptly
+- Make requested changes
+- Explain your reasoning when necessary
+- Be respectful and professional
+
+### Hacktoberfest
+
+If your PR is for Hacktoberfest, mention `hacktoberfest` in the PR description.
+
+## What to Contribute
+
+We welcome contributions of all kinds:
+
+### 🐛 Bug Fixes
+
+Help us squash bugs! Check the [issues labeled "bug"](https://github.com/iamngoni/gitwhisper/labels/bug).
+
+### ✨ New Features
+
+Have an idea? Let's discuss it first:
+
+1. Open an issue describing your feature
+2. Wait for feedback from maintainers
+3. Start implementing once approved
+
+This prevents duplicate work and ensures alignment with project goals.
+
+### 📚 Documentation
+
+Improvements to:
+
+- README.md
+- Code comments
+- Examples and tutorials
+- API documentation
+
+### 🧪 Tests
+
+More test coverage is always appreciated:
+
+- Unit tests for new features
+- Integration tests
+- Edge case testing
+- Performance testing
+
+### 🌍 Translations
+
+Add support for more languages:
+
+- Update the `Language` enum in `lib/src/models/language.dart`
+- Add language name and country code
+- Test with the new language
+
+### 🤖 Model Support
+
+Add support for new AI models:
+
+1. Create a new generator class (e.g., `YourModelGenerator`)
+2. Implement the `CommitGenerator` interface
+3. Add model variants to `model_variants.dart`
+4. Update the factory in `commit_generator_factory.dart`
+5. Add tests
+6. Update documentation
+
+### Areas That Need Help
+
+- Additional test coverage
+- Performance optimizations
+- Better error handling and user feedback
+- Support for more AI models and variants
+- Integration with CI/CD platforms
+- Plugin support for more editors
+
+## Guidelines
+
+### Keep Changes Focused
+
+Small, incremental changes are easier to review:
+
+- ✅ One feature or fix per PR
+- ✅ Related changes grouped together
+- ❌ Mixing unrelated changes
+- ❌ Massive PRs with dozens of files
+
+### One Feature Per PR
+
+Don't bundle unrelated changes:
+
+```
+✅ Good: "feat: Add Mistral AI support"
+❌ Bad: "feat: Add Mistral support and fix bug in Claude generator and update README"
+```
+
+### Test Your Changes
+
+Ensure everything works:
+
+- Run all tests
+- Test manually with different scenarios
+- Test edge cases
+- Verify error handling
+
+### Be Respectful
+
+See [CODE_OF_CONDUCT.md](https://github.com/iamngoni/gitwhisper/blob/master/CODE_OF_CONDUCT.md) for community guidelines:
+
+- Be welcoming and inclusive
+- Be respectful of differing viewpoints
+- Accept constructive criticism gracefully
+- Focus on what's best for the community
+
+## Project Structure
+
+```
+gitwhisper/
+├── bin/
+│   └── main.dart              # Entry point
+├── lib/
+│   ├── src/
+│   │   ├── commands/          # CLI commands
+│   │   ├── models/            # AI model generators
+│   │   ├── exceptions/        # Error handling
+│   │   ├── git_utils.dart     # Git operations
+│   │   ├── config_manager.dart # Configuration
+│   │   └── ...
+│   └── gitwhisper.dart        # Library exports
+├── test/                      # Tests
+├── pubspec.yaml               # Dependencies
+└── README.md                  # Documentation
+```
+
+## Development Workflow
+
+1. **Fork and clone** the repository
+2. **Create a feature branch** from `master`
+3. **Make your changes** following our guidelines
+4. **Test thoroughly** (automated and manual)
+5. **Commit using conventional commits** (use GitWhisper!)
+6. **Push to your fork**
+7. **Open a Pull Request** with a clear description
+8. **Respond to reviews** and make requested changes
+9. **Celebrate** when your PR is merged! 🎉
+
+## Getting Help
+
+If you have questions or need help:
+
+- **Open an issue** for discussion
+- **Ask in your PR** if you need guidance during development
+- **Check existing issues** for similar questions
+- **Join discussions** in [GitHub Discussions](https://github.com/iamngoni/gitwhisper/discussions)
+
+## Resources
+
+- [Dart Language Tour](https://dart.dev/guides/language/language-tour)
+- [Effective Dart](https://dart.dev/guides/language/effective-dart)
+- [Dart Package Layout](https://dart.dev/tools/pub/package-layout)
+- [Conventional Commits](https://www.conventionalcommits.org/)
+- [How to Write a Git Commit Message](https://chris.beams.io/posts/git-commit/)
+
+## Recognition
+
+All contributors will be:
+
+- Added to the contributors list
+- Acknowledged in release notes
+- Celebrated in the community
+
+Thank you for contributing to GitWhisper! 🎉

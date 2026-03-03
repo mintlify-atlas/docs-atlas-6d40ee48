@@ -1,0 +1,384 @@
+---
+title: 'Gemini Models'
+description: 'Use Google Gemini models with advanced reasoning and massive context windows'
+icon: 'google'
+---
+
+Google's Gemini models offer cutting-edge AI capabilities with exceptional context windows, making them ideal for analyzing large codebases and complex changes.
+
+## Available Models
+
+GitWhisper supports the latest Gemini models:
+
+### Gemini 2.5 Series (Latest)
+
+The most advanced Gemini models with thinking capabilities:
+
+- **gemini-2.5-pro** - Advanced reasoning with thinking mode
+- **gemini-2.5-flash** - Faster variant updated Sep 2025
+- **gemini-2.5-flash-lite** - Most cost-efficient option
+- **gemini-2.5-flash-image** - Specialized for image generation
+- **gemini-2.5-computer-use** - Agent interaction capabilities
+
+### Gemini 2.0 Series
+
+- **gemini-2.0-flash** ⭐ (default) - Optimized for speed and performance
+- **gemini-2.0-flash-lite** - Lowest latency option
+
+### Gemini 1.5 Series
+
+Previous generation with proven reliability:
+
+- **gemini-1.5-pro-002** - Supports up to 2M tokens
+- **gemini-1.5-flash-002** - Supports up to 1M tokens
+- **gemini-1.5-flash-8b** - Most cost-effective option
+
+<Note>
+  The default model **gemini-2.0-flash** provides excellent performance for most use cases with fast response times.
+</Note>
+
+## Key Features
+
+### Massive Context Windows
+
+Gemini models stand out with industry-leading context sizes:
+
+- **Gemini 1.5 Pro**: Up to **2 million tokens**
+- **Gemini 1.5 Flash**: Up to **1 million tokens**
+- **Gemini 2.0/2.5**: Up to **1 million tokens**
+
+This means you can:
+- Analyze extremely large diffs
+- Process entire repositories
+- Understand complex multi-file changes
+
+### Thinking Mode (2.5 Pro)
+
+**gemini-2.5-pro** includes advanced reasoning with thinking mode:
+
+- Extended analysis of code changes
+- Deeper understanding of implications
+- More thorough commit message generation
+
+### Cost Efficiency
+
+Gemini models are among the most cost-effective options:
+
+- Competitive pricing per token
+- Large free tier available
+- Excellent value for performance
+
+## Usage
+
+### Basic Usage
+
+Generate commit messages with Gemini:
+
+```bash
+# Use default Gemini model (gemini-2.0-flash)
+gitwhisper commit --model gemini
+
+# Shorthand
+gw commit -m gemini
+```
+
+### Specific Variant
+
+Choose a specific Gemini model:
+
+```bash
+# Use Gemini 2.5 Pro with thinking mode
+gitwhisper commit --model gemini --model-variant gemini-2.5-pro
+
+# Use cost-efficient Flash Lite
+gitwhisper commit --model gemini --model-variant gemini-2.0-flash-lite
+
+# Use 1.5 Pro for massive context
+gitwhisper commit --model gemini --model-variant gemini-1.5-pro-002
+```
+
+### Set as Default
+
+Make Gemini your default model:
+
+```bash
+# Set Gemini as default
+gitwhisper set-defaults --model gemini
+
+# Set specific variant as default
+gitwhisper set-defaults --model gemini --model-variant gemini-2.5-pro
+```
+
+## API Key Setup
+
+You need a Google AI API key to use Gemini models. Get one at [makersuite.google.com/app/apikey](https://makersuite.google.com/app/apikey).
+
+<Tabs>
+  <Tab title="Save Permanently">
+    ```bash
+    gitwhisper save-key --model gemini --key "AIza..."
+    ```
+    The key is stored securely in `~/.git_whisper.yaml`
+  </Tab>
+  <Tab title="Environment Variable">
+    ```bash
+    export GEMINI_API_KEY="AIza..."
+    ```
+    Add to your `.bashrc` or `.zshrc` for persistence
+  </Tab>
+  <Tab title="Command Line">
+    ```bash
+    gitwhisper commit --model gemini --key "AIza..."
+    ```
+    Not recommended for security reasons
+  </Tab>
+</Tabs>
+
+## Model Comparison
+
+<Tabs>
+  <Tab title="Gemini 2.5 Series">
+    | Model | Capabilities | Speed | Context | Best For |
+    |-------|--------------|-------|---------|----------|
+    | 2.5 Pro | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | 1M tokens | Complex reasoning |
+    | 2.5 Flash | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | 1M tokens | Balanced use |
+    | 2.5 Flash Lite | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | 1M tokens | Cost efficiency |
+  </Tab>
+  <Tab title="Context Comparison">
+    | Model | Context Size | Use Case |
+    |-------|--------------|----------|
+    | Gemini 1.5 Pro | 2M tokens | Entire repository analysis |
+    | Gemini 1.5 Flash | 1M tokens | Large multi-file changes |
+    | Gemini 2.0 Flash | 1M tokens | Fast processing of large diffs |
+    | Gemini 2.5 Pro | 1M tokens | Advanced reasoning with context |
+  </Tab>
+  <Tab title="Speed & Cost">
+    | Model | Speed | Cost | Recommendation |
+    |-------|-------|------|----------------|
+    | 2.0 Flash Lite | ⚡⚡⚡ | 💰 | High-volume commits |
+    | 2.0 Flash | ⚡⚡⚡ | 💰 | Default choice |
+    | 2.5 Flash | ⚡⚡ | 💰💰 | Better quality |
+    | 2.5 Pro | ⚡ | 💰💰💰 | Maximum capability |
+  </Tab>
+</Tabs>
+
+## Use Cases
+
+### Large Codebase Analysis
+
+Gemini 1.5 Pro with its 2M token context is perfect for:
+
+```bash
+# Analyze massive refactoring across many files
+gitwhisper commit --model gemini --model-variant gemini-1.5-pro-002
+```
+
+- Repository-wide refactoring
+- Large-scale architectural changes
+- Multi-package updates
+
+### Fast Daily Commits
+
+Gemini 2.0 Flash provides excellent speed:
+
+```bash
+# Quick commits for routine changes
+gitwhisper commit --model gemini
+```
+
+- Rapid iteration during development
+- Small to medium changes
+- Cost-effective for high volume
+
+### Complex Reasoning
+
+Gemini 2.5 Pro with thinking mode excels at:
+
+```bash
+# Deep analysis of complex changes
+gitwhisper commit --model gemini --model-variant gemini-2.5-pro
+```
+
+- Subtle bug fixes
+- Complex business logic changes
+- Algorithm improvements
+
+## Code Analysis
+
+Gemini models provide comprehensive code analysis:
+
+```bash
+# Analyze with default model
+gitwhisper analyze --model gemini
+
+# Use thinking mode for deep analysis
+gitwhisper analyze --model gemini --model-variant gemini-2.5-pro
+
+# Analyze large changes with max context
+gitwhisper analyze --model gemini --model-variant gemini-1.5-pro-002
+```
+
+### Analysis Capabilities
+
+<Steps>
+  <Step title="Pattern Recognition">
+    Identifies patterns and anti-patterns in code
+  </Step>
+  <Step title="Impact Analysis">
+    Assesses how changes affect the broader system
+  </Step>
+  <Step title="Security Review">
+    Spots potential security issues
+  </Step>
+  <Step title="Performance Insights">
+    Suggests performance optimizations
+  </Step>
+</Steps>
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Choosing the Right Model">
+    **Use Gemini 1.5 Pro when:**
+    - Changes span dozens of files
+    - Need to understand entire repository context
+    - Working with monorepos
+    
+    **Use Gemini 2.5 Pro when:**
+    - Need deep reasoning about complex logic
+    - Changes involve subtle implications
+    - Want the highest quality analysis
+    
+    **Use Gemini 2.0 Flash when:**
+    - Standard daily commits
+    - Speed is important
+    - Cost-effective processing
+  </Accordion>
+  <Accordion title="Optimizing Context Usage">
+    Even with large context windows, organize your commits:
+    
+    ```bash
+    # Stage related changes together
+    git add src/auth/*.js
+    gitwhisper commit --model gemini
+    
+    # Then commit other changes separately
+    git add src/api/*.js
+    gitwhisper commit --model gemini
+    ```
+  </Accordion>
+  <Accordion title="Using Thinking Mode">
+    For maximum benefit from Gemini 2.5 Pro's thinking mode:
+    
+    - Use it for non-obvious changes
+    - Allow extra time for processing
+    - Review the detailed analysis
+    - Use for architecture decisions
+  </Accordion>
+</AccordionGroup>
+
+## Pricing
+
+Google AI offers competitive pricing:
+
+- **Free tier**: Generous quota for experimentation
+- **Input tokens**: Charged per 1K tokens
+- **Output tokens**: Typically lower rate
+- **Flash models**: Most cost-effective
+
+Check [Google AI pricing](https://ai.google.dev/pricing) for current rates.
+
+<Tip>
+  The free tier is often sufficient for individual developers and small teams.
+</Tip>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="API Key Issues">
+    ```
+    Error: Invalid API key
+    ```
+    
+    **Solution**: Verify your API key:
+    1. Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
+    2. Create or verify your API key
+    3. Save it:
+    ```bash
+    gitwhisper save-key --model gemini --key "AIza..."
+    ```
+  </Accordion>
+  <Accordion title="Quota Exceeded">
+    ```
+    Error: Quota exceeded
+    ```
+    
+    **Solution**: You've hit the free tier limit. Either:
+    - Wait for quota reset (usually daily)
+    - Upgrade to paid tier
+    - Use a different model temporarily
+  </Accordion>
+  <Accordion title="Model Not Available">
+    ```
+    Error: Model not found
+    ```
+    
+    **Solution**: Some models may not be available in all regions. Try:
+    ```bash
+    gitwhisper list-variants --model gemini
+    ```
+    To see available models.
+  </Accordion>
+</AccordionGroup>
+
+## Advantages Over Other Models
+
+<CardGroup cols={2}>
+
+<Card title="vs OpenAI" icon="balance-scale">
+  - Gemini: Much larger context (1-2M vs 128K)
+  - Gemini: More cost-effective
+  - OpenAI: Slightly more mature ecosystem
+</Card>
+
+<Card title="vs Claude" icon="balance-scale">
+  - Gemini: 10x larger context (2M vs 200K)
+  - Gemini: Better pricing
+  - Claude: Superior reasoning in some cases
+</Card>
+
+<Card title="vs Ollama" icon="balance-scale">
+  - Gemini: State-of-the-art capabilities
+  - Ollama: Complete privacy (local)
+  - Gemini: No hardware requirements
+</Card>
+
+<Card title="vs Free Model" icon="balance-scale">
+  - Gemini: Much higher quality
+  - Free Model: No API key needed
+  - Gemini: More reliable and consistent
+</Card>
+
+</CardGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+
+<Card title="All Variants" icon="list" href="/models/variants">
+  Complete list of Gemini model variants
+</Card>
+
+<Card title="OpenAI Models" icon="openai" href="/models/openai">
+  Compare with OpenAI models
+</Card>
+
+<Card title="Code Analysis" icon="magnifying-glass-chart" href="/features/code-analysis">
+  Deep dive into analysis features
+</Card>
+
+<Card title="Configuration" icon="gear" href="/configuration/api-keys">
+  API key setup guide
+</Card>
+
+</CardGroup>

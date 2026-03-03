@@ -1,0 +1,210 @@
+---
+title: Ticket Prefix Integration
+description: Learn how to use ticket numbers and prefixes with GitWhisper for seamless project management integration
+---
+
+GitWhisper supports ticket number prefixing to integrate your commits with project management tools like Jira, Linear, GitHub Issues, and more.
+
+## Basic Usage
+
+Add a ticket prefix to your commit message using the `--prefix` flag:
+
+```bash
+gitwhisper commit --prefix "JIRA-123"
+gw commit --prefix "PROJ-456"
+gw commit -p "GH-789"
+```
+
+## How Prefix Formatting Works
+
+GitWhisper intelligently formats prefixes based on the number of commit messages generated, as documented in the README and implemented in `commit_utils.dart`.
+
+### Single Commit Message
+
+For a **single commit message**, the prefix appears with an arrow (`->`) before the commit type:
+
+```bash
+$ gw commit --prefix "JIRA-123"
+
+# Generated commit:
+JIRA-123 -> fix: 🐛 Fix login validation, handle empty input
+```
+
+The format is:
+```
+<PREFIX> -> <type>: <emoji> <description>
+```
+
+### Multiple Commit Messages
+
+For **multiple unrelated commit messages**, the prefix appears at the top without the arrow:
+
+```bash
+$ gw commit --prefix "PROJ-456"
+
+# Generated commits:
+PROJ-456
+feat: ✨ Add dark mode toggle
+fix: 🐛 Resolve token refresh bug
+docs: 📚 Update installation guide
+```
+
+Each message starts normally after the prefix header, maintaining clean formatting.
+
+## Common Use Cases
+
+### Jira Integration
+
+```bash
+# Link commit to Jira ticket
+gw commit --prefix "PROJ-1234"
+
+# Result:
+PROJ-1234 -> feat: ✨ Add user authentication system
+```
+
+### GitHub Issues
+
+```bash
+# Reference GitHub issue
+gw commit --prefix "#42"
+
+# Result:
+#42 -> fix: 🐛 Resolve memory leak in cache manager
+```
+
+### Linear Tasks
+
+```bash
+# Link to Linear task
+gw commit --prefix "ENG-567"
+
+# Result:
+ENG-567 -> refactor: ♻️ Simplify API response handling
+```
+
+### Azure DevOps Work Items
+
+```bash
+# Link to Azure DevOps work item
+gw commit --prefix "AB#890"
+
+# Result:
+AB#890 -> perf: ⚡ Optimize database query performance
+```
+
+## AI Prompt Integration
+
+When you provide a prefix, GitWhisper includes special instructions in the AI prompt to ensure consistent formatting.
+
+From `commit_utils.dart:42-53`, the prompt includes:
+
+```
+TICKET PREFIX REQUIREMENT:
+You MUST include the ticket prefix "<PREFIX> ->" at the start of EVERY commit message.
+
+Format for commit messages with prefix:
+<PREFIX> -> fix: 🐛 Fix login validation, handle empty input
+<PREFIX> -> feat: ✨ Add dark mode toggle, persist setting
+
+The prefix "<PREFIX> ->" must appear BEFORE the commit type on every line.
+```
+
+This ensures the AI model consistently applies the prefix in the correct format.
+
+## Combining with Other Flags
+
+Prefixes work seamlessly with all GitWhisper features:
+
+### With Auto-Push
+
+```bash
+gw commit --prefix "JIRA-123" --auto-push
+gw commit -p "JIRA-123" -a
+```
+
+### With Git Tags
+
+```bash
+gw commit --prefix "RELEASE-100" --tag v1.0.0
+gw commit -p "RELEASE-100" -t v1.0.0
+```
+
+### With Specific Models
+
+```bash
+gw commit --prefix "PROJ-456" --model claude --model-variant claude-3-5-sonnet-20241022
+gw commit -p "PROJ-456" -m openai -v gpt-4o
+```
+
+### With Interactive Confirmation
+
+```bash
+gw commit --prefix "TASK-789" --confirm
+gw commit -p "TASK-789" -c
+```
+
+## Multi-Language Support
+
+Prefixes work with GitWhisper's multi-language support. The prefix format remains consistent while the description is translated:
+
+**English:**
+```
+JIRA-123 -> feat: ✨ Add user profile page
+```
+
+**Spanish:**
+```
+JIRA-123 -> feat: ✨ Agregar página de perfil de usuario
+```
+
+**French:**
+```
+JIRA-123 -> feat: ✨ Ajouter une page de profil utilisateur
+```
+
+## Best Practices
+
+<Tip>
+**Use consistent prefix formats**: Stick to your team's naming convention (e.g., always `PROJ-123` not `proj-123` or `PROJ123`).
+</Tip>
+
+<Tip>
+**Combine with branch naming**: Use the same ticket prefix in your branch names for complete traceability:
+```bash
+git checkout -b JIRA-123-add-authentication
+gw commit --prefix "JIRA-123"
+```
+</Tip>
+
+<Note>
+**Automation-friendly**: Many project management tools automatically link commits to tickets when they detect the ticket ID in the commit message. GitWhisper's prefix format ensures this works reliably.
+</Note>
+
+## Workflow Example
+
+Here's a complete workflow using ticket prefixes:
+
+```bash
+# 1. Create a feature branch with ticket number
+git checkout -b JIRA-456-user-dashboard
+
+# 2. Make your changes
+# ... edit files ...
+
+# 3. Stage changes
+git add .
+
+# 4. Generate commit with ticket prefix
+gw commit --prefix "JIRA-456"
+
+# 5. GitWhisper generates:
+# JIRA-456 -> feat: ✨ Add user dashboard with analytics
+
+# 6. Push to remote (or use --auto-push)
+git push origin JIRA-456-user-dashboard
+```
+
+<Note>
+The ticket prefix is included in the commit message but not in the git tag when using the `--tag` flag. Tags remain version-focused (e.g., `v1.0.0`) while commit messages include project tracking information.
+</Note>

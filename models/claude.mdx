@@ -1,0 +1,323 @@
+---
+title: 'Claude Models'
+description: 'Use Anthropic Claude models for intelligent commit message generation'
+icon: 'message-bot'
+---
+
+Claude models from Anthropic are renowned for their strong reasoning capabilities, nuanced understanding of code, and adherence to instructions.
+
+## Available Models
+
+GitWhisper supports the latest Claude models across multiple generations:
+
+### Claude 4 Series (Latest)
+
+The most advanced Claude models with superior capabilities:
+
+- **claude-sonnet-4-5-20250929** ⭐ (default) - Best balance of intelligence and speed
+- **claude-sonnet-4-20250514** - Stable Sonnet 4 release
+- **claude-opus-4-1-20250805** - Enhanced Opus with extended context
+- **claude-opus-4-20250514** - Most powerful Claude model
+
+### Claude 3.7 Series
+
+Recent generation with excellent performance:
+
+- **claude-3-7-sonnet-20250219** - Latest 3.7 release
+- **claude-3-7-sonnet-latest** - Always uses newest 3.7 version
+
+### Claude 3.5 Series
+
+Previous generation, still highly capable:
+
+- **claude-3-5-sonnet-latest** - Auto-updates to latest 3.5
+- **claude-3-5-sonnet-20241022** - October 2024 release
+- **claude-3-5-sonnet-20240620** - June 2024 release
+
+### Claude 3 Series
+
+First generation Claude 3 models:
+
+- **claude-3-opus-20240307** - Most powerful Claude 3
+- **claude-3-sonnet-20240307** - Balanced Claude 3
+- **claude-3-haiku-20240307** - Fast and efficient
+
+<Note>
+  The default model **claude-sonnet-4-5-20250929** provides exceptional quality and is recommended for most use cases.
+</Note>
+
+## Usage
+
+### Basic Usage
+
+Generate commit messages with Claude:
+
+```bash
+# Use default Claude model (claude-sonnet-4-5-20250929)
+gitwhisper commit --model claude
+
+# Shorthand
+gw commit -m claude
+```
+
+### Specific Variant
+
+Choose a specific Claude model:
+
+```bash
+# Use Claude Opus 4 for maximum quality
+gitwhisper commit --model claude --model-variant claude-opus-4-20250514
+
+# Use Claude Haiku for speed
+gitwhisper commit --model claude --model-variant claude-3-haiku-20240307
+```
+
+### Set as Default
+
+Make Claude your default model:
+
+```bash
+# Set Claude as default
+gitwhisper set-defaults --model claude
+
+# Set specific variant as default
+gitwhisper set-defaults --model claude --model-variant claude-opus-4-20250514
+```
+
+## API Key Setup
+
+You need an Anthropic API key to use Claude models. Get one at [console.anthropic.com](https://console.anthropic.com).
+
+<Tabs>
+  <Tab title="Save Permanently">
+    ```bash
+    gitwhisper save-key --model claude --key "sk-ant-..."
+    ```
+    The key is stored securely in `~/.git_whisper.yaml`
+  </Tab>
+  <Tab title="Environment Variable">
+    ```bash
+    export ANTHROPIC_API_KEY="sk-ant-..."
+    ```
+    Add to your `.bashrc` or `.zshrc` for persistence
+  </Tab>
+  <Tab title="Command Line">
+    ```bash
+    gitwhisper commit --model claude --key "sk-ant-..."
+    ```
+    Not recommended for security reasons
+  </Tab>
+</Tabs>
+
+## Model Comparison
+
+<Tabs>
+  <Tab title="Claude 4 Series">
+    | Model | Intelligence | Speed | Cost | Best For |
+    |-------|--------------|-------|------|----------|
+    | Opus 4 | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | 💰💰💰 | Complex analysis |
+    | Sonnet 4.5 | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | 💰💰 | Balanced choice |
+    | Sonnet 4 | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | 💰💰 | Everyday use |
+  </Tab>
+  <Tab title="Across Generations">
+    | Generation | Capabilities | Context | Released |
+    |------------|--------------|---------|----------|
+    | Claude 4 | Best reasoning & code understanding | 200K tokens | 2025 |
+    | Claude 3.7 | Enhanced performance | 200K tokens | Early 2025 |
+    | Claude 3.5 | Strong general capability | 200K tokens | 2024 |
+    | Claude 3 | Original release | 200K tokens | Mar 2024 |
+  </Tab>
+</Tabs>
+
+## Key Features
+
+### Superior Code Understanding
+
+Claude models excel at:
+
+- **Contextual awareness** - Understanding how changes fit into the broader codebase
+- **Intent recognition** - Identifying the purpose behind code modifications
+- **Nuanced descriptions** - Generating detailed yet concise commit messages
+- **Following conventions** - Adhering to conventional commit formats
+
+### Large Context Window
+
+All Claude models support **200K token context windows**, allowing them to:
+
+- Analyze large diffs across many files
+- Understand relationships between changes
+- Maintain consistency in commit message style
+
+### Extended Thinking
+
+Claude 4 models can engage in extended reasoning, making them particularly good at:
+
+- Complex refactoring analysis
+- Identifying architectural changes
+- Understanding subtle bug fixes
+
+## Code Analysis
+
+Claude models provide exceptional code analysis:
+
+```bash
+# Analyze staged changes
+gitwhisper analyze --model claude
+
+# Use Opus 4 for deep analysis
+gitwhisper analyze --model claude --model-variant claude-opus-4-20250514
+```
+
+### Analysis Output Includes
+
+<Steps>
+  <Step title="Change Summary">
+    High-level overview of what changed
+  </Step>
+  <Step title="Impact Assessment">
+    How changes affect the codebase
+  </Step>
+  <Step title="Issue Detection">
+    Potential bugs or problems identified
+  </Step>
+  <Step title="Recommendations">
+    Suggestions for improvements
+  </Step>
+</Steps>
+
+## Model Selection Guide
+
+<AccordionGroup>
+  <Accordion title="When to Use Opus 4">
+    Choose **claude-opus-4-20250514** when:
+    - Working with complex, multi-layered changes
+    - Need deep understanding of code implications
+    - Dealing with subtle or nuanced modifications
+    - Maximum quality is more important than speed
+  </Accordion>
+  <Accordion title="When to Use Sonnet 4.5">
+    Choose **claude-sonnet-4-5-20250929** (default) when:
+    - You want the best balance of quality and speed
+    - Working with typical development workflows
+    - Need reliable, consistent results
+    - This is the recommended choice for most users
+  </Accordion>
+  <Accordion title="When to Use Haiku">
+    Choose **claude-3-haiku-20240307** when:
+    - Speed is critical
+    - Working with simple, straightforward changes
+    - Need to minimize costs
+    - Dealing with high-volume commits
+  </Accordion>
+</AccordionGroup>
+
+## Multi-Language Support
+
+Claude models work particularly well with GitWhisper's multi-language support:
+
+```bash
+# Change language to Spanish
+gitwhisper change-language
+# Select: Spanish
+
+# Generate Spanish commit message
+gitwhisper commit --model claude
+# Output: feat: ✨ Agregar autenticación de usuario
+```
+
+Claude maintains high quality across all supported languages.
+
+## Pricing
+
+Anthropic charges based on input and output tokens. Typical usage:
+
+- Small commits: ~500-1,000 input tokens
+- Medium commits: ~1,500-3,000 input tokens
+- Large commits: ~5,000+ input tokens
+- Output: Usually 50-150 tokens per commit message
+
+Check [Anthropic's pricing page](https://anthropic.com/pricing) for current rates.
+
+<Warning>
+  Claude 4 Opus models are the most expensive but offer the highest quality. Use Sonnet for better cost efficiency.
+</Warning>
+
+## Tips for Best Results
+
+1. **Stage related changes together** - Claude understands relationships between files
+2. **Use meaningful file names** - Helps Claude understand the context
+3. **Keep commits focused** - Even powerful models benefit from focused changes
+4. **Use prefixes** - Add ticket numbers for better project tracking
+
+```bash
+gitwhisper commit --model claude --prefix "PROJ-456"
+```
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Invalid API Key">
+    ```
+    Error: Invalid API key
+    ```
+    
+    **Solution**: Ensure you're using a valid Anthropic API key:
+    ```bash
+    gitwhisper save-key --model claude --key "sk-ant-..."
+    ```
+  </Accordion>
+  <Accordion title="Rate Limit">
+    ```
+    Error: Rate limit exceeded
+    ```
+    
+    **Solution**: Anthropic has rate limits per tier. Wait or upgrade your plan.
+  </Accordion>
+  <Accordion title="Context Length Exceeded">
+    ```
+    Error: Context length exceeded
+    ```
+    
+    **Solution**: Even with 200K context, extremely large diffs may hit limits. Stage changes in smaller groups.
+  </Accordion>
+</AccordionGroup>
+
+## Comparison with Other Models
+
+<CardGroup cols={2}>
+
+<Card title="vs OpenAI" icon="balance-scale">
+  - Claude: Better at nuanced understanding
+  - OpenAI: Slightly faster response times
+  - Both: Excellent for code analysis
+</Card>
+
+<Card title="vs Gemini" icon="balance-scale">
+  - Claude: Superior reasoning
+  - Gemini: Larger context (2M tokens)
+  - Claude: More consistent quality
+</Card>
+
+</CardGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+
+<Card title="OpenAI Models" icon="openai" href="/models/openai">
+  Compare with OpenAI's GPT models
+</Card>
+
+<Card title="All Variants" icon="list" href="/models/variants">
+  View complete list of Claude variants
+</Card>
+
+<Card title="Code Analysis" icon="magnifying-glass-chart" href="/features/code-analysis">
+  Deep dive into code analysis features
+</Card>
+
+<Card title="Configuration" icon="gear" href="/configuration/api-keys">
+  Learn more about API key setup
+</Card>
+
+</CardGroup>
