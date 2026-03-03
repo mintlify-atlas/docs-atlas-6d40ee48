@@ -1,0 +1,319 @@
+---
+title: 'DeepSeek'
+description: 'Use DeepSeek models for advanced reasoning and hybrid AI capabilities'
+icon: 'brain'
+---
+
+DeepSeek is a family of advanced AI models from DeepSeek, Inc., featuring hybrid reasoning capabilities and experimental features. GitWhisper supports all DeepSeek variants for commit message generation and code analysis.
+
+## Available Models
+
+GitWhisper supports the following DeepSeek model variants:
+
+### Latest Models
+
+- **deepseek-chat** ⭐ (default) - Balanced general-purpose model
+- **deepseek-v3.2-exp** - Latest experimental model with cutting-edge features
+- **deepseek-v3.1** - Hybrid reasoning model with improved performance
+
+### Specialized Models
+
+- **deepseek-v3.1-terminus** - Optimized terminus variant
+- **deepseek-r1-0528** - Upgraded reasoning model (May 2028 release)
+- **deepseek-v3-0324** - Improved post-training model (March 2024)
+- **deepseek-reasoner** - Specialized reasoning engine
+
+<Note>
+  The default model **deepseek-chat** provides reliable performance for most development workflows.
+</Note>
+
+## Setup
+
+<Steps>
+  <Step title="Get API Key">
+    Obtain your DeepSeek API key from DeepSeek's platform.
+  </Step>
+  
+  <Step title="Save API Key">
+    Save your API key using GitWhisper:
+    
+    ```bash
+    gitwhisper save-key --model deepseek --key "your-deepseek-api-key"
+    ```
+    
+    Or set it as an environment variable:
+    
+    ```bash
+    export DEEPSEEK_API_KEY="your-deepseek-api-key"
+    ```
+    
+    <Note>
+      For DeepSeek, the environment variable can also be `ANTHROPIC_API_KEY` or set via the config file.
+    </Note>
+  </Step>
+  
+  <Step title="Use DeepSeek">
+    Generate commits with DeepSeek:
+    
+    ```bash
+    gitwhisper commit --model deepseek
+    ```
+  </Step>
+</Steps>
+
+## Usage Examples
+
+<CodeGroup>
+
+```bash Default Model
+# Use default DeepSeek model (deepseek-chat)
+gitwhisper commit --model deepseek
+gw commit -m deepseek
+```
+
+```bash Latest Experimental
+# Use the cutting-edge experimental model
+gitwhisper commit --model deepseek --model-variant deepseek-v3.2-exp
+gw commit -m deepseek -v deepseek-v3.2-exp
+```
+
+```bash Hybrid Reasoning
+# Use the hybrid reasoning model
+gitwhisper commit --model deepseek --model-variant deepseek-v3.1
+gw commit -m deepseek -v deepseek-v3.1
+```
+
+```bash Specialized Reasoner
+# Use the specialized reasoning engine
+gitwhisper commit --model deepseek --model-variant deepseek-reasoner
+gw commit -m deepseek -v deepseek-reasoner
+```
+
+```bash Set as Default
+# Set DeepSeek hybrid reasoning as default
+gitwhisper set-defaults --model deepseek --model-variant deepseek-v3.1
+gw set-defaults -m deepseek -v deepseek-v3.1
+```
+
+```bash Code Analysis
+# Analyze changes with DeepSeek reasoner
+gitwhisper analyze --model deepseek --model-variant deepseek-reasoner
+gw analyze -m deepseek -v deepseek-reasoner
+```
+
+</CodeGroup>
+
+## Model Comparison
+
+<Tabs>
+  <Tab title="Capabilities">
+    | Model | Best For | Reasoning | Stability | Release |
+    |-------|----------|-----------|-----------|---------|
+    | deepseek-chat | General use | Good | Stable | Production |
+    | deepseek-v3.2-exp | Cutting-edge | Excellent | Experimental | Latest |
+    | deepseek-v3.1 | Hybrid tasks | Excellent | Stable | Production |
+    | deepseek-reasoner | Complex logic | Superior | Stable | Specialized |
+    | deepseek-r1-0528 | Advanced reasoning | Excellent | Stable | May 2028 |
+    | deepseek-v3-0324 | Improved training | Very Good | Stable | March 2024 |
+  </Tab>
+  
+  <Tab title="Use Cases">
+    **DeepSeek Chat**
+    - Daily development work
+    - Standard commits
+    - Reliable production use
+    
+    **DeepSeek V3.2 Exp**
+    - Testing latest features
+    - Experimental workflows
+    - Cutting-edge capabilities
+    
+    **DeepSeek V3.1**
+    - Hybrid reasoning tasks
+    - Complex analysis
+    - Multi-step logic
+    
+    **DeepSeek Reasoner**
+    - Complex architectural decisions
+    - Advanced code analysis
+    - Multi-file refactoring
+  </Tab>
+  
+  <Tab title="Stability">
+    **Production-Ready**
+    - deepseek-chat ✓
+    - deepseek-v3.1 ✓
+    - deepseek-reasoner ✓
+    - deepseek-r1-0528 ✓
+    
+    **Experimental**
+    - deepseek-v3.2-exp (bleeding edge)
+    
+    **Legacy**
+    - deepseek-v3-0324 (stable, older)
+    - deepseek-v3.1-terminus (specialized)
+  </Tab>
+</Tabs>
+
+## Features
+
+### Hybrid Reasoning
+
+DeepSeek V3.1 excels at hybrid reasoning tasks:
+
+```bash
+# Use hybrid reasoning for complex changes
+gitwhisper commit --model deepseek --model-variant deepseek-v3.1
+```
+
+### Advanced Analysis
+
+The DeepSeek Reasoner is optimized for deep code analysis:
+
+```bash
+# Analyze complex refactoring
+gitwhisper analyze --model deepseek --model-variant deepseek-reasoner
+```
+
+### Experimental Features
+
+Try the latest capabilities with V3.2 experimental:
+
+```bash
+# Use cutting-edge features
+gitwhisper commit --model deepseek --model-variant deepseek-v3.2-exp
+```
+
+## Configuration
+
+### Set Default Variant
+
+```bash
+# Set chat as default (recommended)
+gitwhisper set-defaults --model deepseek --model-variant deepseek-chat
+
+# Set hybrid reasoning as default
+gitwhisper set-defaults --model deepseek --model-variant deepseek-v3.1
+
+# Set reasoner as default (for complex projects)
+gitwhisper set-defaults --model deepseek --model-variant deepseek-reasoner
+```
+
+### API Key Management
+
+<Accordion title="Using Environment Variables">
+  Add to your shell configuration:
+  
+  ```bash
+  export DEEPSEEK_API_KEY="your-deepseek-api-key"
+  ```
+</Accordion>
+
+<Accordion title="Using Saved Configuration">
+  Save permanently with GitWhisper:
+  
+  ```bash
+  gitwhisper save-key --model deepseek --key "your-deepseek-api-key"
+  ```
+  
+  This stores the key in `~/.git_whisper.yaml`
+</Accordion>
+
+<Accordion title="Per-Command Key">
+  Pass key directly to the command:
+  
+  ```bash
+  gitwhisper commit --model deepseek --key "your-deepseek-api-key"
+  ```
+</Accordion>
+
+## Best Practices
+
+<Tip>
+  Use **deepseek-chat** for daily development work. It's stable, fast, and provides good quality results.
+</Tip>
+
+<Warning>
+  The **deepseek-v3.2-exp** model is experimental and may have breaking changes. Use it for testing new features, not production workflows.
+</Warning>
+
+<Info>
+  For complex architectural analysis, consider using **deepseek-reasoner** or **deepseek-v3.1** for superior reasoning capabilities.
+</Info>
+
+## When to Use DeepSeek
+
+### Choose DeepSeek When:
+
+- You need advanced reasoning capabilities
+- Working on complex multi-file refactoring
+- Analyzing architectural decisions
+- Testing experimental AI features
+- Want hybrid reasoning approaches
+
+### Alternative Models:
+
+- **Simple commits**: Use [Free Model](/models/free-model) or [OpenAI GPT-4o-mini](/models/openai)
+- **Best quality**: Use [Claude Opus 4](/models/claude) or [OpenAI GPT-5](/models/openai)
+- **Privacy**: Use [Ollama](/models/ollama) for self-hosted models
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="API Key Not Found">
+    Ensure your DeepSeek API key is properly configured:
+    
+    ```bash
+    # Check configuration
+    gitwhisper show-config
+    
+    # Save key if missing
+    gitwhisper save-key --model deepseek --key "your-key"
+    ```
+  </Accordion>
+  
+  <Accordion title="Invalid Model Variant">
+    Verify the variant name is correct:
+    
+    ```bash
+    # List available variants
+    gitwhisper list-variants --model deepseek
+    ```
+  </Accordion>
+  
+  <Accordion title="Experimental Model Issues">
+    If experiencing issues with `deepseek-v3.2-exp`:
+    
+    - Switch to stable `deepseek-chat` or `deepseek-v3.1`
+    - Check for API updates from DeepSeek
+    - Report issues to DeepSeek support
+  </Accordion>
+  
+  <Accordion title="Reasoning Takes Too Long">
+    If the reasoner models are too slow:
+    
+    - Use `deepseek-chat` for faster responses
+    - Reserve `deepseek-reasoner` for complex analysis only
+    - Consider using smaller models for simple commits
+  </Accordion>
+</AccordionGroup>
+
+## Related Resources
+
+<CardGroup cols={2}>
+  <Card title="All Variants" icon="list" href="/models/variants">
+    See complete list of DeepSeek model variants
+  </Card>
+  
+  <Card title="Model Overview" icon="brain-circuit" href="/models/overview">
+    Compare all supported AI models
+  </Card>
+  
+  <Card title="Code Analysis" icon="magnifying-glass-chart" href="/features/code-analysis">
+    Use DeepSeek for advanced code analysis
+  </Card>
+  
+  <Card title="Configuration" icon="gear" href="/configuration/api-keys">
+    Learn more about API key management
+  </Card>
+</CardGroup>

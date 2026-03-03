@@ -78,6 +78,9 @@
               "models/openai",
               "models/claude",
               "models/gemini",
+              "models/grok",
+              "models/llama",
+              "models/deepseek",
               "models/github",
               "models/ollama",
               "models/free-model"

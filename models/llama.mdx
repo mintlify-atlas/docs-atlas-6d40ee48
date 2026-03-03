@@ -1,0 +1,315 @@
+---
+title: 'Llama (Meta)'
+description: 'Use Meta Llama models for flexible and powerful AI-driven commits'
+icon: 'meta'
+---
+
+Llama is Meta's family of open-source large language models. GitWhisper supports all Llama model variants, offering flexibility and strong performance for commit message generation and code analysis.
+
+## Available Models
+
+GitWhisper supports the following Llama model variants:
+
+### Llama 3.3 Series
+
+- **llama-3.3-70b-instruct** - Latest 70B parameter model with improved capabilities
+
+### Llama 3.2 Series
+
+- **llama-3.2-1b-instruct** - Ultra-lightweight 1B model
+- **llama-3.2-3b-instruct** - Compact 3B model for efficient deployment
+
+### Llama 3.1 Series
+
+- **llama-3.1-405b-instruct** - Massive 405B parameter model (best quality)
+- **llama-3.1-70b-instruct** - Balanced 70B model
+- **llama-3.1-8b-instruct** - Efficient 8B model
+
+### Llama 3 Series
+
+- **llama-3-70b-instruct** ⭐ (default) - Production-ready 70B model
+- **llama-3-8b-instruct** - Fast and efficient 8B model
+
+<Note>
+  The default model **llama-3-70b-instruct** provides excellent performance for most development workflows.
+</Note>
+
+## Setup
+
+<Steps>
+  <Step title="Get API Key">
+    Obtain your Llama API key from Meta's platform or a Llama provider.
+  </Step>
+  
+  <Step title="Save API Key">
+    Save your API key using GitWhisper:
+    
+    ```bash
+    gitwhisper save-key --model llama --key "your-llama-api-key"
+    ```
+    
+    Or set it as an environment variable:
+    
+    ```bash
+    export LLAMA_API_KEY="your-llama-api-key"
+    ```
+  </Step>
+  
+  <Step title="Use Llama">
+    Generate commits with Llama:
+    
+    ```bash
+    gitwhisper commit --model llama
+    ```
+  </Step>
+</Steps>
+
+## Usage Examples
+
+<CodeGroup>
+
+```bash Default Model
+# Use default Llama model (llama-3-70b-instruct)
+gitwhisper commit --model llama
+gw commit -m llama
+```
+
+```bash Llama 3.3 70B
+# Use the latest 70B model
+gitwhisper commit --model llama --model-variant llama-3.3-70b-instruct
+gw commit -m llama -v llama-3.3-70b-instruct
+```
+
+```bash Llama 3.1 405B
+# Use the massive 405B model for best quality
+gitwhisper commit --model llama --model-variant llama-3.1-405b-instruct
+gw commit -m llama -v llama-3.1-405b-instruct
+```
+
+```bash Llama 3.2 3B
+# Use compact model for fast responses
+gitwhisper commit --model llama --model-variant llama-3.2-3b-instruct
+gw commit -m llama -v llama-3.2-3b-instruct
+```
+
+```bash Set as Default
+# Set Llama 3.1 70B as your default model
+gitwhisper set-defaults --model llama --model-variant llama-3.1-70b-instruct
+gw set-defaults -m llama -v llama-3.1-70b-instruct
+```
+
+```bash Code Analysis
+# Analyze changes with Llama 3.1 405B
+gitwhisper analyze --model llama --model-variant llama-3.1-405b-instruct
+gw analyze -m llama -v llama-3.1-405b-instruct
+```
+
+</CodeGroup>
+
+## Model Comparison
+
+<Tabs>
+  <Tab title="Size & Performance">
+    | Model | Parameters | Quality | Speed | Best For |
+    |-------|-----------|---------|-------|----------|
+    | llama-3.1-405b-instruct | 405B | Excellent | Slow | Complex analysis |
+    | llama-3.3-70b-instruct | 70B | Very Good | Medium | Latest features |
+    | llama-3-70b-instruct | 70B | Very Good | Medium | Production use |
+    | llama-3.1-70b-instruct | 70B | Very Good | Medium | Balanced |
+    | llama-3.1-8b-instruct | 8B | Good | Fast | Quick commits |
+    | llama-3.2-3b-instruct | 3B | Fair | Very Fast | Resource-constrained |
+    | llama-3.2-1b-instruct | 1B | Basic | Ultra Fast | Edge deployment |
+  </Tab>
+  
+  <Tab title="Use Cases">
+    **Llama 3.1 405B**
+    - Complex refactoring analysis
+    - Architecture decisions
+    - Maximum quality needed
+    
+    **Llama 3.3 70B / Llama 3 70B**
+    - Daily development work
+    - Production deployments
+    - Balanced quality and speed
+    
+    **Llama 3.1 8B**
+    - Rapid commit generation
+    - Simple features
+    - Fast iteration
+    
+    **Llama 3.2 (1B/3B)**
+    - Resource-constrained environments
+    - Edge deployments
+    - Ultra-fast responses
+  </Tab>
+  
+  <Tab title="Deployment">
+    **Cloud API**
+    - Use Meta's hosted API
+    - All models available
+    - Pay per use
+    
+    **Self-Hosted (Ollama)**
+    - Download Llama models locally
+    - Complete privacy
+    - See [Ollama guide](/models/ollama)
+    
+    **Hybrid**
+    - Large models via API (405B)
+    - Small models self-hosted (8B)
+    - Optimize costs
+  </Tab>
+</Tabs>
+
+## Features
+
+### Open Source Flexibility
+
+Llama models can be deployed anywhere:
+
+```bash
+# Use via cloud API
+gitwhisper commit --model llama --key "your-api-key"
+
+# Or self-host with Ollama
+gitwhisper commit --model ollama --model-variant llama3.2:latest
+```
+
+### Multiple Size Options
+
+Choose the right size for your needs:
+
+```bash
+# Maximum quality (requires powerful hardware or API)
+gitwhisper commit --model llama --model-variant llama-3.1-405b-instruct
+
+# Balanced (good for most use cases)
+gitwhisper commit --model llama --model-variant llama-3-70b-instruct
+
+# Fast (efficient for quick commits)
+gitwhisper commit --model llama --model-variant llama-3.1-8b-instruct
+```
+
+## Configuration
+
+### Set Default Variant
+
+```bash
+# Set 70B as default
+gitwhisper set-defaults --model llama --model-variant llama-3-70b-instruct
+
+# Set lightweight 8B as default
+gitwhisper set-defaults --model llama --model-variant llama-3.1-8b-instruct
+
+# Set massive 405B as default (requires API access)
+gitwhisper set-defaults --model llama --model-variant llama-3.1-405b-instruct
+```
+
+### API Key Management
+
+<Accordion title="Using Environment Variables">
+  Add to your shell configuration:
+  
+  ```bash
+  export LLAMA_API_KEY="your-llama-api-key"
+  ```
+</Accordion>
+
+<Accordion title="Using Saved Configuration">
+  Save permanently with GitWhisper:
+  
+  ```bash
+  gitwhisper save-key --model llama --key "your-llama-api-key"
+  ```
+  
+  This stores the key in `~/.git_whisper.yaml`
+</Accordion>
+
+<Accordion title="Per-Command Key">
+  Pass key directly to the command:
+  
+  ```bash
+  gitwhisper commit --model llama --key "your-llama-api-key"
+  ```
+</Accordion>
+
+## Best Practices
+
+<Tip>
+  Use **llama-3-70b-instruct** or **llama-3.3-70b-instruct** for daily development. They offer the best balance of quality and speed.
+</Tip>
+
+<Warning>
+  The **llama-3.1-405b-instruct** model requires significant resources (API or powerful hardware). It's best suited for complex analysis tasks where maximum quality is needed.
+</Warning>
+
+<Info>
+  For self-hosted deployments, consider using smaller models (8B or 3B) via [Ollama](/models/ollama) for better performance on consumer hardware.
+</Info>
+
+## Self-Hosting with Ollama
+
+Llama models work great with Ollama for complete privacy:
+
+```bash
+# Pull Llama model with Ollama
+ollama pull llama3.2:latest
+
+# Use with GitWhisper
+gitwhisper commit --model ollama --model-variant llama3.2:latest
+```
+
+See the [Ollama guide](/models/ollama) for detailed setup instructions.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="API Key Not Found">
+    Ensure your Llama API key is properly configured:
+    
+    ```bash
+    # Check configuration
+    gitwhisper show-config
+    
+    # Save key if missing
+    gitwhisper save-key --model llama --key "your-key"
+    ```
+  </Accordion>
+  
+  <Accordion title="Invalid Model Variant">
+    Verify the variant name is correct:
+    
+    ```bash
+    # List available variants
+    gitwhisper list-variants --model llama
+    ```
+  </Accordion>
+  
+  <Accordion title="Model Too Large">
+    If you're getting memory or timeout errors with large models:
+    
+    - Use smaller variants (8B or 3B)
+    - Switch to cloud API for 405B model
+    - Consider self-hosting smaller models with Ollama
+  </Accordion>
+</AccordionGroup>
+
+## Related Resources
+
+<CardGroup cols={2}>
+  <Card title="All Variants" icon="list" href="/models/variants">
+    See complete list of Llama model variants
+  </Card>
+  
+  <Card title="Ollama Setup" icon="server" href="/models/ollama">
+    Self-host Llama models with Ollama
+  </Card>
+  
+  <Card title="Model Overview" icon="brain-circuit" href="/models/overview">
+    Compare all supported AI models
+  </Card>
+  
+  <Card title="Configuration" icon="gear" href="/configuration/api-keys">
+    Learn more about API key management
+  </Card>
+</CardGroup>

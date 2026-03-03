@@ -1,0 +1,254 @@
+---
+title: 'Grok (xAI)'
+description: 'Use xAI Grok models for powerful reasoning and code understanding'
+icon: 'sparkles'
+---
+
+Grok is xAI's family of AI models designed for advanced reasoning, code generation, and agentic interactions. GitWhisper supports all Grok model variants for commit message generation and code analysis.
+
+## Available Models
+
+GitWhisper supports the following Grok model variants:
+
+### Grok 4 Series
+
+- **grok-4** - Most intelligent Grok model with superior reasoning
+- **grok-4-heavy** - Most powerful variant with extended capabilities
+- **grok-4-fast** - Efficient reasoning with optimized performance
+
+### Specialized Models
+
+- **grok-code-fast-1** - Optimized for agentic coding tasks
+- **grok-3** - Advanced reasoning capabilities
+- **grok-3-mini** - Faster responses with good performance
+
+### Production Models
+
+- **grok-2-latest** ⭐ (default) - Stable production model
+
+<Note>
+  The default model **grok-2-latest** provides reliable performance for most use cases.
+</Note>
+
+## Setup
+
+<Steps>
+  <Step title="Get API Key">
+    Obtain your Grok API key from xAI's platform.
+  </Step>
+  
+  <Step title="Save API Key">
+    Save your API key using GitWhisper:
+    
+    ```bash
+    gitwhisper save-key --model grok --key "your-grok-api-key"
+    ```
+    
+    Or set it as an environment variable:
+    
+    ```bash
+    export GROK_API_KEY="your-grok-api-key"
+    ```
+  </Step>
+  
+  <Step title="Use Grok">
+    Generate commits with Grok:
+    
+    ```bash
+    gitwhisper commit --model grok
+    ```
+  </Step>
+</Steps>
+
+## Usage Examples
+
+<CodeGroup>
+
+```bash Default Model
+# Use default Grok model (grok-2-latest)
+gitwhisper commit --model grok
+gw commit -m grok
+```
+
+```bash Grok 4
+# Use the most intelligent Grok 4 model
+gitwhisper commit --model grok --model-variant grok-4
+gw commit -m grok -v grok-4
+```
+
+```bash Grok 4 Fast
+# Use fast reasoning for quick commits
+gitwhisper commit --model grok --model-variant grok-4-fast
+gw commit -m grok -v grok-4-fast
+```
+
+```bash Code-Optimized
+# Use code-specialized model
+gitwhisper commit --model grok --model-variant grok-code-fast-1
+gw commit -m grok -v grok-code-fast-1
+```
+
+```bash Set as Default
+# Set Grok as your default model
+gitwhisper set-defaults --model grok --model-variant grok-4
+gw set-defaults -m grok -v grok-4
+```
+
+```bash Code Analysis
+# Analyze changes with Grok
+gitwhisper analyze --model grok --model-variant grok-4
+gw analyze -m grok -v grok-4
+```
+
+</CodeGroup>
+
+## Model Comparison
+
+<Tabs>
+  <Tab title="Capabilities">
+    | Model | Best For | Reasoning | Speed |
+    |-------|----------|-----------|-------|
+    | grok-4 | Complex code analysis | Excellent | Medium |
+    | grok-4-heavy | Demanding tasks | Superior | Slower |
+    | grok-4-fast | Quick commits | Good | Fast |
+    | grok-code-fast-1 | Coding tasks | Excellent | Fast |
+    | grok-2-latest | General use | Good | Fast |
+  </Tab>
+  
+  <Tab title="Use Cases">
+    **Grok 4**
+    - Complex refactoring analysis
+    - Multi-file change understanding
+    - Architecture decisions
+    
+    **Grok 4 Fast**
+    - Rapid commit generation
+    - Simple feature additions
+    - Bug fixes
+    
+    **Grok Code Fast 1**
+    - Agentic coding workflows
+    - Code generation tasks
+    - Algorithm implementations
+    
+    **Grok 2 Latest**
+    - Daily development work
+    - Standard commits
+    - Reliable production use
+  </Tab>
+</Tabs>
+
+## Features
+
+### Advanced Reasoning
+
+Grok models excel at understanding complex code changes and architectural decisions:
+
+```bash
+# Grok analyzes your large refactoring
+gitwhisper commit --model grok --model-variant grok-4
+```
+
+### Agentic Coding Support
+
+The `grok-code-fast-1` variant is optimized for agentic coding workflows:
+
+```bash
+# Use code-specialized model for algorithm commits
+gitwhisper commit --model grok --model-variant grok-code-fast-1
+```
+
+## Configuration
+
+### Set Default Variant
+
+```bash
+# Set grok-4 as default
+gitwhisper set-defaults --model grok --model-variant grok-4
+
+# Set code-specialized as default
+gitwhisper set-defaults --model grok --model-variant grok-code-fast-1
+```
+
+### API Key Management
+
+<Accordion title="Using Environment Variables">
+  Add to your shell configuration:
+  
+  ```bash
+  export GROK_API_KEY="your-grok-api-key"
+  ```
+</Accordion>
+
+<Accordion title="Using Saved Configuration">
+  Save permanently with GitWhisper:
+  
+  ```bash
+  gitwhisper save-key --model grok --key "your-grok-api-key"
+  ```
+  
+  This stores the key in `~/.git_whisper.yaml`
+</Accordion>
+
+<Accordion title="Per-Command Key">
+  Pass key directly to the command:
+  
+  ```bash
+  gitwhisper commit --model grok --key "your-grok-api-key"
+  ```
+</Accordion>
+
+## Best Practices
+
+<Tip>
+  Use **grok-4-fast** for regular development work to balance quality and speed, and upgrade to **grok-4** for complex analysis tasks.
+</Tip>
+
+<Warning>
+  The **grok-4-heavy** model is more expensive and slower. Use it only when you need maximum reasoning capability.
+</Warning>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="API Key Not Found">
+    Ensure your Grok API key is properly configured:
+    
+    ```bash
+    # Check configuration
+    gitwhisper show-config
+    
+    # Save key if missing
+    gitwhisper save-key --model grok --key "your-key"
+    ```
+  </Accordion>
+  
+  <Accordion title="Invalid Model Variant">
+    Verify the variant name is correct:
+    
+    ```bash
+    # List available variants
+    gitwhisper list-variants --model grok
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Related Resources
+
+<CardGroup cols={2}>
+  <Card title="All Variants" icon="list" href="/models/variants">
+    See complete list of Grok model variants
+  </Card>
+  
+  <Card title="Model Overview" icon="brain-circuit" href="/models/overview">
+    Compare all supported AI models
+  </Card>
+  
+  <Card title="Configuration" icon="gear" href="/configuration/api-keys">
+    Learn more about API key management
+  </Card>
+  
+  <Card title="Code Analysis" icon="magnifying-glass-chart" href="/features/code-analysis">
+    Use Grok for advanced code analysis
+  </Card>
+</CardGroup>
